@@ -18,7 +18,5 @@ class UserSeeder extends Seeder
             'email'    => 'super_admin@doccare.com',
             'password' => bcrypt('12345678'),
         ]);
-
-        $user->roles()->attach(1);
     }
 }
