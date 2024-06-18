@@ -1,11 +1,6 @@
-// main.dart
 import 'package:flutter/material.dart';
-import 'package:mobile_app/components/bottom_navbar.dart';
-import 'package:mobile_app/pages/calendar/calendar_page.dart';
-import 'package:mobile_app/pages/home/home_page.dart';
-import 'package:mobile_app/pages/message/message_page.dart';
-import 'package:mobile_app/pages/profile/profile_page.dart';
-import 'package:mobile_app/pages/search/search_page.dart';
+
+import 'screens.dart';
 
 class LayoutPage extends StatefulWidget {
   @override
@@ -16,7 +11,7 @@ class _LayoutPageState extends State<LayoutPage> {
   int _selectedIndex = 0;
 
   static const List<Widget> _widgetOptions = <Widget>[
-    HomePage(),
+    HomeScreen(),
     SearchPage(),
     CalendarPage(),
     MessagePage(),

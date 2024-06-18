@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/components/bottom_navbar.dart';
-import 'package:mobile_app/pages/layout.dart';
+import 'package:mobile_app/screens/layout.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
