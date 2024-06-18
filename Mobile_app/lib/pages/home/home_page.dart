@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/components/bottom_navbar.dart';
+import 'package:mobile_app/pages/layout.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -8,7 +10,9 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("DocCare"),
+        centerTitle: true,
       ),
+      body: Text('HomePage'),
     );
   }
 }
