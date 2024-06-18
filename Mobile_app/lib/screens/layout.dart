@@ -12,7 +12,7 @@ class _LayoutPageState extends State<LayoutPage> {
 
   static const List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
-    SearchPage(),
+    SearchScreen(),
     CalendarPage(),
     MessagePage(),
     ProfilePage(),

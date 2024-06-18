@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class SearchPage extends StatelessWidget {
-  const SearchPage({super.key});
+class SearchScreen extends StatelessWidget {
+  const SearchScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -9,7 +9,7 @@ class SearchPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Home"),
       ),
-      body: Text('Search Page'),
+      body: Text('Search Screen'),
     );
   }
 }
