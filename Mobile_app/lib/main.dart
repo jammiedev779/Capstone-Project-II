@@ -1,7 +1,6 @@
+import 'package:doc_care/screens/home/home_screen.dart';
+import 'package:doc_care/shared/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_app/themes/themes.dart';
-
-import 'screens/layout.dart';
 
 void main() {
   runApp(const DocCare());
@@ -13,9 +12,8 @@ class DocCare extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: LayoutPage(),
-      theme: lightMode,
-    );
+        debugShowCheckedModeBanner: false,
+        home: const HomeScreen(),
+        theme: const AppTheme().themeData);
   }
 }
