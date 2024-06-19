@@ -1,4 +1,3 @@
-import 'package:doc_care/screens/screens.dart';
 import 'package:doc_care/shared/theme/app_theme.dart';
 import 'package:doc_care/shared/utils/bottom_nav_bars/main_nav_bar.dart';
 import 'package:flutter/material.dart';

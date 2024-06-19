@@ -9,7 +9,7 @@ class SearchScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Search Screen"),
       ),
-      body: Text('Search Screen'),
+      body: const Text('Search Screen'),
     );
   }
 }
