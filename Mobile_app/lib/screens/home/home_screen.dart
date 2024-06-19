@@ -1,3 +1,4 @@
+import 'package:doc_care/shared/utils/bottom_nav_bars/main_nav_bar.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -30,12 +31,12 @@ class HomeView extends StatelessWidget {
               'Welcome',
               style: textTheme.bodyMedium,
             ),
-            SizedBox(height: 4.0),
+            const SizedBox(height: 4.0),
             Text(
               'John Doe',
               style: textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 4.0),
+            const SizedBox(height: 4.0),
             Row(
               children: [
                 Icon(
@@ -90,7 +91,6 @@ class HomeView extends StatelessWidget {
           ),
         ),
       ),
-      // bottomNavigationBar: const MainNavBar(),
     );
   }
 }
