@@ -1,5 +1,5 @@
 import 'package:doc_care/shared/widgets/cards/appointment_preview_card.dart';
-import 'package:doc_care/shared/widgets/titiles/section_title.dart';
+import 'package:doc_care/shared/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -99,6 +99,8 @@ class HomeView extends StatelessWidget {
             children: <Widget>[
               _MyAppointment(),
               SizedBox(height: 24.0),
+              _GeneralNeeds(),
+              SizedBox(height: 24.0),
             ],
           ),
         ),
@@ -120,6 +122,24 @@ class _MyAppointment extends StatelessWidget {
           onPressed: () {},
         ),
         const AppointmentPreviewCard(),
+      ],
+    );
+  }
+}
+
+class _GeneralNeeds extends StatelessWidget {
+  const _GeneralNeeds();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SectionTitle(
+          title: 'For General Neededs',
+          action: '',
+          onPressed: () {},
+        ),
+        const GeneralNeedsPreviewList(),
       ],
     );
   }

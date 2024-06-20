@@ -46,7 +46,7 @@ class AppointmentPreviewCard extends StatelessWidget {
                   Icon(
                     Icons.calendar_month_rounded,
                     color: colorScheme.primary,
-                    size: 24.0,
+                    size: 28.0,
                   ),
                 ],
               ),
