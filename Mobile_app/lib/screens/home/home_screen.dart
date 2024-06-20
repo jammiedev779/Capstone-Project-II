@@ -101,6 +101,8 @@ class HomeView extends StatelessWidget {
               SizedBox(height: 24.0),
               _GeneralNeeds(),
               SizedBox(height: 24.0),
+              _SpecificNeeds(),
+              SizedBox(height: 24.0),
             ],
           ),
         ),
@@ -135,11 +137,29 @@ class _GeneralNeeds extends StatelessWidget {
     return Column(
       children: [
         SectionTitle(
-          title: 'For General Neededs',
+          title: 'For General Needs',
           action: '',
           onPressed: () {},
         ),
         const GeneralNeedsPreviewList(),
+      ],
+    );
+  }
+}
+
+class _SpecificNeeds extends StatelessWidget {
+  const _SpecificNeeds();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SectionTitle(
+          title: 'For Specific Needs',
+          action: '',
+          onPressed: () {},
+        ),
+        const SpecificNeedsPreviewList(),
       ],
     );
   }
