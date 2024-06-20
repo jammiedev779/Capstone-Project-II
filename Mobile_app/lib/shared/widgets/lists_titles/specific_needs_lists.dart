@@ -31,7 +31,7 @@ class SpecificNeedsPreviewList extends StatelessWidget {
           subtitle:
               'UTI, Birth control, Menopause, Period problems, Yeast infections, & more.',
           onTap: () {
-            // TODO: Implement Talk to a Doctor action
+            // TODO: Implement Women action
           },
         ),
         _buildCard(
@@ -43,7 +43,7 @@ class SpecificNeedsPreviewList extends StatelessWidget {
           subtitle:
               'Cold & flu symptoms, Diarrhea or Constipation, Skin rashed, & Allergies.',
           onTap: () {
-            // TODO: Implement Request Urgent Care action
+            // TODO: Implement Child action
           },
         ),
         _buildCard(
@@ -55,7 +55,7 @@ class SpecificNeedsPreviewList extends StatelessWidget {
           subtitle:
               'STI symptoms, Erection issues, Bladder or Bowel issues, Skin & hair care.',
           onTap: () {
-            // TODO: Implement Locate a Pharmacy action
+            // TODO: Implement male action
           },
         ),
         _buildCard(
@@ -67,7 +67,7 @@ class SpecificNeedsPreviewList extends StatelessWidget {
           subtitle:
               'Muscle or joint pain, Medication management, Preventive health method.',
           onTap: () {
-            // TODO: Implement Book an Appointment action
+            // TODO: Implement elder action
           },
         ),
         const SizedBox(height: 4.0),
