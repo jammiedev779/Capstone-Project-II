@@ -15,7 +15,7 @@ class CreateSpecialistsTable extends Migration
         Schema::create('specialists', function (Blueprint $table) {
             $table->id();
             $table->string('title')->nullable();
-            $table->boolean('status')->default(0); // default value set to 0
+            $table->boolean('status')->default(1); // default value set to 0
             $table->timestamps();
         });
     }
