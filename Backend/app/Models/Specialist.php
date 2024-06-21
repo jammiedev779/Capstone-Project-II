@@ -8,5 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Specialist extends Model
 {
     use HasFactory;
-    protected $fillable = ['title','status'];
+    protected $table = "specilaists";
+    protected $fillable = [
+        'title' , 'status'
+    ];  
 }
