@@ -21,4 +21,14 @@ class Appointment extends Model
     {
         return $this->belongsTo(Doctor::class);
     }
+
+    public function getStatusAttribute($value) {
+        switch($value){
+            case 0: return "Pending";
+            case 1: return "Accepted";
+            case 2: return "Rejected";
+            case 3: return "Completed";
+            case 4: return "Cancelled";
+        }
+    }
 }
