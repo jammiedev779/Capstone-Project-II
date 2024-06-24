@@ -2,19 +2,20 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\AppointmentResource\Pages;
-use App\Filament\Resources\AppointmentResource\RelationManagers;
-use App\Models\Appointment;
 use Filament\Forms;
+use Filament\Tables;
 use Filament\Forms\Form;
-use Filament\Infolists\Components\TextEntry;
+use Filament\Tables\Table;
+use App\Models\Appointment;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
-use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Table;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Infolists\Components\TextEntry;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\AppointmentResource\Pages;
+use App\Filament\Resources\AppointmentResource\RelationManagers;
 
 class AppointmentResource extends Resource
 {
@@ -37,25 +38,94 @@ class AppointmentResource extends Resource
             ->columns([
                 TextColumn::make('patient_name')
                     ->label('Patient')
-                    ->default(fn ($record) => $record->patient->first_name . ' ' . $record->patient->last_name)
+                    ->default(fn ($record) => ($record->patient->first_name ?? "") . ' ' . ($record->patient->last_name ?? ""))
                     ->searchable(),
                 TextColumn::make('doctor_name')
                     ->label('Doctor')
-                    ->default(fn ($record) => $record->doctor->first_name . ' ' . $record->doctor->last_name)
+                    ->default(fn ($record) => ($record->doctor->first_name ?? "") . ' ' . ($record->doctor->last_name ?? ""))
                     ->searchable(),
                 TextColumn::make('appointment_date')
                     ->date(),
                 TextColumn::make('location'),
-                TextColumn::make('user_status'),
-                TextColumn::make('doctor_status'),
-                TextColumn::make('status'),
+                TextColumn::make('user_status')
+                    ->badge()
+                    ->color(function ($record) {
+                        switch ($record['user_status']) {
+                            case "Pending":
+                                return "Pending";
+                            case "Cancelled":
+                                return "Cancelled";
+                        }
+                    }),
+                TextColumn::make('doctor_status')
+                    ->badge()
+                    ->color(function ($record) {
+                        switch ($record['doctor_status']) {
+                            case "Pending":
+                                return "Pending";
+                            case "Accepted":
+                                return "Accepted";
+                            case "Rejected":
+                                return "Rejected";
+                        }
+                    }),
+                TextColumn::make('status')
+                    ->badge()
+                    ->color(function ($record) {
+                        switch ($record['status']) {
+                            case "Pending":
+                                return "Pending";
+                            case "Ongoing":
+                                return "Ongoing";
+                            case "Completed":
+                                return "success";
+                        }
+                    }),
 
 
             ])
             ->filters([
-                //
+                SelectFilter::make('status')
+                    ->options([
+                        0 => 'Pending',
+                        1 => 'Ongoing',
+                        2 => 'Completed',
+                    ]),
+                SelectFilter::make('user_status')
+                    ->options([
+                        0 => 'Pending',
+                        1 => 'Cancelled',
+                    ]),
+                SelectFilter::make('doctor_status')
+                    ->options([
+                        0 => 'Pending',
+                        1 => 'Accepted',
+                        2 => 'Rejected',
+                    ]),
+
             ])
             ->actions([
+                Tables\Actions\Action::make('Accept')
+                    ->color('success')
+                    ->button()
+                    ->visible(function ($record, Tables\Contracts\HasTable $livewire) {
+                        return $livewire->activeTab == 'Pending';
+                    })
+                    ->action(function ($record) {
+                        $record['doctor_status'] = 1;
+                        $record['status'] = 1;
+                        $record->save();
+                    }),
+                Tables\Actions\Action::make('Reject')
+                    ->color('danger')
+                    ->button()
+                    ->visible(function ($record, Tables\Contracts\HasTable $livewire) {
+                        return $livewire->activeTab == 'Pending';
+                    })
+                    ->action(function ($record) {
+                        $record['doctor_status'] = 2;
+                        $record->save();
+                    }),
                 Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
@@ -87,10 +157,10 @@ class AppointmentResource extends Resource
             ->schema([
                 TextEntry::make('patient_name')
                     ->label('Patient')
-                    ->default(fn ($record) => $record->patient->first_name . ' ' . $record->patient->last_name),
+                    ->default(fn ($record) => ($record->patient->first_name ?? "") . ' ' . ($record->patient->last_name ?? "")),
                 TextEntry::make('doctor_name')
                     ->label('Doctor')
-                    ->default(fn ($record) => $record->doctor->first_name . ' ' . $record->doctor->last_name),
+                    ->default(fn ($record) => ($record->doctor->first_name ?? "") . ' ' . ($record->doctor->last_name ?? "")),
                 TextEntry::make('appointment_date')->date(),
                 TextEntry::make('reason'),
                 TextEntry::make('location'),
