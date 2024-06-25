@@ -27,6 +27,7 @@ class AppTheme {
       onBackground: Color(0xff000000),
       error: Color(0xFF5e162e),
       onError: Color(0xFFf5e9ed),
+      outline: Color(0xff)
     );
   }
 
