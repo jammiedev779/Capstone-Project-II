@@ -2765,3 +2765,7 @@ Did you mean one of these?
 #95 C:\\Users\\vinun\\Desktop\\Term 7\\Capstone-Project-II\\Backend\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('C:\\\\Users\\\\vinun\\\\...')
 #96 {main}
 "} 
+[2024-06-25 15:14:05] local.ERROR: Cannot declare class App\Http\Controllers\AppointmentController, because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot declare class App\\Http\\Controllers\\AppointmentController, because the name is already in use at C:\\Users\\vinun\\Desktop\\Term 7\\Capstone-Project-II\\Backend\\app\\Http\\Controllers\\DoctorController.php:10)
+[stacktrace]
+#0 {main}
+"} 
