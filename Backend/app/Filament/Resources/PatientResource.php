@@ -10,6 +10,7 @@ use Filament\Tables\Table;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Infolists\Components\TextEntry;
 use App\Filament\Resources\PatientResource\Pages;
@@ -52,7 +53,11 @@ class PatientResource extends Resource
                     }),
             ])
             ->filters([
-                //
+            SelectFilter::make('status')
+                ->options([
+                    0 => 'Inactive',
+                    1 => 'Active',
+                ]),
             ])
             ->actions([
                 // Tables\Actions\EditAction::make(),
