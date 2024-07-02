@@ -50,4 +50,9 @@ class User extends Authenticatable
     {
         $this->hasOne(HospitalDetail::class, 'hospital_id');
     }
+
+    public function access_patient_medical()
+    {
+        return $this->hasMany(AccessPatientMedical::class);
+    }
 }
