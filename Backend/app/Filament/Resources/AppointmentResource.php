@@ -7,6 +7,7 @@ use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\Appointment;
+use App\Services\PanelService;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables\Columns\TextColumn;
@@ -22,6 +23,19 @@ class AppointmentResource extends Resource
     protected static ?string $model = Appointment::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    public static function getNavigationGroup(): ?string
+    {
+        $get = PanelService::get_panel_order('Appointment');
+
+        return __($get['group_name']);
+    }
+    public static function getNavigationSort(): ?int
+    {
+        $get = PanelService::get_panel_order('Appointment');
+
+        return $get['sort'];
+    }
 
     public static function form(Form $form): Form
     {

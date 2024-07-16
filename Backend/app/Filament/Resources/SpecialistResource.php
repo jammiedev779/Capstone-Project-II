@@ -2,16 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\SpecialistResource\Pages;
-use App\Filament\Resources\SpecialistResource\RelationManagers;
-use App\Models\Specialist;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
+use App\Models\Specialist;
 use Filament\Tables\Table;
+use App\Services\PanelService;
+use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\SpecialistResource\Pages;
+use App\Filament\Resources\SpecialistResource\RelationManagers;
 
 class SpecialistResource extends Resource
 {
@@ -19,6 +20,19 @@ class SpecialistResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static function getNavigationGroup(): ?string
+    {
+        $get = PanelService::get_panel_order('Specialist');
+
+        return __($get['group_name']);
+    }
+    public static function getNavigationSort(): ?int
+    {
+        $get = PanelService::get_panel_order('Specialist');
+
+        return $get['sort'];
+    }
+    
     public static function form(Form $form): Form
     {
         return $form

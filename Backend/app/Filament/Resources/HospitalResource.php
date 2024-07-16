@@ -2,16 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\HospitalResource\Pages;
-use App\Filament\Resources\HospitalResource\RelationManagers;
-use App\Models\Hospital;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Hospital;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Services\PanelService;
+use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\HospitalResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\HospitalResource\RelationManagers;
 
 class HospitalResource extends Resource
 {
@@ -19,6 +20,19 @@ class HospitalResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static function getNavigationGroup(): ?string
+    {
+        $get = PanelService::get_panel_order('Hospital');
+
+        return __($get['group_name']);
+    }
+    public static function getNavigationSort(): ?int
+    {
+        $get = PanelService::get_panel_order('Hospital');
+
+        return $get['sort'];
+    }
+    
     public static function form(Form $form): Form
     {
         return $form
