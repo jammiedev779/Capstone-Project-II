@@ -9,10 +9,10 @@ class PanelService
         return
             [
                 // 'Dashboard'             => ['Dashboards'],
-                'Appointment'       => ['Appointments'],
-                'Patient'       => ['Patients'],
+                'Appointment'           => ['Appointments'],
+                'Patient'               => ['Patients'],
                 'User and Privilege'    => ['Admins', 'Roles', 'Permissions'],
-                'Setting'               => ['Hospitals', 'Specialists', 'Departments',]
+                'Setting'               => ['Hospitals', 'Specialists', 'Departments', 'Categories']
             ];
     }
     public static function get_panel_order($model)
@@ -29,7 +29,7 @@ class PanelService
             0   => ['Appointment'],
             10  => ['Patient'],
             20  => ['Admin', 'Role', 'Permission'],
-            30  => ['Hospital', 'Specialist', 'Department',]
+            30  => ['Hospital', 'Specialist', 'Department', 'Category']
         ];
 
         $get_panel_group = 0;

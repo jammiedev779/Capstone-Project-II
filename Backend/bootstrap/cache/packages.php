@@ -1,4 +1,15 @@
 <?php return array (
+  'althinect/filament-spatie-roles-permissions' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Althinect\\FilamentSpatieRolesPermissions\\FilamentSpatieRolesPermissionsServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'FilamentSpatieRolesPermissions' => 'Althinect\\FilamentSpatieRolesPermissions\\FilamentSpatieRolesPermissionsFacade',
+    ),
+  ),
   'anourvalar/eloquent-serialize' => 
   array (
     'aliases' => 
@@ -145,6 +156,13 @@
     'aliases' => 
     array (
       'BladeCaptureDirective' => 'RyanChandler\\BladeCaptureDirective\\Facades\\BladeCaptureDirective',
+    ),
+  ),
+  'spatie/laravel-permission' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Spatie\\Permission\\PermissionServiceProvider',
     ),
   ),
 );
