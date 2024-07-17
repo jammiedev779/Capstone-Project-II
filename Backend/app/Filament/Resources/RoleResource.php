@@ -158,21 +158,7 @@ class RoleResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\Action::make('activate')
-                    ->label('Activate')
-                    ->color('success')
-                    ->visible(fn ($record) => $record['status'] == 0)
-                    ->action(function ($record) {
-                        $record->update(['status' => 1]);
-                    }),
-                Tables\Actions\Action::make('de_activate')
-                    ->label('Deactivate')
-                    ->requiresConfirmation()
-                    ->color('danger')
-                    ->visible(fn ($record) => $record['status'] == 1)
-                    ->action(function ($record) {
-                        $record->update(['status' => 0]);
-                    }),
+                
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])

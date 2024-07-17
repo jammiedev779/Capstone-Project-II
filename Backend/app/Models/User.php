@@ -24,6 +24,8 @@ class User extends Authenticatable
         'email',
         'password',
         'hospital_id',
+        'location',
+        'phone_number',
     ];
 
     /**
@@ -51,7 +53,7 @@ class User extends Authenticatable
 
     public function hospital() 
     {
-        $this->hasOne(HospitalDetail::class, 'hospital_id');
+        return $this->hasOne(HospitalDetail::class, 'hospital_id');
     }
 
     public function access_patient_medical()

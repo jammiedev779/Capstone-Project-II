@@ -9,7 +9,7 @@ class HospitalPolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Hospital')[0]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Hospital')[0]);
     }
 
     /**
@@ -17,7 +17,7 @@ class HospitalPolicy
      */
     public function view(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Hospital')[1]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Hospital')[1]);
     }
 
     /**
@@ -25,7 +25,7 @@ class HospitalPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Hospital')[2]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Hospital')[2]);
     }
 
     /**
@@ -33,7 +33,7 @@ class HospitalPolicy
      */
     public function update(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Hospital')[3]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Hospital')[3]);
     }
 
     /**
@@ -41,7 +41,7 @@ class HospitalPolicy
      */
     public function delete(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Hospital')[4]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Hospital')[4]);
     }
 
     /**
@@ -49,7 +49,7 @@ class HospitalPolicy
      */
     public function restore(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Hospital')[5]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Hospital')[5]);
     }
 
     /**
@@ -57,6 +57,6 @@ class HospitalPolicy
      */
     public function forceDelete(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Hospital')[6]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Hospital')[6]);
     }
 }

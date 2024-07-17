@@ -10,7 +10,7 @@ class AppointmentPolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Appointment')[0]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Appointment')[0]);
     }
 
     /**
@@ -18,7 +18,7 @@ class AppointmentPolicy
      */
     public function view(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Appointment')[1]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Appointment')[1]);
     }
 
     /**
@@ -26,7 +26,7 @@ class AppointmentPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Appointment')[2]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Appointment')[2]);
     }
 
     /**
@@ -34,7 +34,7 @@ class AppointmentPolicy
      */
     public function update(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Appointment')[3]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Appointment')[3]);
     }
 
     /**
@@ -42,7 +42,7 @@ class AppointmentPolicy
      */
     public function delete(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Appointment')[4]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Appointment')[4]);
     }
 
     /**
@@ -50,7 +50,7 @@ class AppointmentPolicy
      */
     public function restore(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Appointment')[5]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Appointment')[5]);
     }
 
     /**
@@ -58,6 +58,6 @@ class AppointmentPolicy
      */
     public function forceDelete(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Appointment')[6]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Appointment')[6]);
     }
 }

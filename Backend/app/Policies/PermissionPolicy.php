@@ -15,7 +15,7 @@ class PermissionPolicy
 
     public function viewAny(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Permission')[0]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Permission')[0]);
     }
 
     /**
@@ -23,7 +23,7 @@ class PermissionPolicy
      */
     public function view(User $user, Permission $permission): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Permission')[1]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Permission')[1]);
     }
 
     /**
@@ -31,7 +31,7 @@ class PermissionPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Permission')[2]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Permission')[2]);
     }
 
     /**
@@ -39,7 +39,7 @@ class PermissionPolicy
      */
     public function update(User $user, Permission $permission): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Permission')[3]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Permission')[3]);
     }
 
     /**
@@ -47,7 +47,7 @@ class PermissionPolicy
      */
     public function delete(User $user, Permission $permission): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Permission')[4]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Permission')[4]);
     }
 
     /**
@@ -55,7 +55,7 @@ class PermissionPolicy
      */
     public function restore(User $user, Permission $permission): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Permission')[5]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Permission')[5]);
     }
 
     /**
@@ -63,6 +63,6 @@ class PermissionPolicy
      */
     public function forceDelete(User $user, Permission $permission): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Permission')[6]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Permission')[6]);
     }
 }

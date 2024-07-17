@@ -15,7 +15,6 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        // Spatie\Permission\Models\Permission::factory(10)->create();
         $panel_groups = PanelService::get_panel_group();
 
         $panels = [];
@@ -25,42 +24,44 @@ class PermissionSeeder extends Seeder
 
 
         foreach ($panels as $panel) {
-            Permission::createOrUpdate([
+            Permission::updateOrCreate([
                 'name' => 'viewAny ' . str_replace(' ', '', Str::singular($panel)),
                 'guard_name' => 'web',
                 'panel' => str_replace(' ', '', Str::singular($panel)),
             ]);
-            Permission::createOrUpdate([
+            Permission::updateOrCreate([
                 'name' => 'create ' . str_replace(' ', '', Str::singular($panel)),
                 'guard_name' => 'web',
                 'panel' => str_replace(' ', '', Str::singular($panel)),
             ]);
-            Permission::createOrUpdate([
+            Permission::updateOrCreate([
                 'name' => 'update ' . str_replace(' ', '', Str::singular($panel)),
                 'guard_name' => 'web',
                 'panel' => str_replace(' ', '', Str::singular($panel)),
             ]);
-            Permission::createOrUpdate([
+            Permission::updateOrCreate([
                 'name' => 'view ' . str_replace(' ', '', Str::singular($panel)),
                 'guard_name' => 'web',
                 'panel' => str_replace(' ', '', Str::singular($panel)),
             ]);
-            Permission::createOrUpdate([
+            Permission::updateOrCreate([
                 'name' => 'delete ' . str_replace(' ', '', Str::singular($panel)),
                 'guard_name' => 'web',
                 'panel' => str_replace(' ', '', Str::singular($panel)),
             ]);
-            Permission::createOrUpdate([
+            Permission::updateOrCreate([
                 'name' => 'restore ' . str_replace(' ', '', Str::singular($panel)),
                 'guard_name' => 'web',
                 'panel' => str_replace(' ', '', Str::singular($panel)),
             ]);
-            Permission::createOrUpdate([
+            Permission::updateOrCreate([
                 'name' => 'forceDelete ' . str_replace(' ', '', Str::singular($panel)),
                 'guard_name' => 'web',
                 'panel' => str_replace(' ', '', Str::singular($panel)),
             ]);
         }
+
+        
 
     }
 }

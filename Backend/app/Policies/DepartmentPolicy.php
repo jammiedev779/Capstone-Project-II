@@ -9,7 +9,7 @@ class DepartmentPolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Department')[0]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Department')[0]);
     }
 
     /**
@@ -17,7 +17,7 @@ class DepartmentPolicy
      */
     public function view(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Department')[1]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Department')[1]);
     }
 
     /**
@@ -25,7 +25,7 @@ class DepartmentPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Department')[2]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Department')[2]);
     }
 
     /**
@@ -33,7 +33,7 @@ class DepartmentPolicy
      */
     public function update(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Department')[3]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Department')[3]);
     }
 
     /**
@@ -41,7 +41,7 @@ class DepartmentPolicy
      */
     public function delete(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Department')[4]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Department')[4]);
     }
 
     /**
@@ -49,7 +49,7 @@ class DepartmentPolicy
      */
     public function restore(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Department')[5]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Department')[5]);
     }
 
     /**
@@ -57,6 +57,6 @@ class DepartmentPolicy
      */
     public function forceDelete(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Department')[6]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Department')[6]);
     }
 }

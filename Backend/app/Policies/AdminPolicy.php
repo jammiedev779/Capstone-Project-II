@@ -9,7 +9,7 @@ class AdminPolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Admin')[0]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Admin')[0]);
     }
 
     /**
@@ -17,7 +17,7 @@ class AdminPolicy
      */
     public function view(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Admin')[1]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Admin')[1]);
     }
 
     /**
@@ -25,7 +25,7 @@ class AdminPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Admin')[2]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Admin')[2]);
     }
 
     /**
@@ -33,7 +33,7 @@ class AdminPolicy
      */
     public function update(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Admin')[3]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Admin')[3]);
     }
 
     /**
@@ -41,7 +41,7 @@ class AdminPolicy
      */
     public function delete(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Admin')[4]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Admin')[4]);
     }
 
     /**
@@ -49,7 +49,7 @@ class AdminPolicy
      */
     public function restore(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Admin')[5]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Admin')[5]);
     }
 
     /**
@@ -57,6 +57,6 @@ class AdminPolicy
      */
     public function forceDelete(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Admin')[6]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Admin')[6]);
     }
 }

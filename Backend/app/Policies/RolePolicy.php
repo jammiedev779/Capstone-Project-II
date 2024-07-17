@@ -14,7 +14,7 @@ class RolePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Role')[0]) || $user->hasRole('super_admin');
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Role')[0]) || $user->hasRole('super_admin');
     }
 
     /**
@@ -22,7 +22,7 @@ class RolePolicy
      */
     public function view(User $user, Role $role): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Role')[1]) || $user->hasRole('super_admin');
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Role')[1]) || $user->hasRole('super_admin');
     }
 
     /**
@@ -30,7 +30,7 @@ class RolePolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Role')[2]) || $user->hasRole('super_admin');
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Role')[2]) || $user->hasRole('super_admin');
     }
 
     /**
@@ -38,7 +38,7 @@ class RolePolicy
      */
     public function update(User $user, Role $role): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Role')[3]) || $user->hasRole('super_admin');
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Role')[3]) || $user->hasRole('super_admin');
     }
 
     /**
@@ -46,7 +46,7 @@ class RolePolicy
      */
     public function delete(User $user, Role $role): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Role')[4]) || $user->hasRole('super_admin');
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Role')[4]) || $user->hasRole('super_admin');
     }
 
     /**
@@ -54,7 +54,7 @@ class RolePolicy
      */
     public function restore(User $user, Role $role): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Role')[5]) || $user->hasRole('super_admin');
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Role')[5]) || $user->hasRole('super_admin');
     }
 
     /**
@@ -62,6 +62,6 @@ class RolePolicy
      */
     public function forceDelete(User $user, Role $role): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Role')[6]) || $user->hasRole('super_admin');
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Role')[6]) || $user->hasRole('super_admin');
     }
 }

@@ -9,7 +9,7 @@ class SpecialistPolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Specialist')[0]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Specialist')[0]);
     }
 
     /**
@@ -17,7 +17,7 @@ class SpecialistPolicy
      */
     public function view(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Specialist')[1]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Specialist')[1]);
     }
 
     /**
@@ -25,7 +25,7 @@ class SpecialistPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Specialist')[2]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Specialist')[2]);
     }
 
     /**
@@ -33,7 +33,7 @@ class SpecialistPolicy
      */
     public function update(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Specialist')[3]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Specialist')[3]);
     }
 
     /**
@@ -41,7 +41,7 @@ class SpecialistPolicy
      */
     public function delete(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Specialist')[4]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Specialist')[4]);
     }
 
     /**
@@ -49,7 +49,7 @@ class SpecialistPolicy
      */
     public function restore(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Specialist')[5]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Specialist')[5]);
     }
 
     /**
@@ -57,6 +57,6 @@ class SpecialistPolicy
      */
     public function forceDelete(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Specialist')[6]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Specialist')[6]);
     }
 }

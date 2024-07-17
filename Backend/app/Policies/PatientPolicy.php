@@ -9,7 +9,7 @@ class PatientPolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Patient')[0]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Patient')[0]);
     }
 
     /**
@@ -17,7 +17,7 @@ class PatientPolicy
      */
     public function view(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Patient')[1]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Patient')[1]);
     }
 
     /**
@@ -25,7 +25,7 @@ class PatientPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Patient')[2]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Patient')[2]);
     }
 
     /**
@@ -33,7 +33,7 @@ class PatientPolicy
      */
     public function update(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Patient')[3]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Patient')[3]);
     }
 
     /**
@@ -41,7 +41,7 @@ class PatientPolicy
      */
     public function delete(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Patient')[4]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Patient')[4]);
     }
 
     /**
@@ -49,7 +49,7 @@ class PatientPolicy
      */
     public function restore(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Patient')[5]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Patient')[5]);
     }
 
     /**
@@ -57,6 +57,6 @@ class PatientPolicy
      */
     public function forceDelete(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionService::returnMethod('Patient')[6]);
+        return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Patient')[6]);
     }
 }
