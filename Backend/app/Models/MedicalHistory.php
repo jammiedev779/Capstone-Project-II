@@ -23,6 +23,11 @@ class MedicalHistory extends Model
     {
         return $this->belongsTo(Doctor::class);
     }
+
+    public function prescription()
+    {
+        return $this->hasMany(Prescription::class);
+    }
 }
 
 

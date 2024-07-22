@@ -10,6 +10,7 @@ use Filament\Tables\Table;
 use App\Services\PanelService;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use Filament\Infolists\Components\View;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
@@ -17,6 +18,7 @@ use Filament\Infolists\Components\TextEntry;
 use App\Filament\Resources\PatientResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PatientResource\RelationManagers;
+use App\Models\MedicalHistory;
 
 class PatientResource extends Resource
 {
@@ -29,7 +31,7 @@ class PatientResource extends Resource
 
         return $get['sort'];
     }
-    
+
     public static function form(Form $form): Form
     {
         return $form
@@ -60,11 +62,11 @@ class PatientResource extends Resource
                     }),
             ])
             ->filters([
-            SelectFilter::make('status')
-                ->options([
-                    0 => 'Inactive',
-                    1 => 'Active',
-                ]),
+                SelectFilter::make('status')
+                    ->options([
+                        0 => 'Inactive',
+                        1 => 'Active',
+                    ]),
             ])
             ->actions([
                 // Tables\Actions\EditAction::make(),
@@ -123,6 +125,10 @@ class PatientResource extends Resource
                 TextEntry::make('address'),
                 TextEntry::make('emergency_contact')->label('Emergency Contact'),
                 TextEntry::make('status'),
+                View::make('infolists.components.medical-history')
+                    ->viewData([
+                        'medical_histories' => MedicalHistory::where('patient_id', $infolist->getRecord()->id)->get(),
+                    ])->columnSpan("full"),
             ]);
     }
 }
