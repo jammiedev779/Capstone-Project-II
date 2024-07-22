@@ -19,13 +19,6 @@ class HospitalResource extends Resource
     protected static ?string $model = Hospital::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
-    public static function getNavigationGroup(): ?string
-    {
-        $get = PanelService::get_panel_order('Hospital');
-
-        return __($get['group_name']);
-    }
     public static function getNavigationSort(): ?int
     {
         $get = PanelService::get_panel_order('Hospital');

@@ -24,6 +24,8 @@ class AdminResource extends Resource
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
+    
+    protected static ?string $navigationLabel = 'Hospital Provider';
 
     public static function getNavigationGroup(): ?string
     {

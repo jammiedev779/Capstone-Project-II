@@ -8228,3 +8228,11 @@ Did you mean one of these?
 [stacktrace]
 #0 {main}
 "} 
+[2024-07-19 13:35:04] local.ERROR: Cannot declare class App\Http\Controllers\AppointmentController, because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot declare class App\\Http\\Controllers\\AppointmentController, because the name is already in use at C:\\Users\\vinun\\Desktop\\Term 7\\Capstone-Project-II\\Backend\\app\\Http\\Controllers\\DoctorController.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2024-07-22 08:42:25] local.ERROR: Cannot declare class App\Http\Controllers\AppointmentController, because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot declare class App\\Http\\Controllers\\AppointmentController, because the name is already in use at C:\\Users\\vinun\\Desktop\\Term 7\\Capstone-Project-II\\Backend\\app\\Http\\Controllers\\DoctorController.php:10)
+[stacktrace]
+#0 {main}
+"} 

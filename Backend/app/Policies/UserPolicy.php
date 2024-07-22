@@ -5,7 +5,7 @@ namespace App\Policies;
 use App\Models\User;
 use App\Services\PermissionService;
 
-class AdminPolicy
+class UserPolicy
 {
     public function viewAny(User $user): bool
     {

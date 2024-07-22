@@ -20,7 +20,7 @@ class RolePolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Role $role): bool
+    public function view(User $user): bool
     {
         return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Role')[1]) || $user->hasRole('super_admin');
     }
@@ -36,7 +36,7 @@ class RolePolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Role $role): bool
+    public function update(User $user): bool
     {
         return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Role')[3]) || $user->hasRole('super_admin');
     }
@@ -44,7 +44,7 @@ class RolePolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Role $role): bool
+    public function delete(User $user): bool
     {
         return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Role')[4]) || $user->hasRole('super_admin');
     }
@@ -52,7 +52,7 @@ class RolePolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Role $role): bool
+    public function restore(User $user): bool
     {
         return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Role')[5]) || $user->hasRole('super_admin');
     }
@@ -60,7 +60,7 @@ class RolePolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Role $role): bool
+    public function forceDelete(User $user): bool
     {
         return $user->is_superadmin || $user->hasPermissionTo(PermissionService::returnMethod('Role')[6]) || $user->hasRole('super_admin');
     }
