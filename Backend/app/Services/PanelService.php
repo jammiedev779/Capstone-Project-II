@@ -11,6 +11,7 @@ class PanelService
                 // 'Dashboard'             => ['Dashboards'],
                 'Appointment'           => ['Appointments'],
                 'Patient'               => ['Patients'],
+                'Doctor'                => ['Doctors'],
                 'User and Privilege'    => ['Admins', 'Roles', 'Permissions'],
                 'Setting'               => ['Hospitals', 'Specialists', 'Departments', 'Categories']
             ];
@@ -21,15 +22,17 @@ class PanelService
         $panel_groups = [
             0   => 'Appointment',
             10  => 'Patient',
-            20  => 'User and Privilege',
-            30  => 'Setting',
+            20  => 'Doctor',
+            30  => 'User and Privilege',
+            40  => 'Setting',
         ];
 
         $panels = [
             0   => ['Appointment'],
             10  => ['Patient'],
-            20  => ['Admin', 'Role', 'Permission'],
-            30  => ['Hospital', 'Specialist', 'Department', 'Category']
+            20  => ['Doctor'],
+            30  => ['Admin', 'Role', 'Permission'],
+            40  => ['Hospital', 'Specialist', 'Department', 'Category']
         ];
 
         $get_panel_group = 0;
@@ -55,5 +58,23 @@ class PanelService
         }
 
         return $get_panel;
+    }
+
+    public static function get_panel_icon($model)
+    {
+        $panel_icons = [
+            'Appointment' => 'heroicon-o-rectangle-stack',
+            'Patient' => 'heroicon-o-rectangle-stack',
+            'Doctor' => 'heroicon-o-rectangle-stack',
+            'Admin' => 'heroicon-o-rectangle-stack',
+            'Role' => 'heroicon-o-rectangle-stack',
+            'Permission' => 'heroicon-o-rectangle-stack',
+            'HospitalDetail' => 'heroicon-o-rectangle-stack',
+            'Specialist' => 'heroicon-o-rectangle-stack',
+            'Department' => 'heroicon-o-rectangle-stack',
+            'Category' => 'heroicon-o-rectangle-stack',
+        ];
+
+        return $panel_icons[$model];
     }
 }

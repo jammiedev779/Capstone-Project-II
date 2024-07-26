@@ -24,7 +24,12 @@ class PatientResource extends Resource
 {
     protected static ?string $model = Patient::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    public static function getNavigationIcon(): ?string
+    {
+        $panel = explode('\\', self::$model);
+
+        return PanelService::get_panel_icon($panel[2]);
+    }
     public static function getNavigationSort(): ?int
     {
         $get = PanelService::get_panel_order('Patient');

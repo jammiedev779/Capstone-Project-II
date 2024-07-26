@@ -18,7 +18,12 @@ class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    public static function getNavigationIcon(): ?string
+    {
+        $panel = explode('\\', self::$model);
+
+        return PanelService::get_panel_icon($panel[2]);
+    }
 
     public static function getNavigationGroup(): ?string
     {

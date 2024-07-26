@@ -21,8 +21,13 @@ use App\Filament\Resources\AppointmentResource\RelationManagers;
 class AppointmentResource extends Resource
 {
     protected static ?string $model = Appointment::class;
+    
+    public static function getNavigationIcon(): ?string
+    {
+        $panel = explode('\\', self::$model);
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+        return PanelService::get_panel_icon($panel[2]);
+    }
     public static function getNavigationSort(): ?int
     {
         $get = PanelService::get_panel_order('Appointment');
