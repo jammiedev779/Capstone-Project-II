@@ -3,13 +3,16 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Filament\Panel;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -20,6 +23,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'hospital_id',
+        'location',
+        'phone_number',
     ];
 
     /**
@@ -43,5 +49,20 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function hospital() 
+    {
+        return $this->hasOne(HospitalDetail::class, 'hospital_id');
+    }
+
+    public function access_patient_medical()
+    {
+        return $this->hasMany(AccessPatientMedical::class);
+    }
+    
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->hasRole(Role::all());
     }
 }

@@ -2,16 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\DepartmentResource\Pages;
-use App\Filament\Resources\DepartmentResource\RelationManagers;
-use App\Models\Department;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
+use App\Models\Department;
 use Filament\Tables\Table;
+use App\Services\PanelService;
+use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\DepartmentResource\Pages;
+use App\Filament\Resources\DepartmentResource\RelationManagers;
 
 class DepartmentResource extends Resource
 {
@@ -19,6 +20,19 @@ class DepartmentResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static function getNavigationGroup(): ?string
+    {
+        $get = PanelService::get_panel_order('Department');
+
+        return __($get['group_name']);
+    }
+    public static function getNavigationSort(): ?int
+    {
+        $get = PanelService::get_panel_order('Department');
+
+        return $get['sort'];
+    }
+    
     public static function form(Form $form): Form
     {
         return $form

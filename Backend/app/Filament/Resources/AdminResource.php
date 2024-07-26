@@ -2,47 +2,71 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\AdminResource\Pages;
-use App\Filament\Resources\AdminResource\RelationManagers;
-use App\Models\Admin;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use App\Models\User;
 use Filament\Tables;
+use App\Models\Admin;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Tables\Columns\TextColumn;
+use App\Services\PanelService;
+use Filament\Resources\Resource;
 use Filament\Forms\Components\Card;
+use Filament\Forms\Components\Select;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
+use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\AdminResource\Pages;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\AdminResource\RelationManagers;
+
 class AdminResource extends Resource
 {
-    protected static ?string $model = Admin::class;
+    protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
+    
+    protected static ?string $navigationLabel = 'Hospital Provider';
+
+    public static function getNavigationGroup(): ?string
+    {
+        $get = PanelService::get_panel_order('Admin');
+
+        return __($get['group_name']);
+    }
+    public static function getNavigationSort(): ?int
+    {
+        $get = PanelService::get_panel_order('Admin');
+
+        return $get['sort'];
+    }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('email')
+                TextInput::make('email')
                     ->email()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('location')
+                TextInput::make('location')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('phone_number')
+                TextInput::make('phone_number')
                     ->required()
                     ->maxLength(20),
-                Forms\Components\TextInput::make('password')
+                TextInput::make('password')
                     ->password()
                     ->required(fn ($record) => $record === null) // Required only on create
                     ->maxLength(255)
                     ->dehydrateStateUsing(fn ($state) => bcrypt($state))
                     ->hiddenOn('edit'),
+                Select::make('roles')
+                    ->relationship('roles', 'name')
+                    ->multiple()
+                    ->preload(),
             ]);
     }
 
