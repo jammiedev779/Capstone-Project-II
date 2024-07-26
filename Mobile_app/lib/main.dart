@@ -1,3 +1,5 @@
+import 'package:doc_care/screens/login_signup/login_screen.dart';
+import 'package:doc_care/screens/login_signup/register_screen.dart';
 import 'package:doc_care/shared/theme/app_theme.dart';
 import 'package:doc_care/shared/utils/bottom_nav_bars/main_nav_bar.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +15,8 @@ class DocCare extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const MainNavBar(),
+      // home: const MainNavBar(),
+      home: RegisterPage(),
       theme: const AppTheme().themeData,
     );
   }

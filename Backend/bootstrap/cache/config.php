@@ -1,7 +1,13 @@
 <?php return array (
   2 => 'broadcasting',
+  3 => 'cache',
   4 => 'cors',
+  5 => 'database',
+  6 => 'filesystems',
   7 => 'hashing',
+  9 => 'mail',
+  11 => 'services',
+  12 => 'session',
   13 => 'view',
   'app' => 
   array (
@@ -103,8 +109,8 @@
   array (
     'defaults' => 
     array (
-      'guard' => 'web',
-      'passwords' => 'users',
+      'guard' => 'patient',
+      'passwords' => 'patients',
     ),
     'guards' => 
     array (
@@ -112,6 +118,11 @@
       array (
         'driver' => 'session',
         'provider' => 'users',
+      ),
+      'patient' => 
+      array (
+        'driver' => 'patient',
+        'provider' => 'patients',
       ),
       'sanctum' => 
       array (
@@ -126,6 +137,11 @@
         'driver' => 'eloquent',
         'model' => 'App\\Models\\User',
       ),
+      'patients' => 
+      array (
+        'driver' => 'eloquent',
+        'model' => 'App\\Models\\Patient',
+      ),
     ),
     'passwords' => 
     array (
@@ -136,8 +152,252 @@
         'expire' => 60,
         'throttle' => 60,
       ),
+      'patients' => 
+      array (
+        'provider' => 'patients',
+        'table' => 'password_resets',
+        'expire' => 60,
+      ),
     ),
     'password_timeout' => 10800,
+  ),
+  'logging' => 
+  array (
+    'default' => 'stack',
+    'deprecations' => 
+    array (
+      'channel' => NULL,
+      'trace' => false,
+    ),
+    'channels' => 
+    array (
+      'stack' => 
+      array (
+        'driver' => 'stack',
+        'channels' => 
+        array (
+          0 => 'single',
+        ),
+        'ignore_exceptions' => false,
+      ),
+      'single' => 
+      array (
+        'driver' => 'single',
+        'path' => 'C:\\Users\\johnk\\Capstone-Project-II\\Backend\\storage\\logs/laravel.log',
+        'level' => 'debug',
+        'replace_placeholders' => true,
+      ),
+      'daily' => 
+      array (
+        'driver' => 'daily',
+        'path' => 'C:\\Users\\johnk\\Capstone-Project-II\\Backend\\storage\\logs/laravel.log',
+        'level' => 'debug',
+        'days' => 14,
+        'replace_placeholders' => true,
+      ),
+      'slack' => 
+      array (
+        'driver' => 'slack',
+        'url' => NULL,
+        'username' => 'Laravel Log',
+        'emoji' => ':boom:',
+        'level' => 'debug',
+        'replace_placeholders' => true,
+      ),
+      'papertrail' => 
+      array (
+        'driver' => 'monolog',
+        'level' => 'debug',
+        'handler' => 'Monolog\\Handler\\SyslogUdpHandler',
+        'handler_with' => 
+        array (
+          'host' => NULL,
+          'port' => NULL,
+          'connectionString' => 'tls://:',
+        ),
+        'processors' => 
+        array (
+          0 => 'Monolog\\Processor\\PsrLogMessageProcessor',
+        ),
+      ),
+      'stderr' => 
+      array (
+        'driver' => 'monolog',
+        'level' => 'debug',
+        'handler' => 'Monolog\\Handler\\StreamHandler',
+        'formatter' => NULL,
+        'with' => 
+        array (
+          'stream' => 'php://stderr',
+        ),
+        'processors' => 
+        array (
+          0 => 'Monolog\\Processor\\PsrLogMessageProcessor',
+        ),
+      ),
+      'syslog' => 
+      array (
+        'driver' => 'syslog',
+        'level' => 'debug',
+        'facility' => 8,
+        'replace_placeholders' => true,
+      ),
+      'errorlog' => 
+      array (
+        'driver' => 'errorlog',
+        'level' => 'debug',
+        'replace_placeholders' => true,
+      ),
+      'null' => 
+      array (
+        'driver' => 'monolog',
+        'handler' => 'Monolog\\Handler\\NullHandler',
+      ),
+      'emergency' => 
+      array (
+        'path' => 'C:\\Users\\johnk\\Capstone-Project-II\\Backend\\storage\\logs/laravel.log',
+      ),
+    ),
+  ),
+  'queue' => 
+  array (
+    'default' => 'database',
+    'connections' => 
+    array (
+      'sync' => 
+      array (
+        'driver' => 'sync',
+      ),
+      'database' => 
+      array (
+        'driver' => 'database',
+        'connection' => NULL,
+        'table' => 'jobs',
+        'queue' => 'default',
+        'retry_after' => 90,
+        'after_commit' => false,
+      ),
+      'beanstalkd' => 
+      array (
+        'driver' => 'beanstalkd',
+        'host' => 'localhost',
+        'queue' => 'default',
+        'retry_after' => 90,
+        'block_for' => 0,
+        'after_commit' => false,
+      ),
+      'sqs' => 
+      array (
+        'driver' => 'sqs',
+        'key' => '',
+        'secret' => '',
+        'prefix' => 'https://sqs.us-east-1.amazonaws.com/your-account-id',
+        'queue' => 'default',
+        'suffix' => NULL,
+        'region' => 'us-east-1',
+        'after_commit' => false,
+      ),
+      'redis' => 
+      array (
+        'driver' => 'redis',
+        'connection' => 'default',
+        'queue' => 'default',
+        'retry_after' => 90,
+        'block_for' => NULL,
+        'after_commit' => false,
+      ),
+    ),
+    'batching' => 
+    array (
+      'database' => 'mysql',
+      'table' => 'job_batches',
+    ),
+    'failed' => 
+    array (
+      'driver' => 'database-uuids',
+      'database' => 'mysql',
+      'table' => 'failed_jobs',
+    ),
+  ),
+  'sanctum' => 
+  array (
+    'stateful' => 
+    array (
+      0 => 'localhost',
+      1 => 'localhost:3000',
+      2 => '127.0.0.1',
+      3 => '127.0.0.1:8000',
+      4 => '::1',
+      5 => 'localhost',
+    ),
+    'guard' => 
+    array (
+      0 => 'web',
+    ),
+    'expiration' => NULL,
+    'token_prefix' => '',
+    'middleware' => 
+    array (
+      'authenticate_session' => 'Laravel\\Sanctum\\Http\\Middleware\\AuthenticateSession',
+      'encrypt_cookies' => 'Illuminate\\Cookie\\Middleware\\EncryptCookies',
+      'validate_csrf_token' => 'Illuminate\\Foundation\\Http\\Middleware\\ValidateCsrfToken',
+    ),
+  ),
+  'broadcasting' => 
+  array (
+    'default' => 'log',
+    'connections' => 
+    array (
+      'reverb' => 
+      array (
+        'driver' => 'reverb',
+        'key' => NULL,
+        'secret' => NULL,
+        'app_id' => NULL,
+        'options' => 
+        array (
+          'host' => NULL,
+          'port' => 443,
+          'scheme' => 'https',
+          'useTLS' => true,
+        ),
+        'client_options' => 
+        array (
+        ),
+      ),
+      'pusher' => 
+      array (
+        'driver' => 'pusher',
+        'key' => NULL,
+        'secret' => NULL,
+        'app_id' => NULL,
+        'options' => 
+        array (
+          'cluster' => NULL,
+          'host' => 'api-mt1.pusher.com',
+          'port' => 443,
+          'scheme' => 'https',
+          'encrypted' => true,
+          'useTLS' => true,
+        ),
+        'client_options' => 
+        array (
+        ),
+      ),
+      'ably' => 
+      array (
+        'driver' => 'ably',
+        'key' => NULL,
+      ),
+      'log' => 
+      array (
+        'driver' => 'log',
+      ),
+      'null' => 
+      array (
+        'driver' => 'null',
+      ),
+    ),
   ),
   'cache' => 
   array (
@@ -205,6 +465,34 @@
       ),
     ),
     'prefix' => '',
+  ),
+  'cors' => 
+  array (
+    'paths' => 
+    array (
+      0 => 'api/*',
+      1 => 'sanctum/csrf-cookie',
+    ),
+    'allowed_methods' => 
+    array (
+      0 => '*',
+    ),
+    'allowed_origins' => 
+    array (
+      0 => '*',
+    ),
+    'allowed_origins_patterns' => 
+    array (
+    ),
+    'allowed_headers' => 
+    array (
+      0 => '*',
+    ),
+    'exposed_headers' => 
+    array (
+    ),
+    'max_age' => 0,
+    'supports_credentials' => false,
   ),
   'database' => 
   array (
@@ -358,103 +646,22 @@
       'C:\\Users\\johnk\\Capstone-Project-II\\Backend\\public\\storage' => 'C:\\Users\\johnk\\Capstone-Project-II\\Backend\\storage\\app/public',
     ),
   ),
-  'logging' => 
+  'hashing' => 
   array (
-    'default' => 'stack',
-    'deprecations' => 
+    'driver' => 'bcrypt',
+    'bcrypt' => 
     array (
-      'channel' => NULL,
-      'trace' => false,
+      'rounds' => '12',
+      'verify' => true,
     ),
-    'channels' => 
+    'argon' => 
     array (
-      'stack' => 
-      array (
-        'driver' => 'stack',
-        'channels' => 
-        array (
-          0 => 'single',
-        ),
-        'ignore_exceptions' => false,
-      ),
-      'single' => 
-      array (
-        'driver' => 'single',
-        'path' => 'C:\\Users\\johnk\\Capstone-Project-II\\Backend\\storage\\logs/laravel.log',
-        'level' => 'debug',
-        'replace_placeholders' => true,
-      ),
-      'daily' => 
-      array (
-        'driver' => 'daily',
-        'path' => 'C:\\Users\\johnk\\Capstone-Project-II\\Backend\\storage\\logs/laravel.log',
-        'level' => 'debug',
-        'days' => 14,
-        'replace_placeholders' => true,
-      ),
-      'slack' => 
-      array (
-        'driver' => 'slack',
-        'url' => NULL,
-        'username' => 'Laravel Log',
-        'emoji' => ':boom:',
-        'level' => 'debug',
-        'replace_placeholders' => true,
-      ),
-      'papertrail' => 
-      array (
-        'driver' => 'monolog',
-        'level' => 'debug',
-        'handler' => 'Monolog\\Handler\\SyslogUdpHandler',
-        'handler_with' => 
-        array (
-          'host' => NULL,
-          'port' => NULL,
-          'connectionString' => 'tls://:',
-        ),
-        'processors' => 
-        array (
-          0 => 'Monolog\\Processor\\PsrLogMessageProcessor',
-        ),
-      ),
-      'stderr' => 
-      array (
-        'driver' => 'monolog',
-        'level' => 'debug',
-        'handler' => 'Monolog\\Handler\\StreamHandler',
-        'formatter' => NULL,
-        'with' => 
-        array (
-          'stream' => 'php://stderr',
-        ),
-        'processors' => 
-        array (
-          0 => 'Monolog\\Processor\\PsrLogMessageProcessor',
-        ),
-      ),
-      'syslog' => 
-      array (
-        'driver' => 'syslog',
-        'level' => 'debug',
-        'facility' => 8,
-        'replace_placeholders' => true,
-      ),
-      'errorlog' => 
-      array (
-        'driver' => 'errorlog',
-        'level' => 'debug',
-        'replace_placeholders' => true,
-      ),
-      'null' => 
-      array (
-        'driver' => 'monolog',
-        'handler' => 'Monolog\\Handler\\NullHandler',
-      ),
-      'emergency' => 
-      array (
-        'path' => 'C:\\Users\\johnk\\Capstone-Project-II\\Backend\\storage\\logs/laravel.log',
-      ),
+      'memory' => 65536,
+      'threads' => 1,
+      'time' => 4,
+      'verify' => true,
     ),
+    'rehash_on_login' => true,
   ),
   'mail' => 
   array (
@@ -471,7 +678,7 @@
         'username' => NULL,
         'password' => NULL,
         'timeout' => NULL,
-        'local_domain' => 'localhost',
+        'local_domain' => NULL,
       ),
       'ses' => 
       array (
@@ -532,90 +739,6 @@
       ),
     ),
   ),
-  'queue' => 
-  array (
-    'default' => 'database',
-    'connections' => 
-    array (
-      'sync' => 
-      array (
-        'driver' => 'sync',
-      ),
-      'database' => 
-      array (
-        'driver' => 'database',
-        'connection' => NULL,
-        'table' => 'jobs',
-        'queue' => 'default',
-        'retry_after' => 90,
-        'after_commit' => false,
-      ),
-      'beanstalkd' => 
-      array (
-        'driver' => 'beanstalkd',
-        'host' => 'localhost',
-        'queue' => 'default',
-        'retry_after' => 90,
-        'block_for' => 0,
-        'after_commit' => false,
-      ),
-      'sqs' => 
-      array (
-        'driver' => 'sqs',
-        'key' => '',
-        'secret' => '',
-        'prefix' => 'https://sqs.us-east-1.amazonaws.com/your-account-id',
-        'queue' => 'default',
-        'suffix' => NULL,
-        'region' => 'us-east-1',
-        'after_commit' => false,
-      ),
-      'redis' => 
-      array (
-        'driver' => 'redis',
-        'connection' => 'default',
-        'queue' => 'default',
-        'retry_after' => 90,
-        'block_for' => NULL,
-        'after_commit' => false,
-      ),
-    ),
-    'batching' => 
-    array (
-      'database' => 'mysql',
-      'table' => 'job_batches',
-    ),
-    'failed' => 
-    array (
-      'driver' => 'database-uuids',
-      'database' => 'mysql',
-      'table' => 'failed_jobs',
-    ),
-  ),
-  'sanctum' => 
-  array (
-    'stateful' => 
-    array (
-      0 => 'localhost',
-      1 => 'localhost:3000',
-      2 => '127.0.0.1',
-      3 => '127.0.0.1:8000',
-      4 => '::1',
-      5 => 'localhost',
-    ),
-    'guard' => 
-    array (
-      0 => 'web',
-    ),
-    'expiration' => NULL,
-    'token_prefix' => '',
-    'middleware' => 
-    array (
-      'authenticate_session' => 'Laravel\\Sanctum\\Http\\Middleware\\AuthenticateSession',
-      'encrypt_cookies' => 'Illuminate\\Cookie\\Middleware\\EncryptCookies',
-      'validate_csrf_token' => 'Illuminate\\Foundation\\Http\\Middleware\\ValidateCsrfToken',
-    ),
-  ),
   'services' => 
   array (
     'postmark' => 
@@ -663,107 +786,6 @@
     'http_only' => true,
     'same_site' => 'lax',
     'partitioned' => false,
-  ),
-  'broadcasting' => 
-  array (
-    'default' => 'log',
-    'connections' => 
-    array (
-      'reverb' => 
-      array (
-        'driver' => 'reverb',
-        'key' => NULL,
-        'secret' => NULL,
-        'app_id' => NULL,
-        'options' => 
-        array (
-          'host' => NULL,
-          'port' => 443,
-          'scheme' => 'https',
-          'useTLS' => true,
-        ),
-        'client_options' => 
-        array (
-        ),
-      ),
-      'pusher' => 
-      array (
-        'driver' => 'pusher',
-        'key' => NULL,
-        'secret' => NULL,
-        'app_id' => NULL,
-        'options' => 
-        array (
-          'cluster' => NULL,
-          'host' => 'api-mt1.pusher.com',
-          'port' => 443,
-          'scheme' => 'https',
-          'encrypted' => true,
-          'useTLS' => true,
-        ),
-        'client_options' => 
-        array (
-        ),
-      ),
-      'ably' => 
-      array (
-        'driver' => 'ably',
-        'key' => NULL,
-      ),
-      'log' => 
-      array (
-        'driver' => 'log',
-      ),
-      'null' => 
-      array (
-        'driver' => 'null',
-      ),
-    ),
-  ),
-  'cors' => 
-  array (
-    'paths' => 
-    array (
-      0 => 'api/*',
-      1 => 'sanctum/csrf-cookie',
-    ),
-    'allowed_methods' => 
-    array (
-      0 => '*',
-    ),
-    'allowed_origins' => 
-    array (
-      0 => '*',
-    ),
-    'allowed_origins_patterns' => 
-    array (
-    ),
-    'allowed_headers' => 
-    array (
-      0 => '*',
-    ),
-    'exposed_headers' => 
-    array (
-    ),
-    'max_age' => 0,
-    'supports_credentials' => false,
-  ),
-  'hashing' => 
-  array (
-    'driver' => 'bcrypt',
-    'bcrypt' => 
-    array (
-      'rounds' => '12',
-      'verify' => true,
-    ),
-    'argon' => 
-    array (
-      'memory' => 65536,
-      'threads' => 1,
-      'time' => 4,
-      'verify' => true,
-    ),
-    'rehash_on_login' => true,
   ),
   'view' => 
   array (

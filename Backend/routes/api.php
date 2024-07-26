@@ -11,7 +11,8 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('patients',[PatientController::class,'index']);
-Route::post('patients/register',[PatientController::class,'store']);
+Route::post('patients/login',[PatientController::class,'login']);
+Route::post('patients/register',[PatientController::class,'register']);
 Route::get('/patients/show/{id}', [PatientController::class, 'show']);
 Route::post('patients/update/{id}',[PatientController::class,'update']);
 Route::post('patients/delete/{id}',[PatientController::class,'delete']);
