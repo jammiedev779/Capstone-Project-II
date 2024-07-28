@@ -18,7 +18,12 @@ class SpecialistResource extends Resource
 {
     protected static ?string $model = Specialist::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    public static function getNavigationIcon(): ?string
+    {
+        $panel = explode('\\', self::$model);
+
+        return PanelService::get_panel_icon($panel[2]);
+    }
 
     public static function getNavigationGroup(): ?string
     {
@@ -48,9 +53,9 @@ class SpecialistResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')->sortable()->searchable()->alignment('center'),
-                Tables\Columns\TextColumn::make('title')->sortable()->searchable()->alignment('center'),
-                Tables\Columns\BooleanColumn::make('status')->sortable()->searchable()->alignment('center'),
+                Tables\Columns\TextColumn::make('id')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('title')->sortable()->searchable(),
+                Tables\Columns\BooleanColumn::make('status')->sortable()->searchable(),
             ])
             ->filters([
                 //

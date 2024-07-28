@@ -19,3 +19,10 @@ yarn-error.log
 /.idea
 /.vscode
 /Backend/storage/logs/laravel.log
+/storage/logs/laravel.log
+/storage/logs
+/storage/framework/cache
+/storage/framework/sessions
+/storage/framework/views
+
+/storage/framework/views
