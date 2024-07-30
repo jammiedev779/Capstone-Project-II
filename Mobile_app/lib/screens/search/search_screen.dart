@@ -1,5 +1,6 @@
 import 'package:doc_care/services/search_doctor_api.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -69,10 +70,30 @@ class _SearchScreenState extends State<SearchScreen> {
               controller: _searchController,
               onChanged: _filterDoctors,
               decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.white,
                 prefixIcon: const Icon(Icons.search),
                 hintText: "Doctors, Symptoms, Hospitals...",
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(
+                    color: Colors.grey.shade300,
+                    width: 1,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(
+                    color: Colors.grey.shade300,
+                    width: 1,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(
+                    color: Colors.blue,
+                    width: 2,
+                  ),
                 ),
               ),
             ),
@@ -138,33 +159,55 @@ class _SearchScreenState extends State<SearchScreen> {
           itemCount: _filteredDoctors.length,
           itemBuilder: (context, index) {
             final doctor = _filteredDoctors[index];
-            return ListTile(
-              leading: const CircleAvatar(
-                backgroundImage: AssetImage('assets/doctor.png'),
+            return Card(
+              elevation: 5,
+              margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
               ),
-              title: Text('${doctor['first_name']} ${doctor['last_name']}'),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Phone: ${doctor['phone_number']}'),
-                  Text('Status: ${doctor['status']}'),
-                  Text('Address: ${doctor['address']}'),
-                  Row(
-                    children: const [
-                      Icon(Icons.star, size: 16, color: Colors.orange),
-                      Icon(Icons.star, size: 16, color: Colors.orange),
-                      Icon(Icons.star, size: 16, color: Colors.orange),
-                      Icon(Icons.star, size: 16, color: Colors.orange),
-                      Icon(Icons.star, size: 16, color: Colors.grey),
-                    ],
-                  ),
-                ],
-              ),
-              trailing: TextButton(
-                child: const Text('Booking'),
-                onPressed: () {
-                  // Booking action
-                },
+              child: ListTile(
+                contentPadding: const EdgeInsets.all(12.0),
+                leading: CircleAvatar(
+                  radius: 60, 
+                  backgroundImage: NetworkImage('https://i.pinimg.com/736x/83/1f/01/831f015888b5a0cd588e89b865ed12d0.jpg'),
+                ),
+                title: Text('${doctor['first_name']} ${doctor['last_name']}'),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(Icons.phone, size: 16),
+                        const SizedBox(width: 4),
+                        Text('${doctor['phone_number']}'),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    // Row(
+                    //   children: [
+                    //     const Icon(Icons.info, size: 16),
+                    //     const SizedBox(width: 4),
+                    //     Text('${doctor['status']}'),
+                    //   ],
+                    // ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        const Icon(Icons.star, size: 16, color: Colors.orange),
+                        const Icon(Icons.star, size: 16, color: Colors.orange),
+                        const Icon(Icons.star, size: 16, color: Colors.orange),
+                        const Icon(Icons.star, size: 16, color: Colors.orange),
+                        const Icon(Icons.star, size: 16, color: Colors.grey),
+                      ],
+                    ),
+                  ],
+                ),
+                trailing: TextButton(
+                  child: const Text('Detail'),
+                  onPressed: () {
+                    // Booking action
+                  },
+                ),
               ),
             );
           },

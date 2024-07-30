@@ -1,5 +1,5 @@
-import 'package:doc_care/screens/login_signup/login_screen.dart';
-import 'package:doc_care/screens/login_signup/register_screen.dart';
+import 'package:doc_care/screens/login_&_register/login_screen.dart';
+import 'package:doc_care/screens/login_&_register/register_screen.dart';
 import 'package:doc_care/shared/theme/app_theme.dart';
 import 'package:doc_care/shared/utils/bottom_nav_bars/main_nav_bar.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +16,7 @@ class DocCare extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       // home: const MainNavBar(),
-      home: RegisterPage(),
+      home:RegisterPage(),
       theme: const AppTheme().themeData,
     );
   }

@@ -1,57 +1,42 @@
-import 'package:doc_care/screens/login/login_screen.dart';
-import 'package:doc_care/screens/register/register_screen.dart';
+import 'package:doc_care/services/patient_api.dart';
+import 'package:doc_care/shared/utils/bottom_nav_bars/main_nav_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:doc_care/services/patient_api.dart';
+import 'package:doc_care/shared/utils/bottom_nav_bars/main_nav_bar.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class RegisterPage extends StatefulWidget {
-  @override
-  _RegisterPageState createState() => _RegisterPageState();
-}
-
-class _RegisterPageState extends State<RegisterPage> {
-  late TextEditingController _numberController;
-  late TextEditingController _passwordController;
-
-  @override
-  void initState() {
-    super.initState();
-    _numberController = TextEditingController();
-    _passwordController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    _numberController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
+class LoginPage extends StatelessWidget {
+  const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController phoneNumberController = TextEditingController();
+    final TextEditingController passwordController = TextEditingController();
     TextTheme textTheme = Theme.of(context).textTheme;
     ColorScheme colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: <Widget>[
               SvgPicture.asset(
                 'assets/icons/app_icon.svg',
                 height: 60,
               ),
               SizedBox(height: 25),
               Text(
-                'Create Account',
+                'Hi, Welcome Back!',
                 style: TextStyle(
                   fontSize: 23,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Text(
-                'We are here to help you!',
+                'Hope you\'re doing fine.',
                 style: TextStyle(
                   fontSize: 15,
                   color: colorScheme.outlineVariant,
@@ -60,7 +45,8 @@ class _RegisterPageState extends State<RegisterPage> {
               SizedBox(height: 50),
               // Phone number input
               TextField(
-                obscureText: true,
+                controller: phoneNumberController,
+                obscureText: false,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   labelText: 'Your Number',
@@ -83,6 +69,7 @@ class _RegisterPageState extends State<RegisterPage> {
               SizedBox(height: 20),
               // Password input
               TextField(
+                controller: passwordController,
                 obscureText: true,
                 decoration: InputDecoration(
                   labelText: 'Password',
@@ -107,12 +94,14 @@ class _RegisterPageState extends State<RegisterPage> {
               SizedBox(
                 width: double.parse('300'),
                 child: ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: () async {
+                    await _loginUser(context, phoneNumberController.text, passwordController.text);
+                  },
                   icon: Image.asset(
                     'assets/icons/login_icon.png',
                     width: 20,
                   ),
-                  label: Text('Create Account'),
+                  label: Text('Sign In'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
@@ -135,7 +124,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     'assets/icons/telegram_icon.png',
                     width: 20,
                   ),
-                  label: Text('Sign Up with Telegram'),
+                  label: Text('Sign In with Telegram'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: colorScheme.onPrimary,
                     shape: RoundedRectangleBorder(
@@ -151,24 +140,23 @@ class _RegisterPageState extends State<RegisterPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Already have account? ",
-                    style:
-                        TextStyle(color: Theme.of(context).colorScheme.primary),
+                    "Not a member? ",
+                    style: TextStyle(color: colorScheme.primary),
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LoginPage(),
-                        ),
-                      );
+                      // Navigator.pushReplacement(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => RegisterPage(),
+                      //   ),
+                      // );
                     },
                     child: Text(
-                      "Login now",
+                      "Register now",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.primary),
+                          color: colorScheme.primary),
                     ),
                   ),
                 ],
@@ -178,5 +166,67 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
       ),
     );
+  }
+
+  Future<void> _loginUser(BuildContext context, String phoneNumber, String password) async {
+    final Map<String, String> credentials = {
+      'phone_number': phoneNumber,
+      'password': password,
+    };
+
+    final response = await ApiService.loginPatient(credentials);
+
+    if (response['status'] == 200) {
+      String token = response['token'];
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          Future.delayed(const Duration(seconds: 2), () {
+            Navigator.of(context).pop(); 
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MainNavBar(token: token),
+              ),
+            );
+          });
+          return AlertDialog(
+            title: const Text('Congratulations!'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: const <Widget>[
+                Icon(
+                  Icons.check_circle,
+                  size: 100,
+                  color: Colors.green,
+                ),
+                SizedBox(height: 16.0),
+                Text(
+                  'Your account is ready to use. You will be redirected to the Home Page.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.grey,
+                  ),
+                ),
+                SizedBox(height: 16.0),
+                CircularProgressIndicator(),
+              ],
+            ),
+          );
+        },
+      );
+    } else {
+      showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: Text(response['message']),
+          );
+        },
+      );
+    }
   }
 }

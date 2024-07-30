@@ -8,8 +8,8 @@ class ApiService {
   static const String _baseUrl = 'http://10.0.2.2:8002/api/patients';
 
   //add enpoind api server here..
-
-
+  // static const String _baseUrl = 'http://54.151.252.168/api/patients';
+  
   //register
   static Future<Map<String, dynamic>> registerPatient(Map<String, String> userData) async {
     final response = await http.post(

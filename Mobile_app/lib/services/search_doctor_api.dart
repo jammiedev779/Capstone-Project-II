@@ -2,7 +2,11 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class SearchDoctorApi {
+  //api local
   static const String _baseUrl = 'http://10.0.2.2:8002/api/doctors';
+
+  //add enpoind api server here..
+  // static const String _baseUrl = 'http://54.151.252.168/api/doctors';
 
   static Future<List<Map<String, dynamic>>> searchDoctors(String query) async {
     final response = await http.get(

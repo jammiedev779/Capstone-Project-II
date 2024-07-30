@@ -1,4 +1,4 @@
-import 'package:doc_care/screens/login_signup/login_screen.dart';
+import 'package:doc_care/screens/login_&_register/login_screen.dart';
 import 'package:doc_care/screens/profile/edit_profile.dart';
 import 'package:doc_care/services/patient_api.dart';
 import 'package:flutter/material.dart';
@@ -90,6 +90,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text('Profile'),
         actions: [
           IconButton(
