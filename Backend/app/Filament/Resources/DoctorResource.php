@@ -46,13 +46,19 @@ class DoctorResource extends Resource
             ->schema([
                 TextInput::make('first_name'),
                 TextInput::make('last_name'),
-                TextInput::make('gender'),
+                Select::make('gender')
+                    ->options([
+                        'male'  => 'Male',
+                        'female' => 'Female'
+                    ]),
                 TextInput::make('address'),
                 TextInput::make('phone_number'),
                 Select::make('specialist_id')
-                ->options(fn() => Specialist::all()->pluck('title', 'id')),
+                    ->label('Specialist')
+                    ->options(fn () => Specialist::all()->pluck('title', 'id')),
                 Select::make('department_id')
-                ->options(fn() => Department::all()->pluck('title', 'id')),
+                    ->label('Department')
+                    ->options(fn () => Department::all()->pluck('title', 'id')),
 
             ]);
     }
