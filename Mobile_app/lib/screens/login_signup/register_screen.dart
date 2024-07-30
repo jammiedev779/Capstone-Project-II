@@ -3,8 +3,14 @@ import 'package:doc_care/services/patient_api.dart';
 import 'package:doc_care/shared/utils/bottom_nav_bars/main_nav_bar.dart';
 import 'package:flutter/material.dart';
 
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+
+
+
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
+  
 
   @override
   Widget build(BuildContext context) {
@@ -110,11 +116,11 @@ class AdditionalInfoPage extends StatelessWidget {
 
   AdditionalInfoPage({required this.phoneNumber, required this.password});
 
-  final TextEditingController firstNameController = TextEditingController();
-  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
   final TextEditingController genderController = TextEditingController();
   final TextEditingController ageController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -143,21 +149,22 @@ class AdditionalInfoPage extends StatelessWidget {
             ),
             const Spacer(),
             TextField(
-              controller: firstNameController,
+              controller: nameController,
               decoration: const InputDecoration(
-                labelText: 'First Name',
+                labelText: 'Your Name',
                 border: OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 16.0),
-            TextField(
-              controller: lastNameController,
+           TextField(
+              controller: emailController,
               decoration: const InputDecoration(
-                labelText: 'Last Name',
+                labelText: 'Email',
                 border: OutlineInputBorder(),
               ),
             ),
-            const SizedBox(height: 16.0),
+           
+            const SizedBox(height: 16.0),  
             TextField(
               controller: addressController,
               decoration: const InputDecoration(
@@ -182,6 +189,7 @@ class AdditionalInfoPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16.0),
+           
             ElevatedButton(
               onPressed: () async {
                 await _registerUser(context);
@@ -198,70 +206,73 @@ class AdditionalInfoPage extends StatelessWidget {
     );
   }
 
-Future<void> _registerUser(BuildContext context) async {
-  final Map<String, String> userData = {
-    'first_name': firstNameController.text,
-    'last_name': lastNameController.text,
-    'address': addressController.text,
-    'gender': genderController.text,
-    'age': ageController.text,
-    'phone_number': phoneNumber,
-    'password': password,
-  };
+  Future<void> _registerUser(BuildContext context) async {
+    final Map<String, String> userData = {
+      'name': nameController.text,
+      'address': addressController.text,
+      'gender': genderController.text,
+      'age': ageController.text,
+      'email': emailController.text,
+      'phone_number': phoneNumber,
+      'password': password,
+    };
 
-  final response = await ApiService.registerPatient(userData);
+    final response = await ApiService.registerPatient(userData);
 
-  if (response['status'] == 200) {
-    // Show congratulations dialog
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        Future.delayed(const Duration(seconds: 2), () {
-          Navigator.of(context).pop(); // Close the dialog
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const MainNavBar(),
+    if (response['status'] == 200) {
+      String token = response['token'];
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          Future.delayed(const Duration(seconds: 2), () {
+            Navigator.of(context).pop(); 
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MainNavBar(token: token),
+              ),
+            );
+          });
+          return AlertDialog(
+            title: const Text('Congratulations!'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: const <Widget>[
+                Icon(
+                  Icons.check_circle,
+                  size: 100,
+                  color: Colors.green,
+                ),
+                SizedBox(height: 16.0),
+                Text(
+                  'Your account is ready to use. You will be redirected to the Home Page.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.grey,
+                  ),
+                ),
+                SizedBox(height: 16.0),
+                CircularProgressIndicator(),
+              ],
             ),
           );
-        });
-
-        return AlertDialog(
-          title: const Text('Congratulations!'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: const <Widget>[
-              Icon(
-                Icons.check_circle,
-                size: 100,
-                color: Colors.green,
-              ),
-              SizedBox(height: 16.0),
-              Text(
-                'Your account is ready to use. You will be redirected to the Home Page.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.grey,
-                ),
-              ),
-              SizedBox(height: 16.0),
-              CircularProgressIndicator(),
-            ],
-          ),
-        );
-      },
-    );
-  } else {
-    // Handle error
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(response['message'])),
-    );
+        },
+      );
+    } else {
+      showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: Text(response['message']),
+          );
+        },
+      );
+    }
   }
 }
-
-}
-
 class CongratulationsPage extends StatelessWidget {
   const CongratulationsPage({super.key});
 

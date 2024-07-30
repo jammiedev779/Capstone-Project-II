@@ -76,9 +76,7 @@ class LoginPage extends StatelessWidget {
             ),
             const Spacer(flex: 2),
             TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
+              onPressed: () {},
               child: const Text('Please kindly fill the information to login'),
             ),
             const Spacer(),
@@ -96,17 +94,99 @@ class LoginPage extends StatelessWidget {
 
     final response = await ApiService.loginPatient(credentials);
 
-    if (response['status'] == 200) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const MainNavBar(),
-        ),
+  if (response['status'] == 200) {
+      String token = response['token'];
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          Future.delayed(const Duration(seconds: 2), () {
+            Navigator.of(context).pop(); 
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MainNavBar(token: token),
+              ),
+            );
+          });
+          return AlertDialog(
+            title: const Text('Congratulations!'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: const <Widget>[
+                Icon(
+                  Icons.check_circle,
+                  size: 100,
+                  color: Colors.green,
+                ),
+                SizedBox(height: 16.0),
+                Text(
+                  'Your account is ready to use. You will be redirected to the Home Page.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.grey,
+                  ),
+                ),
+                SizedBox(height: 16.0),
+                CircularProgressIndicator(),
+              ],
+            ),
+          );
+        },
       );
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(response['message'])),
+      showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: Text(response['message']),
+          );
+        },
       );
     }
+  }
+}
+
+class CongratulationsPage extends StatelessWidget {
+  const CongratulationsPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const <Widget>[
+            Icon(
+              Icons.check_circle,
+              size: 100,
+              color: Colors.green,
+            ),
+            SizedBox(height: 16.0),
+            Text(
+              'Congratulations!',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              'Your account is ready to use. You will be redirected to the Home Page in a few seconds.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.grey,
+              ),
+            ),
+            SizedBox(height: 16.0),
+            CircularProgressIndicator(),
+          ],
+        ),
+      ),
+    );
   }
 }

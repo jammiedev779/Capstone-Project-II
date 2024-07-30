@@ -11,174 +11,137 @@ use Illuminate\Http\Response;
 
 class PatientController extends Controller
 {
-    /**
-     * Display a listing of patients.
-     */
-    public function index()
-    {
-        $patients = Patient::all();
-
-        return response()->json([
-            'status' => Response::HTTP_OK,
-            'patients' => $patients,
-        ], Response::HTTP_OK);
-    }
-
-    /**
-     * Store a newly created patient.
-     */
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'first_name' => 'nullable',
-            'last_name' => 'nullable',
-            'age' => 'nullable|integer',
-            'gender' => 'nullable',
+        $validatePatient = Validator::make($request->all(), [
+            'name' => 'nullable',   
+            'phone_number' => 'nullable',   
             'address' => 'nullable',
-            'emergency_contact' => 'nullable',
-            'phone_number' => 'required|unique:patients,phone_number',
-            'password' => 'required|min:6',
-            'email' => 'nullable|email|unique:patients,email',
+            'gender' => 'nullable',
+            'age' => 'nullable',         
+            'email' => 'required',
+            'password' => 'required',
         ]);
 
-        if ($validator->fails()) {
+        if ($validatePatient->fails()) {
             return response()->json([
-                'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                'message' => $validator->messages(),
-            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                'status' => false,
+                'message' => 'validation error',
+                'errors' => $validatePatient->errors()
+            ]);
         }
 
-        $patient = new Patient($request->only([
-            'first_name', 'last_name', 'age', 'gender', 'address',
-            'emergency_contact', 'phone_number', 'email'
-        ]));
-        $patient->password = Hash::make($request->password);
-        
-        $patient->save();
-
-        return response()->json([
-            'status' => Response::HTTP_OK,
-            'message' => "Created successfully",
-        ], Response::HTTP_OK);
-    }
-
-    /**
-     * Display the specified patient.
-     */
-    public function show($id)
-    {
-        $patient = Patient::find($id);
-
-        if (!$patient) {
-            return response()->json([
-                'status' => Response::HTTP_NOT_FOUND,
-                'message' => 'Patient not found',
-            ], Response::HTTP_NOT_FOUND);
-        }
-
-        return response()->json([
-            'status' => Response::HTTP_OK,
-            'patient' => $patient,
-        ], Response::HTTP_OK);
-    }
-
-    /**
-     * Update the specified patient.
-     */
-    public function update(Request $request, $id)
-    {
-        $validator = Validator::make($request->all(), [
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'age' => 'required|integer',
-            'gender' => 'required',
-            'address' => 'required',
-            'emergency_contact' => 'required',
-            'phone_number' => 'required|unique:patients,phone_number,' . $id,
-            'email' => 'required|email|unique:patients,email,' . $id,
+        $patient = Patient::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone_number' => $request->phone_number,
+            'gender' => $request->gender,
+            'address' => $request->address,
+            'age' => $request->age,
+            'password' => Hash::make($request->password),
         ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                'message' => $validator->messages(),
-            ], Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
-
-        $patient = Patient::find($id);
-
-        if (!$patient) {
-            return response()->json([
-                'status' => Response::HTTP_NOT_FOUND,
-                'message' => 'Patient not found',
-            ], Response::HTTP_NOT_FOUND);
-        }
-
-        $patient->update($request->only([
-            'first_name', 'last_name', 'age', 'gender', 'address',
-            'emergency_contact', 'phone_number', 'email'
-        ]));
+        $token = $patient->createToken('authToken')->plainTextToken;
 
         return response()->json([
-            'status' => Response::HTTP_OK,
-            'message' => "Updated successfully",
-        ], Response::HTTP_OK);
+            'status' => true,
+            'message' => 'Patient registered successfully',
+            'token' => $token,
+            'data' => $patient
+        ]);
     }
 
-    /**
-     * Remove the specified patient.
-     */
-    public function delete($id)
-    {
-        $patient = Patient::find($id);
-
-        if (!$patient) {
-            return response()->json([
-                'status' => Response::HTTP_NOT_FOUND,
-                'message' => 'Patient not found',
-            ], Response::HTTP_NOT_FOUND);
-        }
-
-        $patient->delete();
-
-        return response()->json([
-            'status' => Response::HTTP_OK,
-            'message' => "Deleted successfully",
-        ], Response::HTTP_OK);
-    }
-
-    /**
-     * Login a patient.
-     */
     public function login(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $validateLogin = Validator::make($request->all(), [
             'phone_number' => 'required',
-            'password' => 'required|min:6',
+            'password' => 'required',
         ]);
 
-        if ($validator->fails()) {
+        if ($validateLogin->fails()) {
             return response()->json([
-                'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                'message' => $validator->messages(),
-            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                'status' => false,
+                'message' => 'Validation error',
+                'errors' => $validateLogin->errors()
+            ]);
         }
 
         $patient = Patient::where('phone_number', $request->phone_number)->first();
 
         if (!$patient || !Hash::check($request->password, $patient->password)) {
             return response()->json([
-                'status' => Response::HTTP_UNAUTHORIZED,
+                'status' => false,
                 'message' => 'Invalid credentials',
-            ], Response::HTTP_UNAUTHORIZED);
+            ], 401);
         }
 
+        $token = $patient->createToken('authToken')->plainTextToken;
+
         return response()->json([
-            'status' => Response::HTTP_OK,
-            'message' => 'Login successful',
-            'patient' => $patient,
-        ], Response::HTTP_OK);
+            'status' => true,
+            'message' => 'Patient logged in successfully',
+            'token' => $token,
+            'data' => $patient
+        ]);
     }
 
-    
+    public function profile()
+    {
+        $patient = auth()->user();
+        return response()->json([
+            'status' => true,
+            'message' => 'Profile Information',
+            'data' => $patient,
+            'id' => $patient->id
+        ], 200);
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Patient logged out successfully'
+        ]);
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $patient = auth()->user();
+
+        $validatePatient = Validator::make($request->all(), [
+            'name' => 'nullable',   
+            'phone_number' => 'nullable',   
+            'address' => 'nullable',
+            'gender' => 'nullable',
+            'age' => 'nullable',
+            'email' => 'nullable|email',
+            'password' => 'nullable',
+        ]);
+
+        if ($validatePatient->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'validation error',
+                'errors' => $validatePatient->errors()
+            ]);
+        }
+
+        $patient->update([
+            'name' => $request->name ?? $patient->name,
+            'email' => $request->email ?? $patient->email,
+            'phone_number' => $request->phone_number ?? $patient->phone_number,
+            'gender' => $request->gender ?? $patient->gender,
+            'address' => $request->address ?? $patient->address,
+            'age' => $request->age ?? $patient->age,
+            'password' => $request->password ? Hash::make($request->password) : $patient->password,
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Profile updated successfully',
+            'data' => $patient
+        ]);
+    }
 }

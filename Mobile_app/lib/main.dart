@@ -9,7 +9,7 @@ void main() {
 }
 
 class DocCare extends StatelessWidget {
-  const DocCare({super.key});
+  const DocCare({super.key}); 
 
   @override
   Widget build(BuildContext context) {

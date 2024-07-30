@@ -23,29 +23,6 @@
     19 => 'Illuminate\\Translation\\TranslationServiceProvider',
     20 => 'Illuminate\\Validation\\ValidationServiceProvider',
     21 => 'Illuminate\\View\\ViewServiceProvider',
-<<<<<<< HEAD
-    22 => 'BladeUI\\Heroicons\\BladeHeroiconsServiceProvider',
-    23 => 'BladeUI\\Icons\\BladeIconsServiceProvider',
-    24 => 'Filament\\Actions\\ActionsServiceProvider',
-    25 => 'Filament\\FilamentServiceProvider',
-    26 => 'Filament\\Forms\\FormsServiceProvider',
-    27 => 'Filament\\Infolists\\InfolistsServiceProvider',
-    28 => 'Filament\\Notifications\\NotificationsServiceProvider',
-    29 => 'Filament\\Support\\SupportServiceProvider',
-    30 => 'Filament\\Tables\\TablesServiceProvider',
-    31 => 'Filament\\Widgets\\WidgetsServiceProvider',
-    32 => 'Kirschbaum\\PowerJoins\\PowerJoinsServiceProvider',
-    33 => 'Laravel\\Sail\\SailServiceProvider',
-    34 => 'Laravel\\Sanctum\\SanctumServiceProvider',
-    35 => 'Laravel\\Tinker\\TinkerServiceProvider',
-    36 => 'Livewire\\LivewireServiceProvider',
-    37 => 'Carbon\\Laravel\\ServiceProvider',
-    38 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
-    39 => 'Termwind\\Laravel\\TermwindServiceProvider',
-    40 => 'RyanChandler\\BladeCaptureDirective\\BladeCaptureDirectiveServiceProvider',
-    41 => 'App\\Providers\\AppServiceProvider',
-    42 => 'App\\Providers\\Filament\\AdminPanelProvider',
-=======
     22 => 'Althinect\\FilamentSpatieRolesPermissions\\FilamentSpatieRolesPermissionsServiceProvider',
     23 => 'BladeUI\\Heroicons\\BladeHeroiconsServiceProvider',
     24 => 'BladeUI\\Icons\\BladeIconsServiceProvider',
@@ -69,7 +46,6 @@
     42 => 'Spatie\\Permission\\PermissionServiceProvider',
     43 => 'App\\Providers\\AppServiceProvider',
     44 => 'App\\Providers\\Filament\\AdminPanelProvider',
->>>>>>> 106331db243e753ec3690727ba675c8cb20cf74a
   ),
   'eager' => 
   array (
@@ -83,27 +59,6 @@
     7 => 'Illuminate\\Pagination\\PaginationServiceProvider',
     8 => 'Illuminate\\Session\\SessionServiceProvider',
     9 => 'Illuminate\\View\\ViewServiceProvider',
-<<<<<<< HEAD
-    10 => 'BladeUI\\Heroicons\\BladeHeroiconsServiceProvider',
-    11 => 'BladeUI\\Icons\\BladeIconsServiceProvider',
-    12 => 'Filament\\Actions\\ActionsServiceProvider',
-    13 => 'Filament\\FilamentServiceProvider',
-    14 => 'Filament\\Forms\\FormsServiceProvider',
-    15 => 'Filament\\Infolists\\InfolistsServiceProvider',
-    16 => 'Filament\\Notifications\\NotificationsServiceProvider',
-    17 => 'Filament\\Support\\SupportServiceProvider',
-    18 => 'Filament\\Tables\\TablesServiceProvider',
-    19 => 'Filament\\Widgets\\WidgetsServiceProvider',
-    20 => 'Kirschbaum\\PowerJoins\\PowerJoinsServiceProvider',
-    21 => 'Laravel\\Sanctum\\SanctumServiceProvider',
-    22 => 'Livewire\\LivewireServiceProvider',
-    23 => 'Carbon\\Laravel\\ServiceProvider',
-    24 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
-    25 => 'Termwind\\Laravel\\TermwindServiceProvider',
-    26 => 'RyanChandler\\BladeCaptureDirective\\BladeCaptureDirectiveServiceProvider',
-    27 => 'App\\Providers\\AppServiceProvider',
-    28 => 'App\\Providers\\Filament\\AdminPanelProvider',
-=======
     10 => 'Althinect\\FilamentSpatieRolesPermissions\\FilamentSpatieRolesPermissionsServiceProvider',
     11 => 'BladeUI\\Heroicons\\BladeHeroiconsServiceProvider',
     12 => 'BladeUI\\Icons\\BladeIconsServiceProvider',
@@ -125,7 +80,6 @@
     28 => 'Spatie\\Permission\\PermissionServiceProvider',
     29 => 'App\\Providers\\AppServiceProvider',
     30 => 'App\\Providers\\Filament\\AdminPanelProvider',
->>>>>>> 106331db243e753ec3690727ba675c8cb20cf74a
   ),
   'deferred' => 
   array (

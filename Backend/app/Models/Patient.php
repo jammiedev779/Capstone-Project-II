@@ -4,15 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Sanctum\HasApiTokens;
 
-
-class Patient extends Model
+class Patient extends Model 
 {
-    use HasFactory;
+    use HasApiTokens, HasFactory;
 
     protected $table = "patients";
     protected $fillable = [
-        'first_name', 'last_name', 'phone_number', 'email', 'password',
+           'first_name', 'last_name','name', 'age', 'gender', 'address',
+            'emergency_contact', 'phone_number', 'email', 'password'
     ];
 
     protected $hidden = [
