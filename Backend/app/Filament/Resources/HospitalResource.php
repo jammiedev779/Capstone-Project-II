@@ -13,12 +13,18 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\HospitalResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\HospitalResource\RelationManagers;
+use App\Models\HospitalDetail;
 
 class HospitalResource extends Resource
 {
-    protected static ?string $model = Hospital::class;
+    protected static ?string $model = HospitalDetail::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    public static function getNavigationIcon(): ?string
+    {
+        $panel = explode('\\', self::$model);
+
+        return PanelService::get_panel_icon($panel[2]);
+    }
     public static function getNavigationSort(): ?int
     {
         $get = PanelService::get_panel_order('Hospital');
