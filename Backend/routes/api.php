@@ -19,14 +19,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/patients/updateProfile', [PatientController::class, 'updateProfile']);
 });
 
-
-
-
-Route::get('/appointments', [AppointmentController::class, 'index']);
-Route::post('/appointments/create', [AppointmentController::class, 'store']);
-Route::get('/appointments/show/{id}', [AppointmentController::class, 'show']);
-Route::post('/appointments/update/{id}', [AppointmentController::class, 'update']);
-Route::post('/appointments/delete/{id}', [AppointmentController::class, 'destroy']);
+Route::post('/appointments/booking', [AppointmentController::class, 'store']);
 
 Route::get('doctors', [DoctorController::class, 'index']);
 Route::get('doctors/search', [DoctorController::class, 'search']);

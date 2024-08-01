@@ -20,11 +20,16 @@ class SearchDoctorApi {
       final List<dynamic> doctors = jsonDecode(response.body)['doctors'];
       return doctors.map((doctor) {
         return {
+          'id': doctor['id'],
           'first_name': doctor['first_name'],
           'last_name': doctor['last_name'],
           'phone_number': doctor['phone_number'],
           'status': doctor['status'],
           'address': doctor['address'],
+          'hospital_name': doctor['hospital_name'],
+          'hospital_description': doctor['hospital_description'],
+          'specialist_title': doctor['specialist_title'],
+          'department_title': doctor['department_title'],
         };
       }).toList();
     } else {
@@ -44,6 +49,7 @@ class SearchDoctorApi {
       final List<dynamic> doctors = jsonDecode(response.body)['doctors'];
       return doctors.map((doctor) {
         return {
+          'id': doctor['id'],
           'first_name': doctor['first_name'],
           'last_name': doctor['last_name'],
           'phone_number': doctor['phone_number'],

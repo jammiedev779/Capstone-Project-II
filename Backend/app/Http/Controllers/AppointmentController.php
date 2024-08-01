@@ -6,54 +6,23 @@ use Illuminate\Http\Request;
 use App\Models\Appointment;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class AppointmentController extends Controller
 {
-    public function index(request $request)
-    {
-        $query = Appointment::query();
-
-        if ($request->has('doctor_id')) {
-            $query->where('doctor_id', $request->doctor_id);
-        }
-
-        if ($request->has('patient_id')) {
-            $query->where('patient_id', $request->patient_id);
-        }
-
-        if ($request->has('date')) {
-            $query->where('appointment_date', $request->date);
-        }
-
-        if ($request->has('user_status')) {
-            $query->where('user_status', $request->user_status);
-        }
-
-        if ($request->has('doctor_status')) {
-            $query->where('doctor_status', $request->doctor_status);
-        }
-
-        $appointments = $query->with('patient')->get();
-        $appointments = $query->with('doctor')->get();
-
-        return response()->json([
-            'status' => Response::HTTP_OK,
-            'appointments' => $appointments,
-        ], Response::HTTP_OK);
-    }
-
     public function store(Request $request)
     {
+      
         $validator = Validator::make($request->all(), [
             'doctor_id' => 'required|integer|exists:doctors,id',
             'patient_id' => 'required|integer|exists:patients,id',
-            'appointment_date' => 'required',
-            'location' => 'nullable',
-            'status' => 'nullable',
-            'user_status' => 'required|string',
-            'doctor_status' => 'required|string',
-            'reason' => 'required|string',
-            'note' => 'nullable'
+            'appointment_date' => 'required|date|after:today',
+            'location' => 'nullable|string|max:255',
+            'status' => 'nullable|integer|in:0,1,2',
+            'user_status' => 'nullable|integer|in:0,1', 
+            'doctor_status' => 'nullable|integer|in:0,1,2',
+            'reason' => 'required|string|max:255',
+            'note' => 'nullable|string|max:500'
         ]);
 
         if ($validator->fails()) {
@@ -63,86 +32,32 @@ class AppointmentController extends Controller
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $appointment = new Appointment($request->all());
-        $appointment->save();
+        try {
+            $appointment = new Appointment([
+                'doctor_id' => $request->doctor_id,
+                'patient_id' => $request->patient_id,
+                'appointment_date' => Carbon::parse($request->appointment_date),
+                'location' => $request->location,
+                'status' => $request->status ?? 0,
+                'user_status' => $request->user_status ?? 0, 
+                'doctor_status' => $request->doctor_status ?? 0, 
+                'reason' => $request->reason,
+                'note' => $request->note,
+            ]);
 
-        return response()->json([
-            'status' => Response::HTTP_CREATED,
-            'message' => 'Appointment created successfully',
-        ], Response::HTTP_CREATED);
-    }
+            $appointment->save();
 
-    public function show($id)
-    {
-        $appointment = Appointment::find($id);
-
-        if (!$appointment) {
             return response()->json([
-                'status' => Response::HTTP_NOT_FOUND,
-                'message' => 'Appointment not found',
-            ], Response::HTTP_NOT_FOUND);
-        }
+                'status' => Response::HTTP_CREATED,
+                'message' => 'Appointment created successfully',
+                'appointment' => $appointment 
+            ], Response::HTTP_CREATED);
+        } catch (\Exception $e) {
 
-        return response()->json([
-            'status' => Response::HTTP_OK,
-            'appointment' => $appointment,
-        ], Response::HTTP_OK);
-    }
-
-    public function update(Request $request, $id)
-    {
-        $validator = Validator::make($request->all(), [
-            'doctor_id' => 'required|integer|exists:doctors,id',
-            'patient_id' => 'required|integer|exists:patients,id',
-            'appointment_date' => 'required',
-            'location' => 'nullable',
-            'status' => 'nullable',
-            'user_status' => 'required|string',
-            'doctor_status' => 'required|string',
-            'reason' => 'required|string',
-            'note' => 'nullable'
-        ]);
-
-        if ($validator->fails()) {
             return response()->json([
-                'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                'message' => $validator->messages(),
-            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'message' => 'Failed to create appointment. Please try again later.',
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-
-        $appointment = Appointment::find($id);
-
-        if (!$appointment) {
-            return response()->json([
-                'status' => Response::HTTP_NOT_FOUND,
-                'message' => 'Appointment not found',
-            ], Response::HTTP_NOT_FOUND);
-        }
-
-        $appointment->update($request->all());
-
-        return response()->json([
-            'status' => Response::HTTP_OK,
-            'message' => 'Appointment updated successfully',
-        ], Response::HTTP_OK);
-    }
-
-    public function destroy($id)
-    {
-        $appointment = Appointment::find($id);
-
-        if (!$appointment) {
-            return response()->json([
-                'status' => Response::HTTP_NOT_FOUND,
-                'message' => 'Appointment not found',
-            ], Response::HTTP_NOT_FOUND);
-        }
-
-        $appointment->delete();
-
-        return response()->json([
-            'status' => Response::HTTP_OK,
-            'message' => 'Appointment deleted successfully',
-        ], Response::HTTP_OK);
     }
 }

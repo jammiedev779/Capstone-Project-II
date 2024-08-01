@@ -20,10 +20,11 @@ class Doctor extends Model
     }
     public function specialist()
     {
-        return $this->belongsTo(Specialist::class);
+        return $this->belongsTo(Specialist::class, 'specialist_id');
     }
+
     public function department()
     {
-        return $this->belongsTo(Department::class);
+        return $this->belongsTo(Department::class, 'department_id');
     }
 }

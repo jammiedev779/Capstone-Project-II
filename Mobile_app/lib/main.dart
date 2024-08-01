@@ -1,3 +1,4 @@
+import 'package:doc_care/screens/appointment/appointment_screen.dart';
 import 'package:doc_care/screens/login_&_register/login_screen.dart';
 import 'package:doc_care/screens/login_&_register/register_screen.dart';
 import 'package:doc_care/shared/theme/app_theme.dart';

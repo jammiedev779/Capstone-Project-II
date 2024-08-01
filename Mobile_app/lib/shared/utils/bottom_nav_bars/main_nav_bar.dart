@@ -19,7 +19,7 @@ class _MainNavBarState extends State<MainNavBar> {
     _children = [
       const HomeScreen(),
       const SearchScreen(),
-      const BookingScreen(),
+      const AppointmentScreen(),
       // const InboxScreen(),
       ProfileScreen(token: widget.token),
     ];

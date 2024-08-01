@@ -1,4 +1,4 @@
-import 'package:doc_care/screens/search/doctor_detail.dart';
+import 'package:doc_care/screens/doctor/doctor_detail.dart';
 import 'package:doc_care/services/search_doctor_api.dart';
 import 'package:flutter/material.dart';
 
@@ -73,7 +73,7 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Search"),
+        title: const Text("Doctor"),
         actions: [
           IconButton(
             icon: const Icon(Icons.location_on),
@@ -95,7 +95,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 filled: true,
                 fillColor: Colors.white,
                 prefixIcon: const Icon(Icons.search),
-                hintText: "Search doctors, symptoms, hospitals...",
+                hintText: "Search doctors...",
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
                   borderSide: BorderSide(
@@ -149,12 +149,12 @@ class _SearchScreenState extends State<SearchScreen> {
               },
               child: Card(
                 elevation: 5,
-                margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 0),
+                margin: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 0),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: ListTile(
-                  contentPadding: const EdgeInsets.all(12.0),
+                  contentPadding: const EdgeInsets.all(8.0),
                   leading: CircleAvatar(
                     radius: 30,
                     backgroundImage: NetworkImage('https://img.freepik.com/free-vector/doctor-character-background_1270-84.jpg?size=338&ext=jpg&ga=GA1.1.2008272138.1722297600&semt=ais_hybrid'),
@@ -163,7 +163,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Medical Officer'),
+                      Text('${doctor['specialist_title']} | ${doctor['hospital_name']}'),
                       Row(
                         children: [
                           const Icon(Icons.star, size: 16, color: Colors.orange),
@@ -175,8 +175,6 @@ class _SearchScreenState extends State<SearchScreen> {
                           Text('1031 Ratings'),
                         ],
                       ),
-                      const SizedBox(height: 8),
-                      Text('Hisglory Specialist Hospitals'),
                     ],
                   ),
                   trailing: Icon(Icons.check_circle, color: Colors.green),
