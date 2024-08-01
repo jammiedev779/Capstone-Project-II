@@ -5,7 +5,12 @@ import 'package:http/http.dart' as http;
 class ApiService {
 
   //endpoint api local port 8002
-  static const String _baseUrl = 'http://10.0.2.2:8002/api/patients';
+
+  //For chrome developer
+  static const String _baseUrl = 'http://127.0.0.1:8002/api/patients'; 
+  
+  //For emulator developer
+  // static const String _baseUrl = ' 'http://10.0.2.2:8002/api/patients'; 
 
   //add enpoind api server here..
   // static const String _baseUrl = 'http://54.151.252.168/api/patients';
@@ -102,6 +107,8 @@ class ApiService {
 
       return {
         'name': data['name'] ?? 'N/A',
+        'age': data['age'] != null ? data['age'].toString() : 'N/A',
+        'gender': data['gender'] ?? 'N/A',
         'phone_number': data['phone_number'] ?? 'N/A',
         'status': data['status'] ?? 'N/A',
         'address': data['address'] ?? 'N/A',

@@ -1,7 +1,12 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:doc_care/screens/login_&_register/login_screen.dart';
 import 'package:doc_care/screens/profile/edit_profile.dart';
+import 'package:doc_care/screens/profile/widget_style.dart';
 import 'package:doc_care/services/patient_api.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_launcher_icons/xml_templates.dart';
+
 
 class ProfileScreen extends StatefulWidget {
   final String token;
@@ -91,18 +96,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Text('Profile'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.edit),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => EditProfileScreen(token: widget.token)),
-              );
-            },
-          ),
-        ],
+        title: const Text('Profile',
+        style: TextStyle(fontWeight: FontWeight.bold),),
+        centerTitle: true,
+
       ),
       body: FutureBuilder<Map<String, dynamic>>(
         future: futureProfile,
@@ -139,9 +136,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         children: [
                           Row(
                             children: [
+                               
                               CircleAvatar(
-                                radius: 40,
-                                backgroundImage: NetworkImage('https://i.pinimg.com/736x/83/1f/01/831f015888b5a0cd588e89b865ed12d0.jpg'),
+                                radius: 30,
+                                backgroundImage: NetworkImage(
+                                    'https://i.pinimg.com/736x/83/1f/01/831f015888b5a0cd588e89b865ed12d0.jpg'),
                               ),
                               const SizedBox(width: 16),
                               Column(
@@ -149,83 +148,100 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 children: [
                                   Text(
                                     profile['name'],
-                                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    profile['email'],
-                                    style: const TextStyle(color: Colors.grey),
+                                    '${profile['age']} years old',
+                                    style: const TextStyle(color: Color.fromARGB(255, 24, 22, 22)),
                                   ),
                                 ],
+                              ),
+                              Spacer(),
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: IconButton(
+                                  icon: const Icon(Icons.edit),
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => EditProfileScreen(token: 'widget.token'),
+                                      ),
+                                    );
+                                  },
+                                ),
                               ),
                             ],
                           ),
                           const SizedBox(height: 16),
-                          const Divider(),
+                          const Divider(
+                            height: 0.3,
+                          ),
+
                           const SizedBox(height: 16),
                           Row(
                             children: [
-                              const Icon(Icons.phone),
+                              WidgetStyle().buildCircleIcon(paddingValue: 8.0, backgroundColor: Color.fromRGBO(77, 139, 201, 1), iconData: Icons.transgender_outlined, iconColor: Colors.white, iconSize: 16.0),
                               const SizedBox(width: 8),
+                              const Text('Gender'),
+                              Spacer(),
+                              Text(
+                                profile['gender'] ?? 'N/A',
+                                style: const TextStyle(color: Colors.black),
+                              ),
+                            ],
+                          ),
+
+                          const SizedBox(height: 16),
+                          Row(
+                            children: [
+                              WidgetStyle().buildCircleIcon(paddingValue: 8.0, backgroundColor: Color.fromRGBO(77, 139, 201, 1), iconData: Icons.phone, iconColor: Colors.white, iconSize: 16.0),
+                              const SizedBox(width: 8),
+                              const Text('Phone'),
+                              Spacer(),
                               Text(
                                 profile['phone_number'] ?? 'N/A',
                                 style: const TextStyle(color: Colors.black),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 8),
+
+                          const SizedBox(height: 16),
                           Row(
                             children: [
-                              const Icon(Icons.email),
+                              WidgetStyle().buildCircleIcon(paddingValue: 8.0, backgroundColor: Color.fromRGBO(77, 139, 201, 1), iconData: Icons.email, iconColor: Colors.white, iconSize: 16.0),
                               const SizedBox(width: 8),
+                              const Text('Email'),
+                              Spacer(),
                               Text(
                                 profile['email'] ?? 'N/A',
                                 style: const TextStyle(color: Colors.black),
                               ),
                             ],
                           ),
-                        ],
-                      ),
-                    ),
-                    // Wallet and Orders
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      padding: const EdgeInsets.all(16),
-                      margin: const EdgeInsets.only(bottom: 16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Column(
-                            children: const [
-                              Text(
-                                '\$140.00',
-                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+
+                          const SizedBox(height: 16),
+                          Row(
+                            children: [
+                              WidgetStyle().buildCircleIcon(paddingValue: 8.0, backgroundColor: Color.fromRGBO(77, 139, 201, 1), iconData: Icons.location_on, iconColor: Colors.white, iconSize: 16.0),
+                              const SizedBox(width: 8),
+                              const Text('Address'),
+                              Spacer(),
+                              Expanded(
+                                child: Text(
+                                  profile['address'] ?? 'N/A',
+                                  style: const TextStyle(color: Colors.black),
+                                  softWrap: true,
+                                ),
                               ),
-                              Text('Total Spend'),
-                            ],
-                          ),
-                          Column(
-                            children: const [
-                              Text(
-                                '12',
-                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                              ),
-                              Text('Appointment'),
                             ],
                           ),
                         ],
                       ),
                     ),
+                  
                     // Menu Options
                     Container(
                       decoration: BoxDecoration(
@@ -242,31 +258,88 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       child: Column(
                         children: [
-                          ListTile(
-                            leading: const Icon(Icons.favorite),
-                            title: const Text('Medical History'),
-                            onTap: () {
-                              // Navigate to Your Favorites
-                            },
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ListTile(
+                              leading: const Icon(Icons.favorite, color: Colors.red),
+                              title: const Text('Medical History'),
+                              onTap: () {
+                                // Navigate to Your Favorites
+                              },
+                            ),
                           ),
-                          ListTile(
-                            leading: const Icon(Icons.payment),
-                            title: const Text('Payment'),
-                            onTap: () {
-                              // Navigate to Paymentx`
-                            },
+                          WidgetStyle().buildBottomBorder(
+                              horizontalValue: 24.0,
+                              colorValue: Color.fromARGB(15, 41, 38, 38),
+                              widthValue: 2.0),
+
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ListTile(
+                              leading: const Icon(Icons.bookmark_add, color: Color.fromARGB(255, 53, 138, 56)),
+                              title: const Text('Appointment'),
+                              onTap: () {
+                                // Navigate to Paymentx`
+                              },
+                            ),
                           ),
-                          ListTile(
-                            leading: const Icon(Icons.settings),
-                            title: const Text('Settings'),
-                            onTap: () {
-                              // Navigate to Settings
-                            },
+                          WidgetStyle().buildBottomBorder(
+                              horizontalValue: 24.0,
+                              colorValue: Color.fromARGB(15, 41, 38, 38),
+                              widthValue: 2.0),
+
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ListTile(
+                              leading: const Icon(Icons.person_4, color: Color.fromARGB(255, 80, 131, 156)),
+                              title: const Text('Favorite Doctor'),
+                              onTap: () {
+                                // Navigate to Paymentx`
+                              },
+                            ),
                           ),
-                          ListTile(
-                            leading: const Icon(Icons.logout),
-                            title: const Text('Log out', style: TextStyle(color: Colors.red)),
-                            onTap: _showLogoutConfirmationDialog,
+                          WidgetStyle().buildBottomBorder(
+                              horizontalValue: 24.0,
+                              colorValue: Color.fromARGB(15, 41, 38, 38),
+                              widthValue: 2.0),
+
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ListTile(
+                              leading: const Icon(Icons.maps_home_work, color:Color.fromARGB(255, 138, 84, 22)),
+                              title: const Text('Favorite Hospital'),
+                              onTap: () {
+                                // Navigate to Paymentx`
+                              },
+                            ),
+                          ),
+                          WidgetStyle().buildBottomBorder(
+                              horizontalValue: 24.0,
+                              colorValue: Color.fromARGB(15, 41, 38, 38),
+                              widthValue: 2.0),
+
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ListTile(
+                              leading: const Icon(Icons.settings, color: Color.fromARGB(248, 108, 104, 104)),
+                              title: const Text('Settings'),
+                              onTap: () {
+                                // Navigate to Settings
+                              },
+                            ),
+                          ),
+                          WidgetStyle().buildBottomBorder(
+                              horizontalValue: 24.0,
+                              colorValue: Color.fromARGB(15, 41, 38, 38),
+                              widthValue: 2.0),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ListTile(
+                              leading: const Icon(Icons.logout_outlined, color: Color.fromARGB(255, 167, 18, 18)),
+                              title: const Text('Log out',
+                                  style: TextStyle(color: Colors.red)),
+                              onTap: _showLogoutConfirmationDialog,
+                            ),
                           ),
                         ],
                       ),
@@ -280,4 +353,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
+
+  
 }
