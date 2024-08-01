@@ -1,5 +1,7 @@
+import 'package:doc_care/screens/home/notification_page.dart';
 import 'package:doc_care/screens/login_&_register/login_screen.dart';
 import 'package:doc_care/screens/login_&_register/register_screen.dart';
+import 'package:doc_care/screens/profile/profile_screen.dart';
 import 'package:doc_care/shared/theme/app_theme.dart';
 import 'package:doc_care/shared/utils/bottom_nav_bars/main_nav_bar.dart';
 import 'package:flutter/material.dart';

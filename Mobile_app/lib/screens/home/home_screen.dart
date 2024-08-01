@@ -1,3 +1,4 @@
+import 'package:doc_care/screens/home/notification_page.dart';
 import 'package:doc_care/shared/widgets/cards/appointment_preview_card.dart';
 import 'package:doc_care/shared/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -62,7 +63,12 @@ class HomeView extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => NotificationPage()),
+            );
+            },
             icon: const Icon(Icons.notifications_outlined),
           ),
           const SizedBox(width: 8.0),
