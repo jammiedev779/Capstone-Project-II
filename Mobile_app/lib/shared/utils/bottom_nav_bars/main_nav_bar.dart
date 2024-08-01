@@ -20,7 +20,7 @@ class _MainNavBarState extends State<MainNavBar> {
       const HomeScreen(),
       const SearchScreen(),
       const BookingScreen(),
-      const InboxScreen(),
+      // const InboxScreen(),
       ProfileScreen(token: widget.token),
     ];
   }
@@ -55,17 +55,17 @@ class _MainNavBarState extends State<MainNavBar> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
+            icon: Icon(Icons.local_hospital),
+            label: 'Doctor',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.book),
-            label: 'Booking',
+            label: 'Appointment',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.inbox),
-            label: 'Inbox',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.inbox),
+          //   label: 'Inbox',
+          // ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Profile',

@@ -1,3 +1,4 @@
+import 'package:doc_care/screens/login_&_register/register_screen.dart';
 import 'package:doc_care/services/patient_api.dart';
 import 'package:doc_care/shared/utils/bottom_nav_bars/main_nav_bar.dart';
 import 'package:flutter/material.dart';
@@ -145,12 +146,12 @@ class LoginPage extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      // Navigator.pushReplacement(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => RegisterPage(),
-                      //   ),
-                      // );
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RegisterPage(),
+                        ),
+                      );
                     },
                     child: Text(
                       "Register now",

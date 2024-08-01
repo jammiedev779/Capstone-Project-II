@@ -8,7 +8,13 @@ use Illuminate\Http\Response;
 
 class DoctorController extends Controller
 {
-    public function index(Request $request)
+    public function index()
+    {
+        $doctors = Doctor::all(['first_name', 'last_name', 'phone_number', 'status', 'address']);
+        return response()->json(['doctors' => $doctors], 200);
+    }
+
+    public function search(Request $request)
     {
         $query = $request->query('query');
         

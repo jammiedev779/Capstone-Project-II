@@ -28,4 +28,5 @@ Route::get('/appointments/show/{id}', [AppointmentController::class, 'show']);
 Route::post('/appointments/update/{id}', [AppointmentController::class, 'update']);
 Route::post('/appointments/delete/{id}', [AppointmentController::class, 'destroy']);
 
-Route::get('doctors/search', [DoctorController::class, 'index']);
+Route::get('doctors', [DoctorController::class, 'index']);
+Route::get('doctors/search', [DoctorController::class, 'search']);

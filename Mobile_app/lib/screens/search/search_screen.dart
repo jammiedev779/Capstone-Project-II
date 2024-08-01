@@ -1,6 +1,6 @@
+import 'package:doc_care/screens/search/doctor_detail.dart';
 import 'package:doc_care/services/search_doctor_api.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -18,7 +18,29 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
     super.initState();
-    _filteredDoctors = _doctors;
+    _fetchDoctors();
+  }
+
+  Future<void> _fetchDoctors() async {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      final results = await SearchDoctorApi.getAllDoctors();
+      setState(() {
+        _doctors = results;
+        _filteredDoctors = results;
+      });
+    } catch (e) {
+      setState(() {
+        _doctors = [];
+        _filteredDoctors = [];
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   Future<void> _filterDoctors(String query) async {
@@ -73,7 +95,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 filled: true,
                 fillColor: Colors.white,
                 prefixIcon: const Icon(Icons.search),
-                hintText: "Doctors, Symptoms, Hospitals...",
+                hintText: "Search doctors, symptoms, hospitals...",
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
                   borderSide: BorderSide(
@@ -100,57 +122,14 @@ class _SearchScreenState extends State<SearchScreen> {
             const SizedBox(height: 16),
             _isLoading
                 ? const Center(child: CircularProgressIndicator())
-                : _searchController.text.isEmpty
-                    ? _buildInitialGrid()
-                    : _buildSearchResults(),
+                : _buildDoctorList(),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildInitialGrid() {
-    return Expanded(
-      child: GridView.count(
-        crossAxisCount: 2,
-        crossAxisSpacing: 16,
-        mainAxisSpacing: 16,
-        children: [
-          _buildGridItem("Book an Appointment", Icons.calendar_today, Colors.purple[100]!),
-          _buildGridItem("Request a Physical Consultation", Icons.phone, Colors.green[100]!),
-          _buildGridItem("Find a Health Center", Icons.local_hospital, Colors.blue[100]!),
-          _buildGridItem("Locate a Pharmacy", Icons.local_pharmacy, Colors.red[100]!),
-          _buildGridItem("Order a Lab Test", Icons.science, Colors.orange[100]!),
-          _buildGridItem("Emergency Situation", Icons.warning, Colors.purple[100]!),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildGridItem(String title, IconData icon, Color color) {
-    return Container(
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, size: 40),
-            const SizedBox(height: 8),
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 16),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSearchResults() {
+  Widget _buildDoctorList() {
     if (_filteredDoctors.isEmpty) {
       return _buildNoResults();
     } else {
@@ -159,54 +138,48 @@ class _SearchScreenState extends State<SearchScreen> {
           itemCount: _filteredDoctors.length,
           itemBuilder: (context, index) {
             final doctor = _filteredDoctors[index];
-            return Card(
-              elevation: 5,
-              margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 0),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              child: ListTile(
-                contentPadding: const EdgeInsets.all(12.0),
-                leading: CircleAvatar(
-                  radius: 60, 
-                  backgroundImage: NetworkImage('https://i.pinimg.com/736x/83/1f/01/831f015888b5a0cd588e89b865ed12d0.jpg'),
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DoctorDetailScreen(doctor: doctor),
+                  ),
+                );
+              },
+              child: Card(
+                elevation: 5,
+                margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
                 ),
-                title: Text('${doctor['first_name']} ${doctor['last_name']}'),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        const Icon(Icons.phone, size: 16),
-                        const SizedBox(width: 4),
-                        Text('${doctor['phone_number']}'),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    // Row(
-                    //   children: [
-                    //     const Icon(Icons.info, size: 16),
-                    //     const SizedBox(width: 4),
-                    //     Text('${doctor['status']}'),
-                    //   ],
-                    // ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        const Icon(Icons.star, size: 16, color: Colors.orange),
-                        const Icon(Icons.star, size: 16, color: Colors.orange),
-                        const Icon(Icons.star, size: 16, color: Colors.orange),
-                        const Icon(Icons.star, size: 16, color: Colors.orange),
-                        const Icon(Icons.star, size: 16, color: Colors.grey),
-                      ],
-                    ),
-                  ],
-                ),
-                trailing: TextButton(
-                  child: const Text('Detail'),
-                  onPressed: () {
-                    // Booking action
-                  },
+                child: ListTile(
+                  contentPadding: const EdgeInsets.all(12.0),
+                  leading: CircleAvatar(
+                    radius: 30,
+                    backgroundImage: NetworkImage('https://img.freepik.com/free-vector/doctor-character-background_1270-84.jpg?size=338&ext=jpg&ga=GA1.1.2008272138.1722297600&semt=ais_hybrid'),
+                  ),
+                  title: Text('${doctor['first_name']} ${doctor['last_name']}'),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Medical Officer'),
+                      Row(
+                        children: [
+                          const Icon(Icons.star, size: 16, color: Colors.orange),
+                          const Icon(Icons.star, size: 16, color: Colors.orange),
+                          const Icon(Icons.star, size: 16, color: Colors.orange),
+                          const Icon(Icons.star, size: 16, color: Colors.orange),
+                          const Icon(Icons.star, size: 16, color: Colors.grey),
+                          const SizedBox(width: 4),
+                          Text('1031 Ratings'),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Text('Hisglory Specialist Hospitals'),
+                    ],
+                  ),
+                  trailing: Icon(Icons.check_circle, color: Colors.green),
                 ),
               ),
             );
