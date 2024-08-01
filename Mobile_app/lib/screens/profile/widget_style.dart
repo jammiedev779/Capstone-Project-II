@@ -32,6 +32,7 @@ class WidgetStyle extends StatelessWidget {
     required IconData iconData,
     required Color iconColor,
     required double iconSize,
+
   }) {
     return Container(
       padding: EdgeInsets.all(paddingValue),
@@ -40,7 +41,7 @@ class WidgetStyle extends StatelessWidget {
         border: Border.all(color: Color.fromARGB(255, 233, 229, 229)),
         color: backgroundColor,
       ),
-      child: Icon(iconData, color: iconColor, size: iconSize),
+          child: Icon(iconData, color: iconColor, size: iconSize),
     );
   }
 }

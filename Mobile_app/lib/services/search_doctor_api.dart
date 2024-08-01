@@ -3,7 +3,10 @@ import 'package:http/http.dart' as http;
 
 class SearchDoctorApi {
   //api local
-  static const String _baseUrl = 'http://10.0.2.2:8002/api/doctors';
+  // static const String _baseUrl = 'http://10.0.2.2:8002/api/doctors';
+
+  //For chrome developer
+  static const String _baseUrl = 'http://127.0.0.1:8002/api/doctors'; 
 
   //add enpoind api server here..
   // static const String _baseUrl = 'http://54.151.252.168/api/doctors';

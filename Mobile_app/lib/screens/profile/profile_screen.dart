@@ -7,7 +7,6 @@ import 'package:doc_care/services/patient_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_launcher_icons/xml_templates.dart';
 
-
 class ProfileScreen extends StatefulWidget {
   final String token;
 
@@ -94,12 +93,42 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: const Text('Profile',
-        style: TextStyle(fontWeight: FontWeight.bold),),
-        centerTitle: true,
-
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: Container(
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                offset: Offset(0, 4),
+                blurRadius: 6.0,
+                spreadRadius: 1.0
+              ),
+            ],
+            gradient: LinearGradient(
+              colors: [
+                Color(0xFF7734EB)!,
+                Color(0xFF4B95EA)!,
+                Color(0xFF84BCFD)!
+              ],
+              begin: Alignment.bottomLeft,
+              end: Alignment.topRight,
+            ),
+          ),
+          child: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            automaticallyImplyLeading: false,
+            title: const Text(
+              'Profile',
+              style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
+            centerTitle: true,
+          ),
+        ),
       ),
       body: FutureBuilder<Map<String, dynamic>>(
         future: futureProfile,
@@ -123,10 +152,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         borderRadius: BorderRadius.circular(10),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: const Offset(0, 3),
+                            color: Colors.grey.withOpacity(0.3),
+                            spreadRadius: 1,
+                            blurRadius: 3,
+                            offset: const Offset(0, 2),
                           ),
                         ],
                       ),
@@ -136,7 +165,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         children: [
                           Row(
                             children: [
-                               
                               CircleAvatar(
                                 radius: 30,
                                 backgroundImage: NetworkImage(
@@ -154,7 +182,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                   Text(
                                     '${profile['age']} years old',
-                                    style: const TextStyle(color: Color.fromARGB(255, 24, 22, 22)),
+                                    style: const TextStyle(
+                                        color: Color.fromARGB(255, 24, 22, 22)),
                                   ),
                                 ],
                               ),
@@ -167,7 +196,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => EditProfileScreen(token: 'widget.token'),
+                                        builder: (context) => EditProfileScreen(
+                                            token: 'widget.token'),
                                       ),
                                     );
                                   },
@@ -179,11 +209,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           const Divider(
                             height: 0.3,
                           ),
-
                           const SizedBox(height: 16),
                           Row(
                             children: [
-                              WidgetStyle().buildCircleIcon(paddingValue: 8.0, backgroundColor: Color.fromRGBO(77, 139, 201, 1), iconData: Icons.transgender_outlined, iconColor: Colors.white, iconSize: 16.0),
+                              WidgetStyle().buildCircleIcon(
+                                  paddingValue: 8.0,
+                                  backgroundColor: Color(0xFF4B95EA),
+                                  iconData: Icons.transgender_outlined,
+                                  iconColor: Color.fromARGB(255, 255, 255, 255),
+                                  iconSize: 16.0),
                               const SizedBox(width: 8),
                               const Text('Gender'),
                               Spacer(),
@@ -193,11 +227,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             ],
                           ),
-
                           const SizedBox(height: 16),
                           Row(
                             children: [
-                              WidgetStyle().buildCircleIcon(paddingValue: 8.0, backgroundColor: Color.fromRGBO(77, 139, 201, 1), iconData: Icons.phone, iconColor: Colors.white, iconSize: 16.0),
+                              WidgetStyle().buildCircleIcon(
+                                  paddingValue: 8.0,
+                                  backgroundColor: Color(0xFF4B95EA),
+                                  iconData: Icons.phone,
+                                  iconColor: Colors.white,
+                                  iconSize: 16.0),
                               const SizedBox(width: 8),
                               const Text('Phone'),
                               Spacer(),
@@ -207,11 +245,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             ],
                           ),
-
                           const SizedBox(height: 16),
                           Row(
                             children: [
-                              WidgetStyle().buildCircleIcon(paddingValue: 8.0, backgroundColor: Color.fromRGBO(77, 139, 201, 1), iconData: Icons.email, iconColor: Colors.white, iconSize: 16.0),
+                              WidgetStyle().buildCircleIcon(
+                                  paddingValue: 8.0,
+                                  backgroundColor: Color(0xFF4B95EA),
+                                  iconData: Icons.email,
+                                  iconColor: Colors.white,
+                                  iconSize: 16.0),
                               const SizedBox(width: 8),
                               const Text('Email'),
                               Spacer(),
@@ -221,11 +263,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             ],
                           ),
-
                           const SizedBox(height: 16),
                           Row(
                             children: [
-                              WidgetStyle().buildCircleIcon(paddingValue: 8.0, backgroundColor: Color.fromRGBO(77, 139, 201, 1), iconData: Icons.location_on, iconColor: Colors.white, iconSize: 16.0),
+                              WidgetStyle().buildCircleIcon(
+                                  paddingValue: 8.0,
+                                  backgroundColor: Color(0xFF4B95EA),
+                                  iconData: Icons.location_on,
+                                  iconColor: Colors.white,
+                                  iconSize: 16.0),
                               const SizedBox(width: 8),
                               const Text('Address'),
                               Spacer(),
@@ -241,7 +287,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ],
                       ),
                     ),
-                  
+
                     // Menu Options
                     Container(
                       decoration: BoxDecoration(
@@ -249,10 +295,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         borderRadius: BorderRadius.circular(10),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: const Offset(0, 3),
+                            color: Colors.grey.withOpacity(0.3),
+                            spreadRadius: 1,
+                            blurRadius: 3,
+                            offset: const Offset(0, 2),
                           ),
                         ],
                       ),
@@ -261,7 +307,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: ListTile(
-                              leading: const Icon(Icons.favorite, color: Colors.red),
+                              leading:
+                                  const Icon(Icons.favorite, color: Colors.red),
                               title: const Text('Medical History'),
                               onTap: () {
                                 // Navigate to Your Favorites
@@ -270,13 +317,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           WidgetStyle().buildBottomBorder(
                               horizontalValue: 24.0,
-                              colorValue: Color.fromARGB(15, 41, 38, 38),
+                              colorValue: Color(0x0F292626),
                               widthValue: 2.0),
-
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: ListTile(
-                              leading: const Icon(Icons.bookmark_add, color: Color.fromARGB(255, 53, 138, 56)),
+                              leading: const Icon(Icons.bookmark_add,
+                                  color: Color(0xFF38AB3B)),
                               title: const Text('Appointment'),
                               onTap: () {
                                 // Navigate to Paymentx`
@@ -285,13 +332,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           WidgetStyle().buildBottomBorder(
                               horizontalValue: 24.0,
-                              colorValue: Color.fromARGB(15, 41, 38, 38),
+                              colorValue: Color(0x0F292626),
                               widthValue: 2.0),
-
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: ListTile(
-                              leading: const Icon(Icons.person_4, color: Color.fromARGB(255, 80, 131, 156)),
+                              leading: const Icon(Icons.person_4,
+                                  color: Color(0xFF5DC2F4)),
                               title: const Text('Favorite Doctor'),
                               onTap: () {
                                 // Navigate to Paymentx`
@@ -300,13 +347,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           WidgetStyle().buildBottomBorder(
                               horizontalValue: 24.0,
-                              colorValue: Color.fromARGB(15, 41, 38, 38),
+                              colorValue:Color(0x0F292626),
                               widthValue: 2.0),
-
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: ListTile(
-                              leading: const Icon(Icons.maps_home_work, color:Color.fromARGB(255, 138, 84, 22)),
+                              leading: const Icon(Icons.home,
+                                  color: Color(0xFFA86D2A)),
                               title: const Text('Favorite Hospital'),
                               onTap: () {
                                 // Navigate to Paymentx`
@@ -315,13 +362,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           WidgetStyle().buildBottomBorder(
                               horizontalValue: 24.0,
-                              colorValue: Color.fromARGB(15, 41, 38, 38),
+                              colorValue:Color(0x0F292626),
                               widthValue: 2.0),
-
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: ListTile(
-                              leading: const Icon(Icons.settings, color: Color.fromARGB(248, 108, 104, 104)),
+                              leading: const Icon(Icons.settings,
+                                  color: Color(0xF8817676)),
                               title: const Text('Settings'),
                               onTap: () {
                                 // Navigate to Settings
@@ -330,14 +377,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           WidgetStyle().buildBottomBorder(
                               horizontalValue: 24.0,
-                              colorValue: Color.fromARGB(15, 41, 38, 38),
+                              colorValue:Color(0x0F292626),
                               widthValue: 2.0),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: ListTile(
-                              leading: const Icon(Icons.logout_outlined, color: Color.fromARGB(255, 167, 18, 18)),
+                              leading: const Icon(Icons.logout_outlined,
+                                  color: Color(0xFFB01313)),
                               title: const Text('Log out',
-                                  style: TextStyle(color: Colors.red)),
+                                  style: TextStyle(color: Color(0xFFB01313))),
                               onTap: _showLogoutConfirmationDialog,
                             ),
                           ),
@@ -353,6 +401,4 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-
-  
 }
