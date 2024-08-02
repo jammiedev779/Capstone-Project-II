@@ -4,19 +4,19 @@ namespace App\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
-use App\Models\Hospital;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\HospitalDetail;
 use App\Services\PanelService;
 use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\HospitalResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\HospitalResource\RelationManagers;
+use App\Filament\Resources\HospitalDetailResource\Pages;
+use App\Filament\Resources\HospitalDetailResource\RelationManagers;
 
-class HospitalResource extends Resource
+class HospitalDetailResource extends Resource
 {
-    protected static ?string $model = Hospital::class;
+    protected static ?string $model = HospitalDetail::class;
 
     public static function getNavigationIcon(): ?string
     {
@@ -26,7 +26,7 @@ class HospitalResource extends Resource
     }
     public static function getNavigationSort(): ?int
     {
-        $get = PanelService::get_panel_order('Hospital');
+        $get = PanelService::get_panel_order('HospitalDetail');
 
         return $get['sort'];
     }
@@ -47,21 +47,13 @@ class HospitalResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user.name')->label('Hospital Provider')->sortable()->searchable()->alignment('center'),
-                Tables\Columns\TextColumn::make('kh_name')->sortable()->searchable()->alignment('center'),
-                Tables\Columns\TextColumn::make('email')->searchable()->alignment('center'),
-                Tables\Columns\TextColumn::make('phone_number')->searchable()->alignment('center'),
-                Tables\Columns\TextColumn::make('description')->searchable()->alignment('center'),
-                Tables\Columns\TextColumn::make('location')->searchable()->alignment('center'),
-                Tables\Columns\TextColumn::make('created_at')->sortable()->searchable()->alignment('center'),
+                //
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -80,10 +72,9 @@ class HospitalResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListHospitals::route('/'),
-            'create' => Pages\CreateHospital::route('/create'),
-            'view' => Pages\ViewHospital::route('/{record}'),
-            'edit' => Pages\EditHospital::route('/{record}/edit'),
+            'index' => Pages\RedirectHospital::route('/'),
+            'create' => Pages\CreateHospitalDetail::route('/create'),
+            'edit' => Pages\EditHospitalDetail::route('/{record}/edit'),
         ];
     }
 }

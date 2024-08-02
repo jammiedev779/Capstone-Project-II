@@ -13,7 +13,7 @@ class PanelService
                 'Patient'               => ['Patients'],
                 'Doctor'                => ['Doctors'],
                 'User and Privilege'    => ['Admins', 'Roles', 'Permissions'],
-                'Setting'               => ['Hospitals', 'Specialists', 'Departments', 'Categories']
+                'Setting'               => ['Hospitals', 'HospitalDetails', 'Specialists', 'Departments', 'Categories']
             ];
     }
     public static function get_panel_order($model)
@@ -32,7 +32,7 @@ class PanelService
             10  => ['Patient'],
             20  => ['Doctor'],
             30  => ['Admin', 'Role', 'Permission'],
-            40  => ['Hospital', 'Specialist', 'Department', 'Category']
+            40  => ['Hospital', 'HospitalDetail', 'Specialist', 'Department', 'Category']
         ];
 
         $get_panel_group = 0;
@@ -63,16 +63,17 @@ class PanelService
     public static function get_panel_icon($model)
     {
         $panel_icons = [
-            'Appointment' => 'heroicon-o-rectangle-stack',
-            'Patient' => 'heroicon-o-rectangle-stack',
-            'Doctor' => 'heroicon-o-rectangle-stack',
-            'Admin' => 'heroicon-o-rectangle-stack',
-            'Role' => 'heroicon-o-rectangle-stack',
-            'Permission' => 'heroicon-o-rectangle-stack',
-            'HospitalDetail' => 'heroicon-o-rectangle-stack',
-            'Specialist' => 'heroicon-o-rectangle-stack',
-            'Department' => 'heroicon-o-rectangle-stack',
-            'Category' => 'heroicon-o-rectangle-stack',
+            'Appointment' => 'heroicon-o-calendar-days',
+            'Patient' => 'heroicon-o-users',
+            'Doctor' => 'heroicon-o-user',
+            'Admin' => 'heroicon-o-user-group',
+            'Role' => 'heroicon-o-lock-open',
+            'Permission' => 'heroicon-o-lock-closed',
+            'HospitalDetail' => 'heroicon-o-building-office-2',
+            'Hospital' => 'heroicon-o-building-office-2',
+            'Specialist' => 'heroicon-o-list-bullet',
+            'Department' => 'heroicon-o-queue-list',
+            'Category' => 'heroicon-o-clipboard-document-list',
         ];
 
         return $panel_icons[$model];

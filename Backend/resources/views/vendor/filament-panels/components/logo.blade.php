@@ -1,3 +1,3 @@
 <div class="flex gap-2">
-    <div class="text-lg font-bold">DocCare</div>
+    <img class="w-30" src="{{ asset('Mobile DocCare Group 4.svg') }}" alt="Logo">
 </div>

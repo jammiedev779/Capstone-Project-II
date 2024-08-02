@@ -26,4 +26,11 @@ class Doctor extends Model
     {
         return $this->belongsTo(Department::class);
     }
+
+    public function getGenderAttribute($value){
+        switch($value){
+            case 0: return "Male";
+            case 1: return "Female";
+        }
+    }
 }

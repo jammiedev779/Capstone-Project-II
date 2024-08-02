@@ -32,8 +32,10 @@ class Appointment extends Model
     {
         switch ($value) {
             case 0:
-                return "Pending";
+                return "Requesting";
             case 1:
+                return "Accepted";
+            case 2:
                 return "Cancelled";
         }
     }

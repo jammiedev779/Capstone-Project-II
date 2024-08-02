@@ -63,8 +63,10 @@ class AppointmentResource extends Resource
                     ->badge()
                     ->color(function ($record) {
                         switch ($record['user_status']) {
-                            case "Pending":
+                            case "Reqesting":
                                 return "Pending";
+                            case "Accepted":
+                                return "Accepted";
                             case "Cancelled":
                                 return "Cancelled";
                         }
@@ -105,8 +107,9 @@ class AppointmentResource extends Resource
                     ]),
                 SelectFilter::make('user_status')
                     ->options([
-                        0 => 'Pending',
-                        1 => 'Cancelled',
+                        0 => 'Requesting',
+                        1 => 'Accepted',
+                        2 => 'Cancelled',
                     ]),
                 SelectFilter::make('doctor_status')
                     ->options([

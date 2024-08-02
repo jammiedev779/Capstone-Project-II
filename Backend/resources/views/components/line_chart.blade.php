@@ -1,8 +1,46 @@
-<div id="line_chart">
-</div>
+<x-filament::section>
+    <x-slot name="heading">
+        @if($this->user->is_superadmin)
+            Hospitals and Patients
+        @else
+            Appointments
+        @endif
+    </x-slot>
+    <div id="line_chart"></div>
+</x-filament::section>
+
+<?php
+    $super_admin = $this->user->is_superadmin;
+    $monthly_data1 = array_fill(0, 12, 0);
+    $monthly_data2 = array_fill(0, 12, 0);
+    if($this->user->is_superadmin){
+        foreach ($this->admin_data['hospitals'] as $item) {
+            $month = Carbon\Carbon::parse($item->created_at)->month;
+            $monthly_data1[$month - 1] += 1;
+        }
+        foreach ($this->admin_data['patients'] as $item) {
+            $month = Carbon\Carbon::parse($item->created_at)->month;
+            $monthly_data2[$month - 1] += 1;
+        }
+    }else{
+        foreach ($this->hospital_data['upcomming_appointments'] as $item) {
+            $month = Carbon\Carbon::parse($item->created_at)->month;
+            $monthly_data1[$month - 1] += 1;
+        }
+        foreach ($this->hospital_data['ongoing_appointments'] as $item) {
+            $month = Carbon\Carbon::parse($item->created_at)->month;
+            $monthly_data2[$month - 1] += 1;
+        }
+    }
+?>
 
 @push('scripts')
     <script>
+
+        var data_set1 = {!! json_encode($monthly_data1) !!};
+        var data_set2 = {!! json_encode($monthly_data2) !!};
+        var super_admin = {!! json_encode($super_admin) !!};
+
         var options = {
             chart: {
                 height: 350,
@@ -14,12 +52,12 @@
             },
             colors: ["#FF1654", "#247BA0"],
             series: [{
-                    name: "Series A",
-                    data: [1.4, 2, 2.5, 1.5, 2.5, 2.8, 3.8, 4.6]
+                    name: super_admin ? "Hospitals" : "Upcomming",
+                    data: data_set1
                 },
                 {
-                    name: "Series B",
-                    data: [20, 29, 37, 36, 44, 45, 50, 58]
+                    name: super_admin ? "Patients" : "Ongoing",
+                    data: data_set2
                 }
             ],
             stroke: {
@@ -31,7 +69,7 @@
                 }
             },
             xaxis: {
-                categories: [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016]
+                categories: months
             },
             yaxis: [{
                     axisTicks: {

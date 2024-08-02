@@ -6,11 +6,13 @@
     <div>
         @include('components.statistic_card')
     </div>
-    <div class="grid gap-6 md:grid-cols-1 xl:grid-cols-2">
+    <div class="grid md:grid-cols-1 xl:grid-cols-1">
         @include('components.line_chart')
+    </div>
+        <div class="grid md:grid-cols-1 xl:grid-cols-1">
         @include('components.bar_chart')
     </div>
-    <div class="grid gap-6 md:grid-cols-1 xl:grid-cols-2">
+    <div class="grid md:grid-cols-1 xl:grid-cols-1">
         @include('components.pie_chart')
     </div>
 </x-filament-panels::page>

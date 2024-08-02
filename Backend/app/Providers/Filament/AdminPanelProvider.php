@@ -35,6 +35,7 @@ class AdminPanelProvider extends PanelProvider
                 'Rejected'  => Color::Red,
                 'Ongoing'   => Color::Blue,
             ])
+            ->favicon(asset('Mobile DocCare Group 4.svg'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
