@@ -4,16 +4,26 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Sanctum\HasApiTokens;
 
-class Patient extends Model
+class Patient extends Model 
 {
-    use HasFactory;
+    use HasApiTokens, HasFactory;
 
     protected $table = "patients";
     protected $fillable = [
-        'phone_number', 'first_name', 'last_name', 'age', 'gender', 'address', 'email', 'emergency_contact', 'status'
+           'first_name', 'last_name','name', 'age', 'gender', 'address',
+            'emergency_contact', 'phone_number', 'email', 'password'
     ];
 
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
+
+    public function getAuthPassword()
+    {
+        return $this->password;
+    }
     CONST ACTIVE = 1;
     const INACTIVE = 0;
 
