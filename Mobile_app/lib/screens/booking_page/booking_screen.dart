@@ -148,7 +148,7 @@ class _BookingScreenState extends State<BookingScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Date & Time', style: Theme.of(context).textTheme.subtitle1),
+              Text('Date & Time'),
               const SizedBox(height: 8),
               TextFormField(
                 controller: _dateController,
@@ -170,7 +170,7 @@ class _BookingScreenState extends State<BookingScreen> {
               ),
               const SizedBox(height: 16),
 
-              Text('Reason', style: Theme.of(context).textTheme.subtitle1),
+              Text('Reason'),
               const SizedBox(height: 8),
               TextFormField(
                 controller: _reasonController,
@@ -184,7 +184,7 @@ class _BookingScreenState extends State<BookingScreen> {
               ),
               const SizedBox(height: 16),
 
-              Text('Location', style: Theme.of(context).textTheme.subtitle1),
+              Text('Location'),
               const SizedBox(height: 8),
               TextFormField(
                 controller: _locationController,
@@ -198,7 +198,7 @@ class _BookingScreenState extends State<BookingScreen> {
               ),
               const SizedBox(height: 16),
 
-              Text('Note', style: Theme.of(context).textTheme.subtitle1),
+              Text('Note'),
               const SizedBox(height: 8),
               TextFormField(
                 controller: _noteController,

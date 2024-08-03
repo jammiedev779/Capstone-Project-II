@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:doc_care/screens/appointment/appointment_screen.dart';
 import 'package:doc_care/screens/login_&_register/login_screen.dart';
 import 'package:doc_care/screens/profile/edit_profile.dart';
+import 'package:doc_care/screens/profile/medical_history.dart';
 import 'package:doc_care/screens/profile/widget_style.dart';
 import 'package:doc_care/services/patient_api.dart';
 import 'package:flutter/material.dart';
@@ -99,18 +101,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.2),
-                offset: Offset(0, 4),
-                blurRadius: 6.0,
-                spreadRadius: 1.0
-              ),
+                  color: Colors.black.withOpacity(0.2),
+                  offset: Offset(0, 4),
+                  blurRadius: 6.0,
+                  spreadRadius: 1.0),
             ],
             gradient: LinearGradient(
-              colors: [
-                Color(0xFF7734EB)!,
-                Color(0xFF4B95EA)!,
-                Color(0xFF84BCFD)!
-              ],
+              colors: [Color(0xFF2d595a)!, Color(0xFF65a399)!],
               begin: Alignment.bottomLeft,
               end: Alignment.topRight,
             ),
@@ -214,7 +211,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             children: [
                               WidgetStyle().buildCircleIcon(
                                   paddingValue: 8.0,
-                                  backgroundColor: Color(0xFF4B95EA),
+                                  backgroundColor: Color(0xFF2d595a),
                                   iconData: Icons.transgender_outlined,
                                   iconColor: Color.fromARGB(255, 255, 255, 255),
                                   iconSize: 16.0),
@@ -232,7 +229,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             children: [
                               WidgetStyle().buildCircleIcon(
                                   paddingValue: 8.0,
-                                  backgroundColor: Color(0xFF4B95EA),
+                                  backgroundColor: Color(0xFF2d595a),
                                   iconData: Icons.phone,
                                   iconColor: Colors.white,
                                   iconSize: 16.0),
@@ -250,7 +247,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             children: [
                               WidgetStyle().buildCircleIcon(
                                   paddingValue: 8.0,
-                                  backgroundColor: Color(0xFF4B95EA),
+                                  backgroundColor: Color(0xFF2d595a),
                                   iconData: Icons.email,
                                   iconColor: Colors.white,
                                   iconSize: 16.0),
@@ -268,7 +265,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             children: [
                               WidgetStyle().buildCircleIcon(
                                   paddingValue: 8.0,
-                                  backgroundColor: Color(0xFF4B95EA),
+                                  backgroundColor: Color(0xFF2d595a),
                                   iconData: Icons.location_on,
                                   iconColor: Colors.white,
                                   iconSize: 16.0),
@@ -311,7 +308,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   const Icon(Icons.favorite, color: Colors.red),
                               title: const Text('Medical History'),
                               onTap: () {
-                                // Navigate to Your Favorites
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) =>   MedicalHistory()),
+                                );
                               },
                             ),
                           ),
@@ -326,7 +326,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   color: Color(0xFF38AB3B)),
                               title: const Text('Appointment'),
                               onTap: () {
-                                // Navigate to Paymentx`
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) =>   AppointmentScreen()),
+                                );
                               },
                             ),
                           ),
@@ -347,7 +350,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           WidgetStyle().buildBottomBorder(
                               horizontalValue: 24.0,
-                              colorValue:Color(0x0F292626),
+                              colorValue: Color(0x0F292626),
                               widthValue: 2.0),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -362,7 +365,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           WidgetStyle().buildBottomBorder(
                               horizontalValue: 24.0,
-                              colorValue:Color(0x0F292626),
+                              colorValue: Color(0x0F292626),
                               widthValue: 2.0),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -377,7 +380,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           WidgetStyle().buildBottomBorder(
                               horizontalValue: 24.0,
-                              colorValue:Color(0x0F292626),
+                              colorValue: Color(0x0F292626),
                               widthValue: 2.0),
                           Padding(
                             padding: const EdgeInsets.all(8.0),

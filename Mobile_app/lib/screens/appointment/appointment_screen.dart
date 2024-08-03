@@ -15,7 +15,8 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Appointment Schedule"),
-        backgroundColor: Colors.green,
+        backgroundColor: Color(0xFF2d595a),
+        
       ),
       body: Column(
         children: [
@@ -47,7 +48,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
         });
       },
       style: TextButton.styleFrom(
-        backgroundColor: selectedTab == tab ? Colors.green : Colors.transparent,
+        backgroundColor: selectedTab == tab ? Color(0xFF2d595a): Colors.transparent,
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),

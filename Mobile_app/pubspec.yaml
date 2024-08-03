@@ -66,6 +66,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/icons/
+    - assets/images/
   #   - images/a_dot_ham.jpeg
 
 flutter_icons:
