@@ -21,7 +21,7 @@ class DocCare extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       // home: MainNavBar(),
-      home:RegisterPage(),
+      home:LoginPage(),
       // home: HomeScreen(),
       // home: MedicalHistory(),
       theme: const AppTheme().themeData,

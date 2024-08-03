@@ -21,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('permission', function (Blueprint $table) {
+        Schema::tablexx('permission', function (Blueprint $table) {
             $table->string('panel');
         });
     }

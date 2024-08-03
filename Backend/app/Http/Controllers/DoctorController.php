@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -10,11 +9,9 @@ class DoctorController extends Controller
 {
     public function index()
     {
-        
         $doctors = Doctor::with(['hospital', 'specialist', 'department'])
-            ->get(['first_name', 'last_name', 'phone_number', 'status', 'address', 'hospital_id', 'specialist_id', 'department_id']);
+            ->get(['id', 'first_name', 'last_name', 'phone_number', 'status', 'address', 'hospital_id', 'specialist_id', 'department_id']);
 
-  
         $doctors = $doctors->map(function ($doctor) {
             return [
                 'id' => $doctor->id,
@@ -41,12 +38,15 @@ class DoctorController extends Controller
             return response()->json(['doctors' => []], 200);
         }
 
+        // Eager load the relationships
         $doctors = Doctor::with(['hospital', 'specialist', 'department'])
-            ->where('first_name', 'LIKE', "%{$query}%")
-            ->orWhere('last_name', 'LIKE', "%{$query}%")
-            ->orWhere('address', 'LIKE', "%{$query}%")
-            ->get(['first_name', 'last_name', 'phone_number', 'status', 'address', 'hospital_id', 'specialist_id', 'department_id']);
-
+            ->where(function ($queryBuilder) use ($query) {
+                $queryBuilder->where('first_name', 'LIKE', "%{$query}%")
+                             ->orWhere('last_name', 'LIKE', "%{$query}%")
+                             ->orWhere('address', 'LIKE', "%{$query}%");
+            })
+            ->get(['id', 'first_name', 'last_name', 'phone_number', 'status', 'address', 'hospital_id', 'specialist_id', 'department_id',]);
+    
         $doctors = $doctors->map(function ($doctor) {
             return [
                 'id' => $doctor->id,

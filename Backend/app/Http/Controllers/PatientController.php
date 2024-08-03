@@ -46,6 +46,7 @@ class PatientController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Patient registered successfully',
+            'patient_id' => $patient->id,
             'token' => $token,
             'data' => $patient
         ]);
@@ -80,6 +81,7 @@ class PatientController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Patient logged in successfully',
+            'patient_id' => $patient->id,
             'token' => $token,
             'data' => $patient
         ]);

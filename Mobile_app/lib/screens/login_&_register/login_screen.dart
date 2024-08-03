@@ -1,7 +1,3 @@
-import 'package:doc_care/screens/login_&_register/register_screen.dart';
-import 'package:doc_care/services/patient_api.dart';
-import 'package:doc_care/shared/utils/bottom_nav_bars/main_nav_bar.dart';
-import 'package:flutter/material.dart';
 import 'package:doc_care/services/patient_api.dart';
 import 'package:doc_care/shared/utils/bottom_nav_bars/main_nav_bar.dart';
 import 'package:flutter/material.dart';
@@ -146,12 +142,12 @@ class LoginPage extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => RegisterPage(),
-                        ),
-                      );
+                      // Navigator.pushReplacement(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => RegisterPage(),
+                      //   ),
+                      // );
                     },
                     child: Text(
                       "Register now",
@@ -179,6 +175,12 @@ class LoginPage extends StatelessWidget {
 
     if (response['status'] == 200) {
       String token = response['token'];
+      int? patientId = response['patient_id'];
+      if (patientId == null) {
+        print('Error: patientId is null');
+        _showErrorDialog(context, 'An error occurred. Please try again.');
+        return;
+      }
       showDialog(
         context: context,
         barrierDismissible: false,
@@ -188,12 +190,12 @@ class LoginPage extends StatelessWidget {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => MainNavBar(token: token),
+                builder: (context) => MainNavBar(token: token, patientId: patientId),
               ),
             );
           });
           return AlertDialog(
-            title: const Text('Congratulations!'),
+            title: const Text('Login Successfully'),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: const <Widget>[
@@ -218,16 +220,20 @@ class LoginPage extends StatelessWidget {
         },
       );
     } else {
-      showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Error'),
-            content: Text(response['message']),
-          );
-        },
-      );
+      _showErrorDialog(context, response['message'] ?? 'An error occurred. Please try again.');
     }
+  }
+
+  void _showErrorDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Error'),
+          content: Text(message),
+        );
+      },
+    );
   }
 }

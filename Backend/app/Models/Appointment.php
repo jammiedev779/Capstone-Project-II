@@ -15,6 +15,10 @@ class Appointment extends Model
         'hospital_id'
     ];
 
+    protected $casts = [
+        'appointment_date' => 'datetime',  
+    ];
+
     public function patient()
     {
         return $this->belongsTo(Patient::class);
@@ -59,6 +63,8 @@ class Appointment extends Model
                 return "Ongoing";
             case 2:
                 return "Completed";
+            case 3:
+                return "Canceled";
         }
     }
 }

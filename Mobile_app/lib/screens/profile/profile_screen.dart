@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:doc_care/screens/appointment/appointment_screen.dart';
 import 'package:doc_care/screens/login_&_register/login_screen.dart';
 import 'package:doc_care/screens/profile/edit_profile.dart';
@@ -7,7 +5,6 @@ import 'package:doc_care/screens/profile/medical_history.dart';
 import 'package:doc_care/screens/profile/widget_style.dart';
 import 'package:doc_care/services/patient_api.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_launcher_icons/xml_templates.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String token;
@@ -25,6 +22,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     futureProfile = ApiService.fetchProfile(widget.token);
+  }
+
+  Future<void> _refreshProfile() async {
+    setState(() {
+      futureProfile = ApiService.fetchProfile(widget.token);
+    });
   }
 
   void _logout() async {
@@ -189,14 +192,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 alignment: Alignment.topRight,
                                 child: IconButton(
                                   icon: const Icon(Icons.edit),
-                                  onPressed: () {
-                                    Navigator.push(
+                                  onPressed: () async {
+                                    final updated = await Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => EditProfileScreen(
-                                            token: 'widget.token'),
+                                          token: widget.token,
+                                          profileData: profile,
+                                          onUpdate: (newProfileData) {
+                                            setState(() {
+                                              futureProfile = Future.value(newProfileData);
+                                            });
+                                          },
+                                        ),
                                       ),
                                     );
+                                    if (updated) {
+                                      await _refreshProfile();
+                                    }
                                   },
                                 ),
                               ),
@@ -310,7 +323,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               onTap: () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) =>   MedicalHistory()),
+                                  MaterialPageRoute(
+                                    builder: (context) => MedicalHistory(),
+                                  ),
                                 );
                               },
                             ),
@@ -326,10 +341,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   color: Color(0xFF38AB3B)),
                               title: const Text('Appointment'),
                               onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) =>   AppointmentScreen()),
-                                );
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //     builder: (context) => AppointmentScreen(),
+                                //   ),
+                                // );
                               },
                             ),
                           ),
@@ -344,7 +361,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   color: Color(0xFF5DC2F4)),
                               title: const Text('Favorite Doctor'),
                               onTap: () {
-                                // Navigate to Paymentx`
+                                // Navigate to Favorite Doctor
                               },
                             ),
                           ),
@@ -359,7 +376,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   color: Color(0xFFA86D2A)),
                               title: const Text('Favorite Hospital'),
                               onTap: () {
-                                // Navigate to Paymentx`
+                                // Navigate to Favorite Hospital
                               },
                             ),
                           ),

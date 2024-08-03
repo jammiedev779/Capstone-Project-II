@@ -20,6 +20,10 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::post('/appointments/booking', [AppointmentController::class, 'store']);
+Route::get('/appointments/{patient_id}', [AppointmentController::class, 'appointmentHistory']);
+Route::post('/appointments/cancel/{appointment_id}', [AppointmentController::class, 'cancelAppointment']);
+
+
 
 Route::get('doctors', [DoctorController::class, 'index']);
 Route::get('doctors/search', [DoctorController::class, 'search']);

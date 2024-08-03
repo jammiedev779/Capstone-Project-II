@@ -3,19 +3,63 @@ import 'package:flutter/material.dart';
 
 class DoctorDetailScreen extends StatelessWidget {
   final Map<String, dynamic> doctor;
+  final int patientId;
 
-  const DoctorDetailScreen({required this.doctor, Key? key}) : super(key: key);
+  const DoctorDetailScreen({required this.doctor, required this.patientId, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final Color appBarColor = Color(0xFF245252); 
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Doctor Details'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: Container(
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                offset: Offset(0, 4),
+                blurRadius: 6.0,
+                spreadRadius: 1.0,
+              ),
+            ],
+            gradient: LinearGradient(
+              colors: [appBarColor, Color(0xFF67A59B)],
+              begin: Alignment.bottomLeft,
+              end: Alignment.topRight,
+            ),
+          ),
+          child: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            centerTitle: true,
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back_ios, color: Colors.white),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            title: Text(
+              'Doctor Details',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 20.0,
+              ),
+            ),
+            actions: [
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 16.0),
+                  child: Icon(
+                    Icons.favorite,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       body: Column(
@@ -60,9 +104,9 @@ class DoctorDetailScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      _buildInfoCard('Patients', doctor['patients_count'] ?? '100', Colors.green),
-                      _buildInfoCard('Experiences', doctor['experience_years'] ?? '5 years', Colors.green),
-                      _buildInfoCard('Rating', doctor['rating'] ?? '4.2', Colors.green),
+                      _buildInfoCard('Patients', doctor['patients_count']?.toString() ?? '100', appBarColor),
+                      _buildInfoCard('Experiences', doctor['experience_years']?.toString() ?? '5 years', appBarColor),
+                      _buildInfoCard('Rating', doctor['rating']?.toString() ?? '4.2', appBarColor),
                     ],
                   ),
                   const SizedBox(height: 16),
@@ -104,7 +148,12 @@ class DoctorDetailScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => BookingScreen()),
+                  MaterialPageRoute(
+                    builder: (context) => BookingScreen(
+                      doctorId: doctor['id'],
+                      patientId: patientId,
+                    ),
+                  ),
                 );
               },
               style: ElevatedButton.styleFrom(
@@ -113,7 +162,7 @@ class DoctorDetailScreen extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
-                backgroundColor: Colors.green, // Set the button color to green
+                backgroundColor: appBarColor, // Match the AppBar color
               ),
               child: const Text('Book Appointment'),
             ),
