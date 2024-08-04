@@ -1,10 +1,6 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:doc_care/screens/home/category_specialize.dart';
 import 'package:doc_care/screens/home/medical_center.dart';
 import 'package:doc_care/screens/home/notification_page.dart';
-import 'package:doc_care/shared/widgets/cards/appointment_preview_card.dart';
-import 'package:doc_care/shared/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -12,7 +8,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Create a bloc and provide it to the HomeView
     return const HomeView();
   }
 }
@@ -22,7 +17,6 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Create the HomeView UI
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
@@ -82,8 +76,6 @@ class HomeView extends StatelessWidget {
             padding:
                 const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 8.0),
             child: TextField(
-              // controller: _searchController,
-              // onChanged: _filterDoctors,
               decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.white,
@@ -115,113 +107,75 @@ class HomeView extends StatelessWidget {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(
-            bottom: 16.0, top: 4.0, right: 16.0, left: 16.0),
-        child: Column(
-          children: [
-            // SizedBox(height: 8.0),
-            // Expanded(
-            //   child: ListView.builder(
-            //     // itemCount: _filteredItems.length,
-            //     itemBuilder: (context, index) {
-            //       return ListTile(
-            //           // title: Text(_filteredItems[index]),
-            //           );
-            //     },
-            //   ),
-            // ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
-              child: Container(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 8.0),
+          child: Column(
+            children: <Widget>[
+              Container(
+                width: double.infinity,
+                height: 200,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  gradient: LinearGradient(
-                    colors: [
-                      // Color(0xFF4B95EA),
-                      // Color(0xFF84BCFD),
-                      // Color(0xFF2d595a),
-                      // Color(0xFF65a399),
-                      Color(0xFF245252),
-                      Color(0xFF54968B),
-                    ],
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight,
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/slide1_image.jpg'),
+                    fit: BoxFit.cover,
                   ),
                 ),
-                padding:
-                    const EdgeInsets.only(left: 16.0, top: 32.0, bottom: 32.0),
-                child: Row(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Start Booking Your',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          'Appointment Now!',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          'Schedule an appointment',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          'with our doctors.',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
+                    Text(
+                      'Start Booking Your',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    Column(
-                      children: [
-                        // Image.asset(
-                        //   'assets/doctor_image.png',
-                        //   width: 10.0,
-                        //   height: 10.0,
-                        // ),
-                        // Image.network(
-                        //   'https://png.pngtree.com/png-clipart/20230918/ourmid/pngtree-photo-men-doctor-physician-chest-smiling-png-image_10132895.png',
-                        //   width: 130.0,
-                        //   height: 150.0,
-                        // ),
-                      ],
+                    Text(
+                      'Appointment Now!',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      'Schedule an appointment',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      'with our doctors.',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
                 ),
               ),
-            ),
-            SizedBox(height: 16.0),
-            Expanded(child: CategoriesScreen()),
-            SizedBox(height: 16.0),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(
-                'Nearby Medical Centers',
-                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+              SizedBox(height: 8.0),
+              Container(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height * 0.3,
+                child: CategoriesScreen(),
               ),
-            ),
-            SizedBox(height: 8.0),
-            Expanded(child: NearbyMedicalCentersScreen()),
-            SizedBox(height: 16.0),
-          ],
+              Container(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height * 0.4,
+                child: NearbyMedicalCentersScreen(),
+              ),
+              SizedBox(height: 16.0),
+            ],
+          ),
         ),
       ),
     );
