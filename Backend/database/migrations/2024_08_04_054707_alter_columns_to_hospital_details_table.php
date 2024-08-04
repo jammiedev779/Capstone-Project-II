@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('permissions', function (Blueprint $table) {
-            $table->string('panel');
+        Schema::table('hospital_details', function (Blueprint $table) {
+            $table->string('image')->nullable();
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::tablexx('permission', function (Blueprint $table) {
-            $table->string('panel');
+        Schema::table('hospital_details', function (Blueprint $table) {
+            $table->string('image')->nullable();
         });
     }
 };
