@@ -1,6 +1,6 @@
+import 'package:doc_care/screens/home/category_specialize.dart';
+import 'package:doc_care/screens/home/medical_center.dart';
 import 'package:doc_care/screens/home/notification_page.dart';
-import 'package:doc_care/shared/widgets/cards/appointment_preview_card.dart';
-import 'package:doc_care/shared/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -8,7 +8,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Create a bloc and provide it to the HomeView
     return const HomeView();
   }
 }
@@ -18,7 +17,6 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Create the HomeView UI
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
@@ -29,68 +27,79 @@ class HomeView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'Welcome',
-              style: textTheme.bodyMedium,
-            ),
-            const SizedBox(height: 4.0),
-            Text(
-              'John Doe',
-              style: textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 4.0),
+            const SizedBox(height: 16.0),
             Row(
               children: [
                 Icon(
                   Icons.location_on,
-                  color: colorScheme.secondary,
+                  color: Colors.black,
                 ),
                 const SizedBox(width: 4.0),
                 Text(
                   'Dubai, UAE',
                   style: textTheme.bodySmall!.copyWith(
-                    color: colorScheme.secondary,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(width: 4.0),
                 Icon(
                   Icons.expand_more,
-                  color: colorScheme.secondary,
+                  color: Colors.black,
                 ),
               ],
             ),
           ],
         ),
         actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => NotificationPage()),
-            );
-            },
-            icon: const Icon(Icons.notifications_outlined),
+          Container(
+            margin: EdgeInsets.only(right: 16.0, top: 16.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(40.0),
+              color: Colors.grey[200],
+            ),
+            child: IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => NotificationPage()),
+                );
+              },
+              icon: const Icon(Icons.notifications),
+              color: Colors.grey[700],
+            ),
           ),
-          const SizedBox(width: 8.0),
         ],
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(64.0),
+          preferredSize: Size.fromHeight(40.0),
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
+            padding:
+                const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 8.0),
+            child: TextField(
               decoration: InputDecoration(
-                hintText: 'Search for doctors...',
+                filled: true,
+                fillColor: Colors.white,
                 prefixIcon: const Icon(Icons.search),
-                suffixIcon: Container(
-                  margin: const EdgeInsets.all(4.0),
-                  padding: const EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    color: colorScheme.onSurfaceVariant,
-                    borderRadius: BorderRadius.circular(8.0),
+                hintText: "Search doctors...",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(
+                    color: Colors.grey.shade300,
+                    width: 1,
                   ),
-                  child: Icon(
-                    Icons.filter_alt_outlined,
-                    color: colorScheme.surfaceVariant,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(
+                    color: Colors.grey.shade300,
+                    width: 1,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(
+                    color: Colors.blue,
+                    width: 2,
                   ),
                 ),
               ),
@@ -98,55 +107,77 @@ class HomeView extends StatelessWidget {
           ),
         ),
       ),
-      body: const SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 8.0),
           child: Column(
             children: <Widget>[
-              _MyAppointment(),
-              SizedBox(height: 24.0),
-              _GeneralNeeds(),
-              SizedBox(height: 24.0),
+              Container(
+                width: double.infinity,
+                height: 200,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/slide1_image.jpg'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Start Booking Your',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      'Appointment Now!',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      'Schedule an appointment',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      'with our doctors.',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 8.0),
+              Container(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height * 0.3,
+                child: CategoriesScreen(),
+              ),
+              Container(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height * 0.4,
+                child: NearbyMedicalCentersScreen(),
+              ),
+              SizedBox(height: 16.0),
             ],
           ),
         ),
       ),
-    );
-  }
-}
-
-class _MyAppointment extends StatelessWidget {
-  const _MyAppointment();
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SectionTitle(
-          title: 'Upcoming Appointments',
-          action: '',
-          onPressed: () {},
-        ),
-        const AppointmentPreviewCard(),
-      ],
-    );
-  }
-}
-
-class _GeneralNeeds extends StatelessWidget {
-  const _GeneralNeeds();
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SectionTitle(
-          title: 'For General Neededs',
-          action: '',
-          onPressed: () {},
-        ),
-        const GeneralNeedsPreviewList(),
-      ],
     );
   }
 }

@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('permissions', function (Blueprint $table) {
-            $table->string('panel');
+        Schema::table('favorite_doctor', function (Blueprint $table) {
+            $table->boolean('status')->default(false); 
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('permission', function (Blueprint $table) {
-            $table->string('panel');
+        Schema::table('favorite_doctor', function (Blueprint $table) {
+            $table->dropColumn('status'); 
         });
     }
 };

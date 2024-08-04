@@ -1,7 +1,8 @@
-
 import 'package:flutter/material.dart';
+import 'dart:ui';
 
 class WidgetStyle extends StatelessWidget {
+  
   const WidgetStyle({super.key});
 
   @override
@@ -38,10 +39,11 @@ class WidgetStyle extends StatelessWidget {
       padding: EdgeInsets.all(paddingValue),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        border: Border.all(color: Color.fromARGB(255, 233, 229, 229)),
+        border: Border.all(color: Color(0xFFE9E5E5)),
         color: backgroundColor,
       ),
           child: Icon(iconData, color: iconColor, size: iconSize),
     );
   }
+
 }

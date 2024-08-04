@@ -30,9 +30,8 @@ class NotificationPage extends StatelessWidget {
             ],
             gradient: LinearGradient(
               colors: [
-                Color(0xFF7734EB)!,
-                Color(0xFF4B95EA)!,
-                Color(0xFF84BCFD)!
+                Color(0xFF245252),
+                Color(0xFF67A59B),
               ],
               begin: Alignment.bottomLeft,
               end: Alignment.topRight,

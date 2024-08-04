@@ -3,7 +3,9 @@ import 'package:doc_care/services/search_doctor_api.dart';
 import 'package:flutter/material.dart';
 
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({super.key});
+  final int patientId;
+
+  const SearchScreen({super.key, required this.patientId});
 
   @override
   _SearchScreenState createState() => _SearchScreenState();
@@ -72,16 +74,45 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Doctor"),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.location_on),
-            onPressed: () {
-              // Location filter action
-            },
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF2d595a), Color(0xFF65a399)],
+              begin: Alignment.bottomLeft,
+              end: Alignment.topRight,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                offset: Offset(0, 4),
+                blurRadius: 6.0,
+                spreadRadius: 1.0,
+              ),
+            ],
           ),
-        ],
+          child: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            title: const Text(
+              'Doctor',
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.location_on),
+                onPressed: () {
+                  // Location filter action
+                },
+              ),
+            ],
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -143,7 +174,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => DoctorDetailScreen(doctor: doctor),
+                    builder: (context) => DoctorDetailScreen(doctor: doctor, patientId: widget.patientId),
                   ),
                 );
               },

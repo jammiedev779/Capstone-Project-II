@@ -27,6 +27,11 @@ class Doctor extends Model
     {
         return $this->belongsTo(Department::class, 'department_id');
     }
+    
+    public function medicalHistories()
+    {
+        return $this->hasMany(MedicalHistory::class);
+    }
 
     public function getGenderAttribute($value){
         switch($value){

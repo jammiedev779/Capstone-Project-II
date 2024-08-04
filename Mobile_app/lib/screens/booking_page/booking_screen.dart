@@ -1,8 +1,14 @@
+import 'package:doc_care/screens/screens.dart';
 import 'package:doc_care/services/booking_api.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class BookingScreen extends StatefulWidget {
+  final int doctorId;
+  final int patientId;
+
+  BookingScreen({required this.doctorId, required this.patientId});
+
   @override
   _BookingScreenState createState() => _BookingScreenState();
 }
@@ -54,12 +60,12 @@ class _BookingScreenState extends State<BookingScreen> {
       }
     }
   }
-
+  
   Future<void> _submitForm() async {
     if (_formKey.currentState?.validate() ?? false) {
       final Map<String, dynamic> bookingData = {
-        'doctor_id': 1, // Replace with actual doctor ID
-        'patient_id': 90, // Replace with actual patient ID
+        'doctor_id': widget.doctorId,
+        'patient_id': widget.patientId,
         'appointment_date': _dateController.text,
         'location': _locationController.text,
         'status': 0, // Default status (Pending)
@@ -72,7 +78,6 @@ class _BookingScreenState extends State<BookingScreen> {
       final response = await BookingApi.createBooking(bookingData);
 
       if (response['statusCode'] == 201) {
-        // Show success message or navigate to another screen
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
@@ -81,7 +86,10 @@ class _BookingScreenState extends State<BookingScreen> {
             actions: [
               TextButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => AppointmentScreen(patientId: widget.patientId)),
+                  );
                 },
                 child: Text('OK'),
               ),
@@ -109,7 +117,8 @@ class _BookingScreenState extends State<BookingScreen> {
     }
   }
 
-  InputDecoration buildInputDecoration(String labelText, String hintText, ColorScheme colorScheme) {
+  InputDecoration _buildInputDecoration(String labelText, String hintText) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     return InputDecoration(
       labelText: labelText,
       hintText: hintText,
@@ -124,21 +133,52 @@ class _BookingScreenState extends State<BookingScreen> {
         borderSide: BorderSide(color: colorScheme.primary, width: 2.0),
         borderRadius: BorderRadius.circular(10.0),
       ),
+      contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    ColorScheme colorScheme = Theme.of(context).colorScheme;
+    // final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Book Appointment'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: Container(
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                offset: Offset(0, 4),
+                blurRadius: 6.0,
+                spreadRadius: 1.0,
+              ),
+            ],
+            gradient: LinearGradient(
+              colors: [Color(0xFF245252), Color(0xFF67A59B)],
+              begin: Alignment.bottomLeft,
+              end: Alignment.topRight,
+            ),
+          ),
+          child: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            centerTitle: true,
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back_ios, color: Colors.white),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            title: Text(
+              'Book Appointment',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 20.0,
+              ),
+            ),
+          ),
         ),
       ),
       body: Padding(
@@ -148,78 +188,77 @@ class _BookingScreenState extends State<BookingScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Date & Time', style: Theme.of(context).textTheme.subtitle1),
+              Text('Date & Time'),
               const SizedBox(height: 8),
               TextFormField(
                 controller: _dateController,
-                decoration: buildInputDecoration(
-                  'Select Date & Time',
-                  'YYYY-MM-DD HH:MM',
-                  colorScheme,
-                ).copyWith(
-                  suffixIcon: Icon(Icons.calendar_today),
-                ),
-                readOnly: true,
-                onTap: () => _selectDate(context),
+                decoration: _buildInputDecoration('Appointment Date', 'Select date and time'),
+                onTap: () async {
+                  FocusScope.of(context).requestFocus(FocusNode());
+                  await _selectDate(context);
+                },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please select a date and time';
+                    return 'Please select an appointment date';
                   }
                   return null;
                 },
               ),
               const SizedBox(height: 16),
 
-              Text('Reason', style: Theme.of(context).textTheme.subtitle1),
+              Text('Reason'),
               const SizedBox(height: 8),
               TextFormField(
                 controller: _reasonController,
-                decoration: buildInputDecoration('Enter reason', 'Reason for appointment', colorScheme),
+                decoration: _buildInputDecoration('Reason', 'Why do you need this appointment?'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a reason';
+                    return 'Please provide a reason';
                   }
                   return null;
                 },
               ),
               const SizedBox(height: 16),
 
-              Text('Location', style: Theme.of(context).textTheme.subtitle1),
+              Text('Location'),
               const SizedBox(height: 8),
               TextFormField(
                 controller: _locationController,
-                decoration: buildInputDecoration('Enter location', 'Location of appointment', colorScheme),
+                decoration: _buildInputDecoration('Location', 'Enter the location'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a location';
+                    return 'Please provide a location';
                   }
                   return null;
                 },
               ),
               const SizedBox(height: 16),
 
-              Text('Note', style: Theme.of(context).textTheme.subtitle1),
+              Text('Note'),
               const SizedBox(height: 8),
               TextFormField(
                 controller: _noteController,
-                decoration: buildInputDecoration('', 'Additional notes', colorScheme),
-                maxLines: 4, // Allows for multiple lines of text
+                decoration: _buildInputDecoration('Note', 'Additional notes (optional)'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please provide a note';
+                  }
+                  return null;
+                },
               ),
-              const SizedBox(height: 24),
-
-              // Submit Button
+              SizedBox(height: 20),
               Center(
                 child: ElevatedButton(
                   onPressed: _submitForm,
+                  child: Text('Submit Booking'),
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                    textStyle: const TextStyle(fontSize: 18),
+                    backgroundColor: Color(0xFF245252), // Match the AppBar gradient color
+                    foregroundColor: Colors.white,
+                    padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(10.0),
                     ),
-                    backgroundColor: Colors.green, // Set the button color to green
                   ),
-                  child: const Text('Submit Booking'),
                 ),
               ),
             ],

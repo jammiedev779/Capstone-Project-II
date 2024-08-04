@@ -9,63 +9,55 @@ use Illuminate\Support\Facades\Validator;
 
 class HospitalDetailController extends Controller
 {
-    public function index(Request $Request){
-
-        $hospital_details = HospitalDetail::all();
-
-        return response()->json([
-            'status'=> Response::HTTP_OK,
-            'hospital_details'=>$hospital_details,
-        ],Response::HTTP_OK,);
-    }
-    public function store(Request $Request){
-
-        $validator = Validator::make($request->all(),[
-            'admin_id',
-            'category_id',
-            'phone_number',
-            'kh_name',
-            'email',
-            'description',
-            'location',
-            'contact_person_phone',
-            'url'
-        ]);
-
-        if($validator ->fails()){
-            return Response()->json([
-                'status' => Respone::HTTP_UNPROCESSABLE_ENTITY,
-                'message' => $validator->message(),
-            ],Respone::HTTP_UNPROCESSABLE_ENTITY);
-        }
-
-        $hospital_detail = new HospitalDetail($request->all());
-        $hospital_detail->save();
-
-        return Response()->json([
-            'status' => Response::HTTP_CREATED,
-            'message' => 'Hospital Detail created successfully',
-            'hospital_detail' => $hospital_detail,
-        ],Response::HTTP_CREATED);
-    }
-    public function show($id)
+    public function index()
     {
-        $hospital_detail = HospitalDetail::find($id);
+        $hospitalDetails = HospitalDetail::with(['category'])
+            ->get(['id','category_id', 'phone_number','kh_name', 'email','description', 'location', 'contact_person_phone', 'url',]);
 
-        if (!$hospital_detail) {
-            return response()->json([
-                'status' => Response::HTTP_NOT_FOUND,
-                'message' => ' not found',
-            ], Response::HTTP_NOT_FOUND);
+        $hospitalDetails = $hospitalDetails->map(function ($hospitalDetail) {
+            return [
+                'id' => $hospitalDetail->id,
+                'kh_name' => $hospitalDetail->kh_name,
+                'description' => $hospitalDetail->description,
+                'location' => $hospitalDetail->location,
+                'email' => $hospitalDetail->email,
+                'phone_number' => $hospitalDetail->phone_number,
+                'url' => $hospitalDetail->url,
+            ];
+        });
+
+        return response()->json(['hospitalDetails' => $hospitalDetails], 200);
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->query('query');
+        
+        if (!$query) {
+            return response()->json(['hospitalDetails' => []], 200);
         }
 
-        return response()->json([
-            'status' => Response::HTTP_OK,
-            'hospital_detail' => $hospital_detail,
-        ], Response::HTTP_OK);
-    }
+        $hospitalDetails = HospitalDetail::with(['category', 'specialist'])
+            ->where(function ($queryBuilder) use ($query) {
+                $queryBuilder->where('kh_name', 'LIKE', "%{$query}%")
+                             ->orWhere('address', 'LIKE', "%{$query}%");
+            })
+            ->get(['id','category_id', 'phone_number','kh_name', 'email','description', 'location', 'contact_person_phone', 'url']);
     
+        $hospitalDetails = $hospitalDetails->map(function ($hospitalDetail) {
+            return [
+                'id' => $hospitalDetail->id,
+                'kh_name' => $hospitalDetail->kh_name,
+                'description' => $hospitalDetail->description,
+                'location' => $hospitalDetail->location,
+                'email' => $hospitalDetail->email,
+                'phone_number' => $hospitalDetail->phone_number,
+                'url' => $hospitalDetail->url,
+            ];
+        });
 
+        return response()->json(['hospitalDetails' => $hospitalDetails], 200);
+    }
 
      
 }
