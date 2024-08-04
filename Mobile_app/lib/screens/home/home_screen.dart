@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:doc_care/screens/home/category_specialize.dart';
+import 'package:doc_care/screens/home/medical_center.dart';
 import 'package:doc_care/screens/home/notification_page.dart';
 import 'package:doc_care/shared/widgets/cards/appointment_preview_card.dart';
 import 'package:doc_care/shared/widgets/widgets.dart';
@@ -78,8 +79,8 @@ class HomeView extends StatelessWidget {
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(40.0),
           child: Padding(
-            padding: const EdgeInsets.only(
-                left: 16.0, right: 16.0, bottom: 8.0),
+            padding:
+                const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 8.0),
             child: TextField(
               // controller: _searchController,
               // onChanged: _filterDoctors,
@@ -196,18 +197,30 @@ class HomeView extends StatelessWidget {
                         //   width: 10.0,
                         //   height: 10.0,
                         // ),
-                        Image.network(
-                          'https://png.pngtree.com/png-clipart/20230918/ourmid/pngtree-photo-men-doctor-physician-chest-smiling-png-image_10132895.png',
-                          width: 130.0,
-                          height: 150.0,
-                        ),
+                        // Image.network(
+                        //   'https://png.pngtree.com/png-clipart/20230918/ourmid/pngtree-photo-men-doctor-physician-chest-smiling-png-image_10132895.png',
+                        //   width: 130.0,
+                        //   height: 150.0,
+                        // ),
                       ],
                     ),
                   ],
                 ),
               ),
             ),
+            SizedBox(height: 16.0),
             Expanded(child: CategoriesScreen()),
+            SizedBox(height: 16.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Text(
+                'Nearby Medical Centers',
+                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+              ),
+            ),
+            SizedBox(height: 8.0),
+            Expanded(child: NearbyMedicalCentersScreen()),
+            SizedBox(height: 16.0),
           ],
         ),
       ),
