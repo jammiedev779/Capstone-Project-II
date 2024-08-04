@@ -22,8 +22,8 @@ class _MainNavBarState extends State<MainNavBar> {
       const HomeScreen(),
       SearchScreen(patientId: widget.patientId), 
       AppointmentScreen(patientId: widget.patientId),
-      // const InboxScreen(),
-      ProfileScreen(token: widget.token),
+      // const InboxScreen(), 
+      ProfileScreen(token: widget.token, patientId: widget.patientId),
     ];
   }
 
@@ -77,3 +77,5 @@ class _MainNavBarState extends State<MainNavBar> {
     );
   }
 }
+
+

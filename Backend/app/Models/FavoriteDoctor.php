@@ -14,8 +14,9 @@ class FavoriteDoctor extends Model
     protected $fillable = [
         'patient_id',
         'doctor_id',
+        'status'
     ];
-
+    
     public function patient()
     {
         return $this->belongsTo(Patient::class);

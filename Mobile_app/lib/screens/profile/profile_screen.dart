@@ -1,4 +1,5 @@
 import 'package:doc_care/screens/appointment/appointment_screen.dart';
+import 'package:doc_care/screens/favorite_doctor/favorite_doctors_screen.dart';
 import 'package:doc_care/screens/login_&_register/login_screen.dart';
 import 'package:doc_care/screens/profile/edit_profile.dart';
 import 'package:doc_care/screens/profile/medical_history.dart';
@@ -8,8 +9,9 @@ import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String token;
+  final int patientId;
 
-  const ProfileScreen({super.key, required this.token});
+  const ProfileScreen({super.key, required this.token, required this.patientId});
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -341,12 +343,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   color: Color(0xFF38AB3B)),
                               title: const Text('Appointment'),
                               onTap: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (context) => AppointmentScreen(),
-                                //   ),
-                                // );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AppointmentScreen(patientId: widget.patientId),
+                                  ),
+                                );
                               },
                             ),
                           ),
@@ -361,7 +363,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   color: Color(0xFF5DC2F4)),
                               title: const Text('Favorite Doctor'),
                               onTap: () {
-                                // Navigate to Favorite Doctor
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => FavoriteDoctorsScreen(patientId: widget.patientId),
+                                  ),
+                                );
                               },
                             ),
                           ),

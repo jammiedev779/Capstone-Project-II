@@ -45,4 +45,5 @@ Route::get('/medical_history/{patientId}', [MedicalHistoryController::class, 'ge
 
 Route::post('/favorites/add/{patient_id}', [FavoriteDoctorController::class, 'addFavorite']);
 Route::post('/favorites/remove/{patient_id}', [FavoriteDoctorController::class, 'removeFavorite']);
-Route::get('/favorites/check/{patient_id}', [FavoriteDoctorController::class, 'isFavorite']);
+Route::get('/favorites/show/{patient_id}/{doctor_id}', [FavoriteDoctorController::class, 'showFavorite']);
+Route::get('/favorites/{patientId}', [FavoriteDoctorController::class, 'getFavoriteDoctors']);
