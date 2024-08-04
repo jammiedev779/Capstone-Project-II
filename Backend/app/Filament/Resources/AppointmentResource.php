@@ -17,6 +17,7 @@ use Filament\Infolists\Components\TextEntry;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\AppointmentResource\Pages;
 use App\Filament\Resources\AppointmentResource\RelationManagers;
+use DB;
 
 class AppointmentResource extends Resource
 {
@@ -46,7 +47,7 @@ class AppointmentResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(fn (Builder $query) => $query->where('hospital_id', 1))
+            ->modifyQueryUsing(fn (Builder $query) => $query->where('hospital_id', DB::table('hospital_details')->where('admin_id', auth()->user()->id)->id ?? 0))
             ->columns([
                 TextColumn::make('patient_name')
                     ->label('Patient')
