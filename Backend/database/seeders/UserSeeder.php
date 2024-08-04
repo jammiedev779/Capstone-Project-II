@@ -14,9 +14,10 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         $user = User::create([
-            'name'     => 'Super Admin',
-            'email'    => 'super_admin@doccare.com',
-            'password' => bcrypt('12345678'),
+            'name'          => 'Super Admin',
+            'email'         => 'super_admin@doccare.com',
+            'password'      => bcrypt('12345678'),
+            'is_superadmin' => 1,
         ]);
     }
 }

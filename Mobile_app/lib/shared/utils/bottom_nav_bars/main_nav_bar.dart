@@ -2,7 +2,10 @@ import 'package:doc_care/screens/screens.dart';
 import 'package:flutter/material.dart';
 
 class MainNavBar extends StatefulWidget {
-  const MainNavBar({super.key});
+  final String token;
+  final int patientId; 
+
+  const MainNavBar({super.key, required this.token, required this.patientId}); 
 
   @override
   _MainNavBarState createState() => _MainNavBarState();
@@ -10,13 +13,19 @@ class MainNavBar extends StatefulWidget {
 
 class _MainNavBarState extends State<MainNavBar> {
   int _currentIndex = 0;
-  final List<Widget> _children = [
-    const HomeScreen(),
-    const SearchScreen(),
-    const BookingScreen(),
-    const InboxScreen(),
-    const ProfileScreen(),
-  ];
+  late List<Widget> _children;
+
+  @override
+  void initState() {
+    super.initState();
+    _children = [
+      const HomeScreen(),
+      SearchScreen(patientId: widget.patientId), 
+      AppointmentScreen(patientId: widget.patientId),
+      // const InboxScreen(),
+      ProfileScreen(token: widget.token),
+    ];
+  }
 
   void onTabTapped(int index) {
     setState(() {
@@ -48,17 +57,17 @@ class _MainNavBarState extends State<MainNavBar> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
+            icon: Icon(Icons.local_hospital),
+            label: 'Doctor',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.book),
-            label: 'Booking',
+            label: 'Appointment',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.inbox),
-            label: 'Inbox',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.inbox),
+          //   label: 'Inbox',
+          // ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Profile',

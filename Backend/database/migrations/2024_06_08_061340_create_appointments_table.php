@@ -18,8 +18,9 @@ class CreateAppointmentsTable extends Migration
             $table->unsignedBigInteger('doctor_id')->nullable();
             $table->dateTime('appointment_date')->nullable();
             $table->string('reason')->nullable();
-            $table->boolean('status')->default(0); // default value set to 0
+            $table->boolean('status')->default(0);
             $table->timestamps();
+
         });
     }
 
