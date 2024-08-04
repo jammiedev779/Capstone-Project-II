@@ -1,87 +1,67 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: CategoriesScreen(),
-    );
-  }
-}
 
 class CategoriesScreen extends StatelessWidget {
   final List<Category> categories = [
     Category(
-        name: 'Dentistry',
-        iconUrl:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLKM1BpG07uEmR0mBszQbFIAOPS2uuP5QqNCzduXaH12eQegIhIUIZ-0t0Tw4JNBrs2zc&usqp=CAU'),
+        name: 'Dentistry', icon: 'assets/icons/categories/dentistry_icon.jpg'),
     Category(
         name: 'Cardiology',
-        iconUrl:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLKM1BpG07uEmR0mBszQbFIAOPS2uuP5QqNCzduXaH12eQegIhIUIZ-0t0Tw4JNBrs2zc&usqp=CAU'),
+        icon: 'assets/icons/categories/cardiology_icon.jpg'),
     Category(
-        name: 'Lung',
-        iconUrl: 'https://example.com/icons/pulmonology.png'),
+        name: 'Pulmonology',
+        icon: 'assets/icons/categories/pulmonology_icon.jpg'),
+    Category(name: 'General', icon: 'assets/icons/categories/general_icon.jpg'),
     Category(
-        name: 'General',
-        iconUrl:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLKM1BpG07uEmR0mBszQbFIAOPS2uuP5QqNCzduXaH12eQegIhIUIZ-0t0Tw4JNBrs2zc&usqp=CAU'),
+        name: 'Neurology', icon: 'assets/icons/categories/neurology_icon.jpg'),
     Category(
-        name: 'Neurology',
-        iconUrl:
-            'hhttps://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLKM1BpG07uEmR0mBszQbFIAOPS2uuP5QqNCzduXaH12eQegIhIUIZ-0t0Tw4JNBrs2zc&usqp=CAU'),
-    Category(
-        name: 'Stomuch',
-        iconUrl:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLKM1BpG07uEmR0mBszQbFIAOPS2uuP5QqNCzduXaH12eQegIhIUIZ-0t0Tw4JNBrs2zc&usqp=CAU'),
+        name: 'Gastroenteritis',
+        icon: 'assets/icons/categories/gastroenteritis_icon.jpg'),
     Category(
         name: 'Laboratory',
-        iconUrl:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLKM1BpG07uEmR0mBszQbFIAOPS2uuP5QqNCzduXaH12eQegIhIUIZ-0t0Tw4JNBrs2zc&usqp=CAU'),
+        icon: 'assets/icons/categories/laboratory_icon.jpg'),
     Category(
         name: 'Vaccination',
-        iconUrl:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLKM1BpG07uEmR0mBszQbFIAOPS2uuP5QqNCzduXaH12eQegIhIUIZ-0t0Tw4JNBrs2zc&usqp=CAU'),
+        icon: 'assets/icons/categories/vaccination_icon.jpg'),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Categories',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              // Implement "See All" functionality
-            },
-            child: Text('See All', style: TextStyle(color: Colors.white)),
-          ),
-        ],
-      ),
       body: Container(
         child: Padding(
           padding: const EdgeInsets.only(
               top: 8.0, bottom: 8.0, left: 4.0, right: 4.0),
-          child: GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 4,
-              crossAxisSpacing: 4.0,
-              mainAxisSpacing: 12.0,
-            ),
-            itemCount: categories.length,
-            itemBuilder: (context, index) {
-              final category = categories[index];
-              return CategoryTile(category: category);
-            },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                Text(
+                  'Categories',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                TextButton(
+                  onPressed: () {
+                    // Implement "See All" functionality
+                  },
+                  child: Text('See All',
+                      style: TextStyle(color: Color(0xff6B7280))),
+                ),
+              ]),
+              Expanded(
+                child: GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4,
+                    crossAxisSpacing: 4.0,
+                    mainAxisSpacing: 12.0,
+                  ),
+                  itemCount: categories.length,
+                  itemBuilder: (context, index) {
+                    final category = categories[index];
+                    return CategoryTile(category: category);
+                  },
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -91,9 +71,9 @@ class CategoriesScreen extends StatelessWidget {
 
 class Category {
   final String name;
-  final String iconUrl;
+  final String icon;
 
-  Category({required this.name, required this.iconUrl});
+  Category({required this.name, required this.icon});
 }
 
 class CategoryTile extends StatelessWidget {
@@ -112,8 +92,8 @@ class CategoryTile extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(8.0),
-            child: Image.network(
-              category.iconUrl,
+            child: Image.asset(
+              category.icon,
               width: 60,
               height: 60,
               errorBuilder: (context, error, stackTrace) =>
