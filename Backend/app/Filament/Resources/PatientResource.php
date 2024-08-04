@@ -19,6 +19,8 @@ use App\Filament\Resources\PatientResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PatientResource\RelationManagers;
 use App\Models\MedicalHistory;
+use Filament\Forms\Components\Placeholder;
+use Illuminate\Support\Facades\Auth;
 
 class PatientResource extends Resource
 {
@@ -40,15 +42,37 @@ class PatientResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([]);
+            ->schema([
+                Placeholder::make('first_name')
+                    ->content(fn ($record): string => $record->first_name),
+                Placeholder::make('last_name')
+                    ->content(fn ($record): string => $record->last_name),
+                Placeholder::make('phone_number')->label('Phone Number')
+                    ->content(fn ($record): string => $record->phone_number),
+                Placeholder::make('age')
+                    ->content(fn ($record): string => $record->age),
+                Placeholder::make('gender')
+                    ->content(fn ($record): string => $record->gender),
+                Placeholder::make('address')
+                    ->content(fn ($record): string => $record->address),
+                Placeholder::make('emergency_contact')->label('Emergency Contact')
+                    ->content(fn ($record): string => $record->emergency_contact),
+                Placeholder::make('status')
+                    ->content(fn ($record): string => $record->status),
+            ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(fn (Builder $query) => $query->whereHas('access_patient_medical', function (Builder $query) {
-                $query->where('admin_id', auth()->user()->id);
-            }))
+            ->modifyQueryUsing(function (Builder $query) {
+                $user = Auth::user();
+                if (!$user->is_superadmin) {
+                    return $query->whereHas('access_patient_medical', function (Builder $query) {
+                        $query->where('admin_id', auth()->user()->id);
+                    });
+                }
+            })
             ->columns([
                 TextColumn::make('first_name')->searchable(),
                 TextColumn::make('last_name')->searchable(),
@@ -74,7 +98,6 @@ class PatientResource extends Resource
                     ]),
             ])
             ->actions([
-                // Tables\Actions\EditAction::make(),
                 Tables\Actions\Action::make('activate')
                     ->visible(fn ($record) => $record['status'] == "Inactive")
                     ->action(function ($record) {
@@ -92,6 +115,8 @@ class PatientResource extends Resource
                     ->button()
                     ->color('Pending'),
                 Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -103,7 +128,7 @@ class PatientResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\MedicalHistoriesRelationManager::class,
         ];
     }
 
@@ -112,7 +137,7 @@ class PatientResource extends Resource
         return [
             'index' => Pages\ListPatients::route('/'),
             // 'create' => Pages\CreatePatient::route('/create'),
-            // 'edit' => Pages\EditPatient::route('/{record}/edit'),
+            'edit' => Pages\EditPatient::route('/{record}/edit'),
             'view'  => Pages\ViewPatient::route('{record}/view'),
         ];
     }
@@ -130,10 +155,10 @@ class PatientResource extends Resource
                 TextEntry::make('address'),
                 TextEntry::make('emergency_contact')->label('Emergency Contact'),
                 TextEntry::make('status'),
-                View::make('infolists.components.medical-history')
-                    ->viewData([
-                        'medical_histories' => MedicalHistory::where('patient_id', $infolist->getRecord()->id)->get(),
-                    ])->columnSpan("full"),
+                // View::make('infolists.components.medical-history')
+                //     ->viewData([
+                //         'medical_histories' => MedicalHistory::where('patient_id', $infolist->getRecord()->id)->get(),
+                //     ])->columnSpan("full"),
             ]);
     }
 }

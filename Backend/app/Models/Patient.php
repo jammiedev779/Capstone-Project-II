@@ -41,4 +41,9 @@ class Patient extends Model
     {
         return $this->hasMany(AccessPatientMedical::class);
     }
+
+    public function medical_histories()
+    {
+        return $this->hasMany(MedicalHistory::class);
+    }
 }
