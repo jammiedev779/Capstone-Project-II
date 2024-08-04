@@ -3,8 +3,6 @@ import 'package:doc_care/services/hospital_api.dart';
 import 'package:flutter/material.dart';
 import 'package:doc_care/screens/hospital/hospital_detail.dart';
 
-
-
 class HospitalListScreen extends StatefulWidget {
   @override
   _HospitalListScreenState createState() => _HospitalListScreenState();
@@ -105,10 +103,37 @@ class HospitalCard extends StatelessWidget {
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 5),
-                  Text(hospital['location'] ?? 'Unknown Location'),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.location_on_outlined,
+                        size: 16,
+                      ),
+                      SizedBox(width: 5),
+                      Text(
+                        hospital['location'] ?? 'Unknown Location',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  ),
                   SizedBox(height: 5),
                   Text(hospital['description'] ?? 'No Description'),
+                  Row(
+                    children: [
+                      const Icon(Icons.star, size: 16, color: Colors.orange),
+                      const Icon(Icons.star, size: 16, color: Colors.orange),
+                      const Icon(Icons.star, size: 16, color: Colors.orange),
+                      const Icon(Icons.star, size: 16, color: Colors.orange),
+                      const Icon(Icons.star, size: 16, color: Colors.grey),
+                      const SizedBox(width: 4),
+                      Text('1031 Ratings'),
+                    ],
+                  ),
                   SizedBox(height: 5),
+                  Divider(
+                    thickness: 2,
+                    color: Color(0xffE5E7EB),
+                  ),
                   Row(
                     children: [
                       Icon(Icons.phone, size: 16),
@@ -129,4 +154,3 @@ class HospitalCard extends StatelessWidget {
     );
   }
 }
-
