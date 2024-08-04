@@ -100,6 +100,7 @@ class AppointmentController extends Controller
                 'status' => Response::HTTP_OK,
                 'appointments' => $appointmentData,
             ], Response::HTTP_OK);
+            
         } catch (\Exception $e) {
             Log::error('Failed to fetch appointments: ' . $e->getMessage());
     

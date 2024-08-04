@@ -1,15 +1,109 @@
+import 'dart:convert';
 import 'package:doc_care/screens/booking_page/booking_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
-class DoctorDetailScreen extends StatelessWidget {
+
+class DoctorDetailScreen extends StatefulWidget {
   final Map<String, dynamic> doctor;
-  final int patientId;
+  final int patientId;  
 
   const DoctorDetailScreen({required this.doctor, required this.patientId, Key? key}) : super(key: key);
 
   @override
+  _DoctorDetailScreenState createState() => _DoctorDetailScreenState();
+}
+
+class _DoctorDetailScreenState extends State<DoctorDetailScreen> {
+  bool _isFavorite = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkIfFavorite();
+  }
+
+  Future<void> _checkIfFavorite() async {
+    final String apiUrl = 'http://10.0.2.2:8002/api/favorites/check/${widget.patientId}';
+    
+    try {
+      final response = await http.get(Uri.parse(apiUrl));
+
+      if (response.statusCode == 200) {
+        final responseBody = jsonDecode(response.body);
+        setState(() {
+          _isFavorite = responseBody['is_favorite'] ?? false;
+        });
+      } else {
+        print('Failed to check favorite status: ${response.body}');
+      }
+    } catch (e) {
+      print('An error occurred while checking favorite status: $e');
+    }
+  }
+
+  Future<void> _toggleFavoriteStatus() async {
+    final String apiUrl = _isFavorite
+        ? 'http://10.0.2.2:8002/api/favorites/remove/${widget.patientId}'
+        : 'http://10.0.2.2:8002/api/favorites/add/${widget.patientId}';
+    
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({'doctor_id': widget.doctor['id']}),
+      );
+
+      if (response.statusCode == 200) {
+        final responseBody = jsonDecode(response.body);
+        setState(() {
+          _isFavorite = !_isFavorite;
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(
+            _isFavorite ? 'Doctor added to favorites!' : 'Doctor removed from favorites!',
+          )),
+        );
+
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Success'),
+              content: Text(_isFavorite
+                  ? 'Doctor has been added to your favorites.'
+                  : 'Doctor has been removed from your favorites.'),
+              actions: [
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        print('Failed to update favorite status: ${response.body}');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to update favorite status.')),
+        );
+      }
+    } catch (e) {
+      print('An error occurred: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('An error occurred: $e')),
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final Color appBarColor = Color(0xFF245252); 
+    final Color appBarColor = Color(0xFF245252);
 
     return Scaffold(
       appBar: PreferredSize(
@@ -52,9 +146,14 @@ class DoctorDetailScreen extends StatelessWidget {
               Center(
                 child: Padding(
                   padding: const EdgeInsets.only(right: 16.0),
-                  child: Icon(
-                    Icons.favorite,
-                    color: Colors.white,
+                  child: IconButton(
+                    icon: Icon(
+                      _isFavorite ? Icons.favorite : Icons.favorite_border,
+                      color: _isFavorite ? Colors.red : Colors.white,
+                    ),
+                    onPressed: () {
+                      _toggleFavoriteStatus();
+                    },
                   ),
                 ),
               ),
@@ -73,13 +172,13 @@ class DoctorDetailScreen extends StatelessWidget {
                   CircleAvatar(
                     radius: 50,
                     backgroundImage: NetworkImage(
-                      doctor['profile_picture_url'] ??
+                      widget.doctor['profile_picture_url'] ??
                           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiO1ABhTbJ30hyaTS5yGuX0cFk_PN51aKV9g&s',
                     ),
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    '${doctor['first_name']} ${doctor['last_name']}',
+                    '${widget.doctor['first_name']} ${widget.doctor['last_name']}',
                     style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -87,13 +186,13 @@ class DoctorDetailScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    doctor['specialist_title'] ?? 'Qualifications not available',
+                    widget.doctor['specialist_title'] ?? 'Qualifications not available',
                     style: const TextStyle(fontSize: 16),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    doctor['hospital_name'] ?? 'Hospital not available',
+                    widget.doctor['hospital_name'] ?? 'Hospital not available',
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -104,9 +203,9 @@ class DoctorDetailScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      _buildInfoCard('Patients', doctor['patients_count']?.toString() ?? '100', appBarColor),
-                      _buildInfoCard('Experiences', doctor['experience_years']?.toString() ?? '5 years', appBarColor),
-                      _buildInfoCard('Rating', doctor['rating']?.toString() ?? '4.2', appBarColor),
+                      _buildInfoCard('Patients', widget.doctor['patients_count']?.toString() ?? '100', appBarColor),
+                      _buildInfoCard('Experiences', widget.doctor['experience_years']?.toString() ?? '5 years', appBarColor),
+                      _buildInfoCard('Rating', widget.doctor['rating']?.toString() ?? '4.2', appBarColor),
                     ],
                   ),
                   const SizedBox(height: 16),
@@ -119,7 +218,7 @@ class DoctorDetailScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    doctor['about'] ?? '${doctor['first_name']} ${doctor['last_name']} is an experienced Specialist ${doctor['specialist_title']} at Cambodia, graduated since 2008, and completed his/her training at Sungai Buloh General Hospital',
+                    widget.doctor['about'] ?? '${widget.doctor['first_name']} ${widget.doctor['last_name']} is an experienced Specialist ${widget.doctor['specialist_title']} at Cambodia, graduated since 2008, and completed his/her training at Sungai Buloh General Hospital',
                     style: const TextStyle(fontSize: 16),
                     textAlign: TextAlign.left,
                   ),
@@ -133,7 +232,7 @@ class DoctorDetailScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    doctor['hospital_description'] ?? 'Hospital description not available',
+                    widget.doctor['hospital_description'] ?? 'Hospital description not available',
                     style: const TextStyle(fontSize: 16),
                     textAlign: TextAlign.left,
                   ),
@@ -150,8 +249,8 @@ class DoctorDetailScreen extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => BookingScreen(
-                      doctorId: doctor['id'],
-                      patientId: patientId,
+                      doctorId: widget.doctor['id'],
+                      patientId: widget.patientId,
                     ),
                   ),
                 );

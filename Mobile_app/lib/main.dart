@@ -22,9 +22,7 @@ class DocCare extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       // home: MainNavBar(),
-      // home:LoginPage(),
-      home: HomeScreen(),
-      // home: MedicalHistory(),
+      home:LoginPage(),
       theme: const AppTheme().themeData,
     );
   }
