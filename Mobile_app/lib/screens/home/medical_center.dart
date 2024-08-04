@@ -1,3 +1,4 @@
+import 'package:doc_care/screens/hospital/hospital_list.dart';
 import 'package:flutter/material.dart';
 
 class NearbyMedicalCentersScreen extends StatelessWidget {
@@ -29,19 +30,45 @@ class NearbyMedicalCentersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 500.0, // Set the height to fit your design
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: medicalCenters.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: MedicalCenterCard(
-              medicalCenter: medicalCenters[index],
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: <Widget>[
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Text(
+                'Nearby Medical Centers',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => HospitalListScreen(),
+                    ),
+                  );
+                },
+                child:
+                    Text('See All', style: TextStyle(color: Color(0xff6B7280))),
+              ),
+            ]),
+            Expanded(
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: medicalCenters.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: MedicalCenterCard(
+                      medicalCenter: medicalCenters[index],
+                    ),
+                  );
+                },
+              ),
             ),
-          );
-        },
+          ],
+        ),
       ),
     );
   }

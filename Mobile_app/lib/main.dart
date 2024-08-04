@@ -1,5 +1,4 @@
 import 'package:doc_care/screens/home/home_screen.dart';
-import 'package:doc_care/screens/home/medical_center.dart';
 import 'package:doc_care/screens/home/notification_page.dart';
 import 'package:doc_care/screens/appointment/appointment_screen.dart';
 import 'package:doc_care/screens/hospital/hospital_list.dart';
@@ -16,7 +15,7 @@ void main() {
 }
 
 class DocCare extends StatelessWidget {
-  const DocCare({super.key});
+  const DocCare({super.key}); 
 
   @override
   Widget build(BuildContext context) {
