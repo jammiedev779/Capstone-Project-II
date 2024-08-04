@@ -24,7 +24,5 @@ class HospitalDetail extends Model
     {
         return $this->belongsTo(Category::class);
     }
-
     
 }
-
