@@ -5,7 +5,8 @@ import 'package:doc_care/services/favorite_doctor_api.dart';
 class FavoriteDoctorsScreen extends StatefulWidget {
   final int patientId;
 
-  const FavoriteDoctorsScreen({required this.patientId, Key? key}) : super(key: key);
+  const FavoriteDoctorsScreen({required this.patientId, Key? key})
+      : super(key: key);
 
   @override
   _FavoriteDoctorsScreenState createState() => _FavoriteDoctorsScreenState();
@@ -23,7 +24,8 @@ class _FavoriteDoctorsScreenState extends State<FavoriteDoctorsScreen> {
 
   Future<void> _fetchFavoriteDoctors() async {
     try {
-      final favoriteDoctors = await FavoriteDoctorApi.getFavoriteDoctors(widget.patientId);
+      final favoriteDoctors =
+          await FavoriteDoctorApi.getFavoriteDoctors(widget.patientId);
       setState(() {
         _favoriteDoctors = favoriteDoctors;
         _isLoading = false;
@@ -58,11 +60,13 @@ class _FavoriteDoctorsScreenState extends State<FavoriteDoctorsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final Color appBarColor = Color(0xFF245252); 
+    final Color appBarColor = Color(0xFF245252);
 
     return Scaffold(
       appBar: AppBar(
+        foregroundColor: Colors.white,
         title: Text('Favorite Doctors'),
+        centerTitle: true,
         backgroundColor: appBarColor,
       ),
       body: _isLoading
@@ -71,26 +75,98 @@ class _FavoriteDoctorsScreenState extends State<FavoriteDoctorsScreen> {
               itemCount: _favoriteDoctors.length,
               itemBuilder: (context, index) {
                 final doctor = _favoriteDoctors[index];
-                return ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage: NetworkImage(
-                      doctor['profile_picture_url'] ??
-                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiO1ABhTbJ30hyaTS5yGuX0cFk_PN51aKV9g&s',
+                return Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12)),
+                  margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.network(
+                            doctor['profile_picture_url'] ??
+                                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiO1ABhTbJ30hyaTS5yGuX0cFk_PN51aKV9g&s',
+                            height: 110,
+                            width: 110,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${doctor['first_name']} ${doctor['last_name']}',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                doctor['specialist_title'] ??
+                                    'Specialist not available',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.grey[600],
+                                ),
+                              ),
+                              SizedBox(height: 4),
+                              Row(
+                                children: [
+                                  Icon(Icons.location_on,
+                                      size: 16, color: Colors.grey),
+                                  SizedBox(width: 4),
+                                  Text(
+                                    '${doctor['hospital_name']}',
+                                    style: TextStyle(color: Colors.grey[600]),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 4),
+                              Row(
+                                children: [
+                                  const Icon(Icons.star,
+                                      size: 16, color: Colors.orange),
+                                  const Icon(Icons.star,
+                                      size: 16, color: Colors.orange),
+                                  const Icon(Icons.star,
+                                      size: 16, color: Colors.orange),
+                                  const Icon(Icons.star,
+                                      size: 16, color: Colors.orange),
+                                  const Icon(Icons.star,
+                                      size: 16, color: Colors.grey),
+                                  const SizedBox(width: 4),
+                                  Text('1031 Ratings'),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            Icons.favorite,
+                            color: Colors.red,
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DoctorDetailScreen(
+                                  doctor: doctor,
+                                  patientId: widget.patientId,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
                     ),
                   ),
-                  title: Text('${doctor['first_name']} ${doctor['last_name']}'),
-                  subtitle: Text(doctor['specialist_title'] ?? 'Specialist not available'),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DoctorDetailScreen(
-                          doctor: doctor,
-                          patientId: widget.patientId,
-                        ),
-                      ),
-                    );
-                  },
                 );
               },
             ),
