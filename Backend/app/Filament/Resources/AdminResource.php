@@ -24,7 +24,7 @@ class AdminResource extends Resource
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
-    
+
     protected static ?string $navigationLabel = 'Hospital Provider';
 
     public static function getNavigationGroup(): ?string
@@ -68,6 +68,16 @@ class AdminResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('No.')->state(
+                    static function (Tables\Contracts\HasTable $livewire, \stdClass $rowLoop): string {
+                        return (string) (
+                            $rowLoop->iteration +
+                            ($livewire->getTableRecordsPerPage() * (
+                                $livewire->getTablePage() - 1
+                            ))
+                        );
+                    }
+                ),
                 Tables\Columns\TextColumn::make('name')
                     ->sortable()
                     ->searchable(),

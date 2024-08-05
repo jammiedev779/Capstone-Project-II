@@ -55,6 +55,16 @@ class AppointmentResource extends Resource
                 }
             })
             ->columns([
+                Tables\Columns\TextColumn::make('No.')->state(
+                    static function (Tables\Contracts\HasTable $livewire, \stdClass $rowLoop): string {
+                        return (string) (
+                            $rowLoop->iteration +
+                            ($livewire->getTableRecordsPerPage() * (
+                                $livewire->getTablePage() - 1
+                            ))
+                        );
+                    }
+                ),
                 TextColumn::make('patient_name')
                     ->label('Patient')
                     ->default(fn ($record) => ($record->patient->first_name ?? "") . ' ' . ($record->patient->last_name ?? ""))
@@ -100,6 +110,8 @@ class AppointmentResource extends Resource
                                 return "Ongoing";
                             case "Completed":
                                 return "success";
+                            case "Canceled":
+                                return "gray";
                         }
                     }),
 
@@ -135,6 +147,7 @@ class AppointmentResource extends Resource
                     })
                     ->action(function ($record) {
                         $record['doctor_status'] = 1;
+                        $record['user_status'] = 1;
                         $record['status'] = 1;
                         $record->save();
                     }),
@@ -146,6 +159,17 @@ class AppointmentResource extends Resource
                     })
                     ->action(function ($record) {
                         $record['doctor_status'] = 2;
+                        $record['status'] = 3;
+                        $record->save();
+                    }),
+                Tables\Actions\Action::make('Completed')
+                    ->color('primary')
+                    ->button()
+                    ->visible(function ($record, Tables\Contracts\HasTable $livewire) {
+                        return $livewire->activeTab == 'Ongoing';
+                    })
+                    ->action(function ($record) {
+                        $record['status'] = 2;
                         $record->save();
                     }),
                 Tables\Actions\ViewAction::make(),

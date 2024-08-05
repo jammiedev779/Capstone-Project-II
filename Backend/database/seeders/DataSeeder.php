@@ -39,6 +39,68 @@ class DataSeeder extends Seeder
             'Angkor Children\'s Hospital'
         ];
 
+        $hospital_names_kh = [
+            'មន្ទីរពេទ្យរាជធានីភ្នំពេញ',
+            'មន្ទីរពេទ្យអន្តរជាតិអង្គរ',
+            'មន្ទីរពេទ្យកាល់ម៉ែត',
+            'មន្ទីរពេទ្យមិត្តភាពខ្មែរសូវៀត',
+            'មន្ទីរពេទ្យសកលវិទ្យាល័យអន្តរជាតិសែនសុខ',
+            'មន្ទីរពេទ្យព្រះកុសមៈ',
+            'មណ្ឌលសុខាភិបាលសីហនុមន្ទីរពេទ្យ HOPE',
+            'មន្ទីរពេទ្យគ្លីនិកណាគា',
+            'មន្ទីរពេទ្យសាន់រ៉ាយស ជប៉ុន',
+            'មន្ទីរពេទ្យកុមារអង្គរ'
+        ];
+
+        $categories_list = [
+            'Emergency Medicine',
+            'Internal Medicine',
+            'Surgery',
+            'Pediatrics',
+            'Obstetrics and Gynecology',
+            'Cardiology',
+            'Neurology',
+            'Oncology',
+            'Radiology',
+            'Anesthesiology'
+        ];
+
+        $departments_list = [
+            'Emergency Room (ER)',
+            'Internal Medicine',
+            'Surgery',
+            'Pediatrics',
+            'Obstetrics and Gynecology',
+            'Cardiology',
+            'Neurology',
+            'Oncology',
+            'Radiology',
+            'Anesthesiology'
+        ];
+
+        $specialists_list = [
+            'Emergency Room Physician',
+            'Trauma Surgeon',
+            'General Internist',
+            'Endocrinologist',
+            'General Surgeon',
+            'Orthopedic Surgeon',
+            'Pediatrician',
+            'Pediatric Cardiologist',
+            'Obstetrician',
+            'Gynecologic Oncologist',
+            'Cardiologist',
+            'Interventional Cardiologist',
+            'Neurologist',
+            'Neurosurgeon',
+            'Medical Oncologist',
+            'Radiation Oncologist',
+            'Diagnostic Radiologist',
+            'Interventional Radiologist',
+            'Anesthesiologist',
+            'Pain Management Specialist'
+        ];
+
         for ($i = 0; $i < 11; $i++) {
             $patients[] = [
                 'first_name' => $faker->firstName,
@@ -80,33 +142,33 @@ class DataSeeder extends Seeder
             ];
         }
 
-        for ($i = 0; $i < 5; $i++) {
+        foreach ($categories_list as $title) {
             $categories[] = [
-                'name' => $faker->word,
+                'name' => $title,
                 'status' => 1,
             ];
         }
 
-        for ($i = 0; $i < 5; $i++) {
+        foreach ($specialists_list as $title) {
             $specialists[] = [
-                'title' => $faker->word,
+                'title' => $title,
                 'status' => 1,
             ];
         }
 
-        for ($i = 0; $i < 5; $i++) {
+        foreach ($departments_list as $title) {
             $departments[] = [
-                'title' => $faker->word,
+                'title' => $title,
                 'status' => 1,
             ];
         }
 
         for ($i = 0; $i < 10; $i++) {
             $hospitals[] = [
-                'admin_id' => $i+2,
-                'kh_name' => $faker->company,
+                'admin_id' => $i + 2,
+                'kh_name' => $hospital_names_kh[$i],
                 'category_id' => $faker->numberBetween(1, 10),
-                'email' => $faker->unique()->safeEmail,
+                'email' => Str::slug($hospital_names[$i], '.') . '@gamil.com',
                 'phone_number' => $faker->phoneNumber,
                 'location' => $faker->address,
                 'url' => $faker->url,
@@ -136,20 +198,20 @@ class DataSeeder extends Seeder
         if (DB::table('appointments')->count() == 0) {
             DB::table('appointments')->insert($appointments);
         }
-            foreach ($hospital_names as $index => $user) {
-                User::updateOrCreate(
-                    [
-                        'email' => Str::slug($user, '.') . '@doccare.com',
-                    ],
-                    [
-                        'id'    => $index + 2,
-                        'name' => $user,
-                        'hospital_id' => $index + 1,
-                        'password' => Hash::make('12345678'),
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ]
-                );
-            }
+        foreach ($hospital_names as $index => $user) {
+            User::updateOrCreate(
+                [
+                    'email' => Str::slug($user, '.') . '@doccare.com',
+                ],
+                [
+                    'id'    => $index + 2,
+                    'name' => $user,
+                    'hospital_id' => $index + 1,
+                    'password' => Hash::make('12345678'),
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]
+            );
+        }
     }
 }

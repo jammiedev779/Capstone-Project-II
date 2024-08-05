@@ -46,15 +46,6 @@ class PatientResource extends Resource
     {
         return $form
             ->schema([
-                Group::make()
-                    ->schema([
-                        FileUpload::make('image')
-                            ->label('Profile Image')
-                            ->image()
-                            ->preserveFilenames()
-                            ->directory('patient_profiles')
-                            ->visibility('public'),
-                    ])->columnSpanFull()->columns(2),
                 Placeholder::make('first_name')
                     ->content(fn ($record): string => $record->first_name ?? ""),
                 Placeholder::make('last_name')
@@ -86,6 +77,16 @@ class PatientResource extends Resource
                 }
             })
             ->columns([
+                Tables\Columns\TextColumn::make('No.')->state(
+                    static function (Tables\Contracts\HasTable $livewire, \stdClass $rowLoop): string {
+                        return (string) (
+                            $rowLoop->iteration +
+                            ($livewire->getTableRecordsPerPage() * (
+                                $livewire->getTablePage() - 1
+                            ))
+                        );
+                    }
+                ),
                 ImageColumn::make('image')
                     ->label('Profile')
                     ->circular(),

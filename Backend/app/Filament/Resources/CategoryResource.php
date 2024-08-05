@@ -45,8 +45,6 @@ class CategoryResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('description')
-                    ->required(),
                 Forms\Components\Toggle::make('status')->label('Active')->default(1),
             ]);
     }
@@ -55,10 +53,18 @@ class CategoryResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')->sortable()->searchable()->alignment('center'),
-                Tables\Columns\TextColumn::make('name')->sortable()->searchable()->alignment('center'),
-                Tables\Columns\TextColumn::make('description')->sortable()->searchable()->alignment('center'),
-                Tables\Columns\BooleanColumn::make('status')->sortable()->searchable()->alignment('center'),
+                Tables\Columns\TextColumn::make('No.')->state(
+                    static function (Tables\Contracts\HasTable $livewire, \stdClass $rowLoop): string {
+                        return (string) (
+                            $rowLoop->iteration +
+                            ($livewire->getTableRecordsPerPage() * (
+                                $livewire->getTablePage() - 1
+                            ))
+                        );
+                    }
+                ),
+                Tables\Columns\TextColumn::make('name')->sortable()->searchable(),
+                Tables\Columns\BooleanColumn::make('status')->sortable()->searchable(),
             ])
             ->filters([
                 //

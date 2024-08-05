@@ -37,14 +37,14 @@ class SpecialistResource extends Resource
 
         return $get['sort'];
     }
-    
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('title')
-                ->required()
-                ->maxLength(255),
+                    ->required()
+                    ->maxLength(255),
                 Forms\Components\Toggle::make('status')->label('Active')->default(1),
             ]);
     }
@@ -53,7 +53,16 @@ class SpecialistResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('No.')->state(
+                    static function (Tables\Contracts\HasTable $livewire, \stdClass $rowLoop): string {
+                        return (string) (
+                            $rowLoop->iteration +
+                            ($livewire->getTableRecordsPerPage() * (
+                                $livewire->getTablePage() - 1
+                            ))
+                        );
+                    }
+                ),
                 Tables\Columns\TextColumn::make('title')->sortable()->searchable(),
                 Tables\Columns\BooleanColumn::make('status')->sortable()->searchable(),
             ])

@@ -59,6 +59,16 @@ class HospitalResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('No.')->state(
+                    static function (Tables\Contracts\HasTable $livewire, \stdClass $rowLoop): string {
+                        return (string) (
+                            $rowLoop->iteration +
+                            ($livewire->getTableRecordsPerPage() * (
+                                $livewire->getTablePage() - 1
+                            ))
+                        );
+                    }
+                ),
                 TextColumn::make('user.name')->label('Hospital Provider')->sortable()->searchable(),
                 TextColumn::make('kh_name')->sortable()->searchable(),
                 TextColumn::make('email')->searchable(),
