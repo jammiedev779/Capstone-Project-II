@@ -4,10 +4,10 @@
   class ApiService {
 
     // Endpoint API local For chrome developer
-    static const String _baseUrl = 'http://127.0.0.1:8002/api/patients'; 
+    // static const String _baseUrl = 'http://127.0.0.1:8002/api/patients'; 
 
     //Endpoint API local for emulator developer
-    // static const String _baseUrl = 'http://10.0.2.2:8002/api/patients'; 
+    static const String _baseUrl = 'http://10.0.2.2:8002/api/patients'; 
 
     //add enpoind api server here..
     // static const String _baseUrl = 'http://54.151.252.168/api/doctors';

@@ -172,7 +172,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               CircleAvatar(
                                 radius: 30,
                                 backgroundImage: NetworkImage(
-                                    'https://i.pinimg.com/736x/83/1f/01/831f015888b5a0cd588e89b865ed12d0.jpg'),
+                                    '${profile['image']}'),
                               ),
                               const SizedBox(width: 16),
                               Column(

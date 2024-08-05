@@ -120,14 +120,27 @@ class PatientController extends Controller
             'age' => 'nullable',
             'email' => 'nullable|email',
             'password' => 'nullable',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
+     
         if ($validatePatient->fails()) {
             return response()->json([
                 'status' => false,
-                'message' => 'validation error',
+                'message' => 'Validation error',
                 'errors' => $validatePatient->errors()
             ]);
+        }
+
+        if ($request->hasFile('image')) {
+        
+            if ($patient->image) {
+                Storage::delete($patient->image);
+            }
+
+            $imagePath = $request->file('image')->store('images');
+
+            $patient->image = $imagePath;
         }
 
         $patient->update([
