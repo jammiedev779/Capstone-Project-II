@@ -23,13 +23,13 @@ class ListAppointments extends ListRecords
         return [
             'All' => Tab::make(),
             'Pending' => Tab::make()->modifyQueryUsing(function ($query) {
-                $query->where('doctor_status', 0);
-            }),
-            'Accepted' => Tab::make()->modifyQueryUsing(function ($query) {
-                $query->where('doctor_status', 1);
+                $query->where('status', 0);
             }),
             'Ongoing' => Tab::make()->modifyQueryUsing(function ($query) {
                 $query->where('status', 1);
+            }),
+            'Completed' => Tab::make()->modifyQueryUsing(function ($query) {
+                $query->where('status', 2);
             }),
         ];
     }

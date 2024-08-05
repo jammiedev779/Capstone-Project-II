@@ -1,109 +1,48 @@
-import 'package:flutter/material.dart';
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-class MedicalHistory extends StatefulWidget {
-  MedicalHistory({super.key});
+import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+class MedicalHistoryScreen extends StatefulWidget {
+  final int patientId;
+
+  MedicalHistoryScreen({required this.patientId});
 
   @override
-  State<MedicalHistory> createState() => _MedicalHistoryState();
+  _MedicalHistoryScreenState createState() => _MedicalHistoryScreenState();
 }
 
-class _MedicalHistoryState extends State<MedicalHistory> {
-  final List<Record> records = [
-    buildCardMedicalHistory(
-      doctorType: 'Dentist',
-      date: 'January 4th, 2018',
-      time: '09:00am',
-      disease: 'Dental hygiene',
-      attendingDoctor: 'John Smith, MD',
-    ),
-    buildCardMedicalHistory(
-      doctorType: 'ENT doctor',
-      date: 'December 17th, 2017',
-      time: '10:30am',
-      disease: 'Sore throat',
-      attendingDoctor: 'Matt Ryerson, MD',
-    ),
-    buildCardMedicalHistory(
-      doctorType: 'Cardiologist',
-      date: 'August 25th, 2017',
-      time: '4:15pm',
-      disease: 'Circulatory problems',
-      attendingDoctor: 'Ronald Boyd, MD',
-    ),
-    buildCardMedicalHistory(
-      doctorType: 'Dentist',
-      date: 'January 4th, 2018',
-      time: '09:00am',
-      disease: 'Dental hygiene',
-      attendingDoctor: 'John Smith, MD',
-    ),
-    buildCardMedicalHistory(
-      doctorType: 'ENT doctor',
-      date: 'December 17th, 2024',
-      time: '10:30am',
-      disease: 'Sore throat',
-      attendingDoctor: 'Matt Ryerson, MD',
-    ),
-    buildCardMedicalHistory(
-      doctorType: 'Cardiologist',
-      date: 'August 25th, 2017',
-      time: '4:15pm',
-      disease: 'Circulatory problems',
-      attendingDoctor: 'Ronald Boyd, MD',
-    ),
-    buildCardMedicalHistory(
-      doctorType: 'Pediatrician',
-      date: 'March 10th, 2019',
-      time: '2:00pm',
-      disease: 'Routine check-up',
-      attendingDoctor: 'Sarah Johnson, MD',
-    ),
-    buildCardMedicalHistory(
-      doctorType: 'Orthopedist',
-      date: 'November 5th, 2020',
-      time: '11:15am',
-      disease: 'Knee pain',
-      attendingDoctor: 'Michael Adams, MD',
-    ),
-    buildCardMedicalHistory(
-      doctorType: 'Dermatologist',
-      date: 'July 21st, 2021',
-      time: '1:30pm',
-      disease: 'Skin rash',
-      attendingDoctor: 'Emily Davis, MD',
-    ),
-    buildCardMedicalHistory(
-      doctorType: 'Gynecologist',
-      date: 'February 14th, 2022',
-      time: '3:00pm',
-      disease: 'Routine check-up',
-      attendingDoctor: 'Jessica Wilson, MD',
-    ),
-    buildCardMedicalHistory(
-      doctorType: 'Neurologist',
-      date: 'September 30th, 2022',
-      time: '10:00am',
-      disease: 'Migraines',
-      attendingDoctor: 'Robert Brown, MD',
-    ),
-    buildCardMedicalHistory(
-      doctorType: 'Ophthalmologist',
-      date: 'December 1st, 2022',
-      time: '9:45am',
-      disease: 'Vision problems',
-      attendingDoctor: 'Linda Taylor, MD',
-    ),
-    buildCardMedicalHistory(
-      doctorType: 'Endocrinologist',
-      date: 'April 18th, 2023',
-      time: '1:00pm',
-      disease: 'Thyroid issues',
-      attendingDoctor: 'William Harris, MD',
-    ),
-  ];
-
+class _MedicalHistoryScreenState extends State<MedicalHistoryScreen> {
   String selectedTab = 'allRecordsTab';
+  late Future<List<Map<String, dynamic>>> _medicalHistoryFuture;
+
+  // Endpoint API local For chrome developer
+  static const String _baseUrl = 'http://127.0.0.1:8002/api/medical_history';
+
+  // Endpoint API local for emulator developer
+  // static const String _baseUrl = 'http://10.0.2.2:8002/api/patients';
+
+  // Add endpoint API server here..
+  // static const String _baseUrl = 'http://54.151.252.168/api/doctors';
+
+  @override
+  void initState() {
+    super.initState();
+    _medicalHistoryFuture = fetchMedicalHistory(widget.patientId);
+  }
+
+  Future<List<Map<String, dynamic>>> fetchMedicalHistory(int patientId) async {
+    final response = await http.get(Uri.parse('$_baseUrl/$patientId'));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonData = json.decode(response.body)['medical'];
+      print('API is on');
+      return jsonData.map((json) => json as Map<String, dynamic>).toList();
+    } else {
+      throw Exception('Failed to load medical history');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -115,14 +54,8 @@ class _MedicalHistoryState extends State<MedicalHistory> {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  // Color(0xFF245252),
-                  // Color(0xFF54968B),
-                  
                   Color(0xFF245252),
                   Color(0xFF67A59B),
-                  // Color(0xFF7734EB)!,
-                  // Color(0xFF4B95EA)!,
-                  // Color(0xFF84BCFD)!
                 ],
                 begin: Alignment.bottomLeft,
                 end: Alignment.topRight,
@@ -180,33 +113,28 @@ class _MedicalHistoryState extends State<MedicalHistory> {
           ),
         ),
       ),
-      body: buildBodyMedicalHistory(),
-    );
-  }
-
-  //widget that take the card to display as the ListView
-  Widget buildBodyMedicalHistory() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8.0),
-      child: ListView.builder(
-        itemCount: getFilteredRecords().length,
-        itemBuilder: (context, index) {
-          final record = getFilteredRecords()[index];
-          return RecordCard(record: record);
+      body: FutureBuilder<List<Map<String, dynamic>>>(
+        future: _medicalHistoryFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(child: Text('No medical history found.'));
+          } else {
+            final medicalHistory = getFilteredRecords(snapshot.data!);
+            return ListView.builder(
+              itemCount: medicalHistory.length,
+              itemBuilder: (context, index) {
+                final record = medicalHistory[index];
+                return MedicalHistoryCard(record: record);
+              },
+            );
+          }
         },
       ),
     );
-  }
-
-  //the list split to search for the year of the record
-  List<Record> getFilteredRecords() {
-    if (selectedTab == 'allRecordsTab') {
-      return records;
-    }
-    return records.where((record) {
-      final year = record.date.split(' ')[2];
-      return year == selectedTab.replaceAll('Tab', '');
-    }).toList();
   }
 
   //widget costumize the button
@@ -235,42 +163,28 @@ class _MedicalHistoryState extends State<MedicalHistory> {
       ),
     );
   }
+    //the list split to search for the year of the record
+  List<Map<String, dynamic>> getFilteredRecords(List<Map<String, dynamic>> records) {
+    if (selectedTab == 'allRecordsTab') {
+      return records;
+    }
+    return records.where((record) {
+      final year = (record['visit_date'] ?? '').split('-')[0];
+      return year == selectedTab.replaceAll('Tab', '');
+    }).toList();
+  }
 }
 
-//widget that take the data from the list to prepare as a card
-Record buildCardMedicalHistory({
-  required String doctorType,
-  required String disease,
-  required String date,
-  required String time,
-  required String attendingDoctor,
-}) {
-  return Record(doctorType, disease, date, time, attendingDoctor);
-}
+class MedicalHistoryCard extends StatelessWidget {
+  final Map<String, dynamic> record;
 
-class Record {
-  final String doctorType;
-  final String disease;
-  final String date;
-  final String time;
-  final String attendingDoctor;
-
-  Record(this.doctorType, this.disease, this.date, this.time,
-      this.attendingDoctor);
-}
-
-class RecordCard extends StatelessWidget {
-  final Record record;
-
-  RecordCard({required this.record});
+  const MedicalHistoryCard({required this.record});
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
+      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -284,22 +198,23 @@ class RecordCard extends StatelessWidget {
               ),
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  record.doctorType,
+                  '${record['diagnosis'] ?? 'No Diagnosis'}',
                   style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18.0,
-                  ),
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
                 ),
+                Spacer(),
+                Icon(Icons.more_time_outlined, size: 16, color: Colors.white, ),
+                SizedBox(width: 5),
                 Text(
-                  record.date,
+                  '${record['visit_date'] ?? 'No Date'}',
                   style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -324,45 +239,35 @@ class RecordCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text('Treatment: ${record['treatment'] ?? 'No Treatment'}',style: TextStyle(fontSize: 14,),),
+                SizedBox(height: 5),
                 Text(
-                  record.disease,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: 4.0),
+                    'Follow-Up Date: ${record['follow_up_date'] ?? 'No Date'}',style: TextStyle(fontSize: 14,)),
+                SizedBox(height: 5),
                 Text(
-                  'Scheduled at: ${record.time}',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 12,
-                  ),
-                ),
-                SizedBox(height: 4.0),
+                    'Doctor: ${record['doctor_firstName']} ${record['doctor_lastName']}',style: TextStyle(fontSize: 14,)),
+                SizedBox(height: 5),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'Attending doctor: ${record.attendingDoctor}',
-                      style: TextStyle(
-                        color: Colors.black,
+                    Icon(Icons.note_alt_outlined, size: 16),
+                    SizedBox(width: 5),
+                    Text('Note: ${record['note'] ?? 'No Note'}',style: TextStyle(fontSize: 14,)),
+                    Spacer(),
+                    Container(
+                      width: 20,
+                      height: 20,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Color(0xFF4F7E76),
                       ),
-                    ),
-                    CircleAvatar(
-                      radius: 10,
-                      backgroundColor: Color(0xFF4F7E76),
-                      child: Icon(
-                        Icons.check,
-                        color: Colors.white,
-                        size: 12,
-                      ),
+                      child: Icon(Icons.check, size: 12, color: Colors.white),
                     ),
                   ],
                 ),
               ],
             ),
           ),
+          SizedBox(height: 5),
         ],
       ),
     );

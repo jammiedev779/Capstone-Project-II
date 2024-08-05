@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use DB;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
@@ -10,6 +11,7 @@ use App\Models\Appointment;
 use App\Services\PanelService;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Auth;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
@@ -17,12 +19,11 @@ use Filament\Infolists\Components\TextEntry;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\AppointmentResource\Pages;
 use App\Filament\Resources\AppointmentResource\RelationManagers;
-use DB;
 
 class AppointmentResource extends Resource
 {
     protected static ?string $model = Appointment::class;
-    
+
     public static function getNavigationIcon(): ?string
     {
         $panel = explode('\\', self::$model);
@@ -47,7 +48,12 @@ class AppointmentResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(fn (Builder $query) => $query->where('hospital_id', DB::table('hospital_details')->where('admin_id', auth()->user()->id)->id ?? 0))
+            ->modifyQueryUsing(function (Builder $query) {
+                $user = Auth::user();
+                if (!$user->is_superadmin) {
+                    return $query->where('hospital_id', DB::table('hospital_details')->where('admin_id', auth()->user()->id)->first()->id ?? 0);
+                }
+            })
             ->columns([
                 TextColumn::make('patient_name')
                     ->label('Patient')

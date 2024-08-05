@@ -51,18 +51,12 @@ class AdminResource extends Resource
                     ->email()
                     ->required()
                     ->maxLength(255),
-                TextInput::make('location')
-                    ->required()
-                    ->maxLength(255),
-                TextInput::make('phone_number')
-                    ->required()
-                    ->maxLength(20),
                 TextInput::make('password')
                     ->password()
                     ->required(fn ($record) => $record === null) // Required only on create
                     ->maxLength(255)
                     ->dehydrateStateUsing(fn ($state) => bcrypt($state))
-                    ->hiddenOn('edit'),
+                    ->hiddenOn('view'),
                 Select::make('roles')
                     ->relationship('roles', 'name')
                     ->multiple()
@@ -80,16 +74,7 @@ class AdminResource extends Resource
                 Tables\Columns\TextColumn::make('email')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('location')
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('phone_number')
-                    ->sortable()
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable(),
             ])

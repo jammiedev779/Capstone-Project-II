@@ -36,7 +36,7 @@ class _DoctorDetailScreenState extends State<DoctorDetailScreen> {
       setState(() {
         _isLoading = false;
       });
-      _showErrorDialog('Failed to load favorite status.');
+      // _showErrorDialog('Failed to load favorite status.');
     }
   }
 
@@ -64,7 +64,7 @@ class _DoctorDetailScreenState extends State<DoctorDetailScreen> {
         // Revert the favorite status if the API call fails
         _isFavorite = !_isFavorite;
       });
-      _showErrorDialog('Failed to update favorite status.');
+      // _showErrorDialog('Failed to update favorite status.');
     }
   }
 

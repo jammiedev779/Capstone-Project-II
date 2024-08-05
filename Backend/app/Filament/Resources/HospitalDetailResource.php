@@ -4,15 +4,20 @@ namespace App\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
+use App\Models\Category;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\HospitalDetail;
 use App\Services\PanelService;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\HospitalDetailResource\Pages;
 use App\Filament\Resources\HospitalDetailResource\RelationManagers;
+use Filament\Forms\Components\Textarea;
 
 class HospitalDetailResource extends Resource
 {
@@ -35,11 +40,17 @@ class HospitalDetailResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('kh_name')->required(),
-                Forms\Components\TextInput::make('email')->email()->required(),
-                Forms\Components\TextInput::make('phone_number'),
-                Forms\Components\TextInput::make('description'),
-                Forms\Components\TextInput::make('location'),
+                FileUpload::make('image')->label('Hospital Image')->image()->required()->columnSpanFull(),
+                TextInput::make('kh_name')->label('Name KH')->required(),
+                Select::make('category_id')
+                    ->label('Category')
+                    ->options(Category::all()->pluck('name', 'id'))
+                    ->required(),
+                TextInput::make('email')->email()->required(),
+                TextInput::make('phone_number'),
+                TextInput::make('location'),
+                TextInput::make('url')->label('Link'),
+                Textarea::make('description')->columnSpanFull(),
             ]);
     }
 

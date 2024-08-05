@@ -1,10 +1,12 @@
+import 'package:doc_care/services/favorite_hospital_api.dart';
 import 'package:flutter/material.dart';
 import 'package:doc_care/services/hospital_api.dart';
 
 class HospitalDetailScreen extends StatefulWidget {
   final int hospitalId;
+  final int patientId;
 
-  HospitalDetailScreen({required this.hospitalId});
+  HospitalDetailScreen({required this.hospitalId, required this.patientId});
 
   @override
   _HospitalDetailScreenState createState() => _HospitalDetailScreenState();
@@ -12,76 +14,146 @@ class HospitalDetailScreen extends StatefulWidget {
 
 class _HospitalDetailScreenState extends State<HospitalDetailScreen> {
   late Future<Map<String, dynamic>> _hospitalFuture;
+  bool _isFavorite = false;
+  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    print('Fetching hospital details for ID: ${widget.hospitalId}');
     _hospitalFuture = HospitalApi.fetchHospitalDetails(widget.hospitalId);
+    _checkFavoriteStatus();
+  }
+
+  Future<void> _checkFavoriteStatus() async {
+    try {
+      final isFavorite = await FavoriteHospitalApi.isFavorite(
+          widget.patientId, widget.hospitalId);
+      setState(() {
+        _isFavorite = isFavorite;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+      // _showErrorDialog('Failed to load favorite status.');
+    }
+  }
+
+  Future<void> _toggleFavorite() async {
+    try {
+      setState(() {
+        _isFavorite = !_isFavorite;
+        _isLoading = true;
+      });
+
+      if (_isFavorite) {
+        await FavoriteHospitalApi.addFavorite(
+            widget.patientId, widget.hospitalId);
+      } else {
+        await FavoriteHospitalApi.removeFavorite(
+            widget.patientId, widget.hospitalId);
+      }
+
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+  
+        _isFavorite = !_isFavorite;
+      });
+      // _showErrorDialog('Failed to update favorite status.');
+    }
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Error'),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final Color appBarColor = Color(0xFF245252);
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
         child: Container(
           decoration: BoxDecoration(
-            border: Border(
-              bottom: BorderSide(color: Colors.grey, width: 0.25),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                offset: Offset(0, 4),
+                blurRadius: 6.0,
+                spreadRadius: 1.0,
+              ),
+            ],
+            gradient: LinearGradient(
+              colors: [appBarColor, Color(0xFF67A59B)],
+              begin: Alignment.bottomLeft,
+              end: Alignment.topRight,
             ),
           ),
-          child: Container(
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    offset: Offset(0, 4),
-                    blurRadius: 6.0,
-                    spreadRadius: 1.0),
-              ],
-              gradient: LinearGradient(
-                colors: [
-                  Color(0xFF245252),
-                  Color(0xFF67A59B),
-                ],
-                begin: Alignment.bottomLeft,
-                end: Alignment.topRight,
-              ),
+          child: AppBar(
+            backgroundColor: Colors.transparent,
+            foregroundColor: Colors.white,
+            elevation: 0,
+            centerTitle: true,
+            title: FutureBuilder<Map<String, dynamic>>(
+              future: _hospitalFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Text('Loading...', style: TextStyle(color: Colors.white));
+                } else if (snapshot.hasError) {
+                  return Text('Error', style: TextStyle(color: Colors.white));
+                } else if (!snapshot.hasData) {
+                  return Text('No Data', style: TextStyle(color: Colors.white));
+                } else {
+                  final hospital = snapshot.data!;
+                  return Text(
+                    hospital['kh_name'] ?? 'Unknown Name',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  );
+                }
+              },
             ),
-            child: AppBar(
-              backgroundColor: Colors.transparent,
-              foregroundColor: Colors.white,
-              elevation: 0,
-              centerTitle: true,
-              leading: IconButton(
-                icon: Icon(
-                  Icons.arrow_back_ios,
+            actions: [
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 16.0),
+                  child: IconButton(
+                    icon: _isLoading
+                        ? CircularProgressIndicator()
+                        : Icon(
+                            Icons.favorite,
+                            color: _isFavorite ? Colors.red : Colors.white,
+                          ),
+                    onPressed: _toggleFavorite,
+                  ),
                 ),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
               ),
-              title: FutureBuilder<Map<String, dynamic>>(
-                future: _hospitalFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Text('Loading...');
-                  } else if (snapshot.hasError) {
-                    return Text('Error');
-                  } else if (!snapshot.hasData) {
-                    return Text('No Data');
-                  } else {
-                    final hospital = snapshot.data!;
-                    return Text(
-                      hospital['kh_name'] ?? 'Unknown Name',
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                    );
-                  }
-                },
-              ),
-            ),
+            ],
           ),
         ),
       ),
@@ -96,7 +168,6 @@ class _HospitalDetailScreenState extends State<HospitalDetailScreen> {
             return Center(child: Text('No data found.'));
           } else {
             final hospital = snapshot.data!;
-            print('Hospital details fetched successfully: $hospital');
             return SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

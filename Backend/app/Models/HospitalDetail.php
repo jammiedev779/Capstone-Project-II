@@ -11,7 +11,7 @@ class HospitalDetail extends Model
     protected $table = "hospital_details";
     protected $fillable = [
         'admin_id', 'category_id', 'phone_number','kh_name', 'email',
-        'description', 'location', 'contact_person_phone', 'url', 'image'
+        'description', 'location', 'contact_person_phone', 'url', 'image', 'name'
     ];
 
 
