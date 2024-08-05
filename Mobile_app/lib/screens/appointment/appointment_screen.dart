@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 
 class AppointmentScreen extends StatefulWidget {
   final int patientId;
-
   const AppointmentScreen({super.key, required this.patientId});
 
   @override
@@ -40,7 +39,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   Future<void> cancelAppointment(int appointmentId) async {
     try {
       await AppointmentApi.cancelAppointment(appointmentId);
-      fetchAppointments(); // Refresh appointments after cancellation
+      fetchAppointments(); 
     } catch (e) {
       print('Error cancelling appointment: $e');
       ScaffoldMessenger.of(context).showSnackBar(

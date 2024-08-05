@@ -8,6 +8,7 @@ use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\MedicalHistoryController;
 use App\Http\Controllers\HospitalDetailController;
 use App\Http\Controllers\FavoriteDoctorController;
+use App\Http\Controllers\FavoriteHospitalController;
 
 
 
@@ -39,6 +40,7 @@ Route::get('doctors/search', [DoctorController::class, 'search']);
 
 Route::get('hospital_details/all', [HospitalDetailController::class, 'index']);
 Route::get('hospital_details/search', [HospitalDetailController::class, 'search']);
+Route::get('/hospital_details/{id}', [HospitalDetailController::class, 'show']);
 
 //Medical history
 Route::get('/medical_history/{patientId}', [MedicalHistoryController::class, 'getMedical']);
@@ -47,3 +49,8 @@ Route::post('/favorites/add/{patient_id}', [FavoriteDoctorController::class, 'ad
 Route::post('/favorites/remove/{patient_id}', [FavoriteDoctorController::class, 'removeFavorite']);
 Route::get('/favorites/show/{patient_id}/{doctor_id}', [FavoriteDoctorController::class, 'showFavorite']);
 Route::get('/favorites/{patientId}', [FavoriteDoctorController::class, 'getFavoriteDoctors']);
+
+Route::post('/favorites/add/{patient_id}', [FavoriteHospitalController::class, 'addFavorite']);
+Route::post('/favorites/remove/{patient_id}', [FavoriteHospitalController::class, 'removeFavorite']);
+Route::get('/favorites/show/{patient_id}/{hospital_id}', [FavoriteHospitalController::class, 'showFavorite']);
+Route::get('/favorites/{patientId}', [FavoriteHospitalController::class, 'getFavoriteHospitals']);

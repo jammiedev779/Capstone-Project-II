@@ -1,7 +1,6 @@
 import 'package:doc_care/screens/hospital/hospital_detail.dart';
 import 'package:doc_care/services/hospital_api.dart';
 import 'package:flutter/material.dart';
-import 'package:doc_care/screens/hospital/hospital_detail.dart';
 
 class HospitalListScreen extends StatefulWidget {
   @override
@@ -61,21 +60,23 @@ class HospitalCard extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: InkWell(
         onTap: () {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => HospitalDetailScreen(hospital: hospital),
-          //   ),
-          // );
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HospitalDetailScreen(
+                hospitalId: hospital['id'], // Pass the hospital ID
+              ),
+            ),
+          );
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
               borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-              child: hospital['url'] != null
+              child: hospital['image'] != null
                   ? Image.network(
-                      hospital['url'],
+                      hospital['image'],
                       height: 150,
                       width: double.infinity,
                       fit: BoxFit.cover,
