@@ -41,7 +41,12 @@ class HospitalResource extends Resource
     {
         return $form
             ->schema([
-                FileUpload::make('image')->label('Hospital Image')->required()->columnSpanFull(),
+                FileUpload::make('image')
+                    ->label('Hospital Image')
+                    ->image()
+                    ->preserveFilenames()
+                    ->directory('hospital_images/')
+                    ->columnSpanFull(),
                 TextInput::make('kh_name')->required(),
                 Select::make('category_id')
                     ->label('Category')

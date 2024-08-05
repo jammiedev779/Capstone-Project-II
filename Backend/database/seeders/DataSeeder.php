@@ -25,6 +25,7 @@ class DataSeeder extends Seeder
         $specialists  = [];
         $departments  = [];
         $hospitals  = [];
+        $access_patients  = [];
 
         $hospital_names = [
             'Royal Phnom Penh Hospital',
@@ -132,13 +133,21 @@ class DataSeeder extends Seeder
 
         for ($i = 0; $i < 11; $i++) {
             $appointments[] = [
-                'patient_id' => $faker->numberBetween(1, 10),
+                'patient_id' => $i + 1,
                 'doctor_id' => $faker->numberBetween(1, 10),
                 'location' => $faker->address,
                 'user_status' => 0,
                 'doctor_status' => 0,
                 'status' => 0,
                 'hospital_id'   => 1
+            ];
+        }
+
+        for ($i = 0; $i < 11; $i++) {
+            $access_patients[] = [
+                'patient_id' => $i + 1,
+                'admin_id'   => 2,
+                'status'     => 1
             ];
         }
 
@@ -197,6 +206,9 @@ class DataSeeder extends Seeder
         }
         if (DB::table('appointments')->count() == 0) {
             DB::table('appointments')->insert($appointments);
+        }
+        if (DB::table('access_patient_medicals')->count() == 0) {
+            DB::table('access_patient_medicals')->insert($access_patients);
         }
         foreach ($hospital_names as $index => $user) {
             User::updateOrCreate(

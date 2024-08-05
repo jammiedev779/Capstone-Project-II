@@ -115,7 +115,10 @@ class PatientResource extends Resource
             ])
             ->actions([
                 Tables\Actions\Action::make('activate')
-                    ->visible(fn ($record) => $record['status'] == "Inactive")
+                    ->visible(function ($record) {
+                        $user = Auth::user();
+                        return $record['status'] == "Inactive" && $user->is_superadmin;
+                    })
                     ->action(function ($record) {
                         $record['status'] = 1;
                         $record->save();
@@ -123,7 +126,10 @@ class PatientResource extends Resource
                     ->button()
                     ->color('success'),
                 Tables\Actions\Action::make('deactivate')
-                    ->visible(fn ($record) => $record['status'] == "Active")
+                    ->visible(function ($record) {
+                        $user = Auth::user();
+                        return $record['status'] == "Active" && $user->is_superadmin;
+                    })
                     ->action(function ($record) {
                         $record['status'] = 0;
                         $record->save();

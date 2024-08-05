@@ -12,6 +12,7 @@ use App\Models\Specialist;
 use Filament\Tables\Table;
 use App\Services\PanelService;
 use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -47,7 +48,13 @@ class DoctorResource extends Resource
     {
         return $form
             ->schema([
-                FileUpload::make('image')->label('Profile Image')->columnSpanFull(),
+                FileUpload::make('image')
+                    ->label('Profile Image')
+                    ->image()
+                    ->preserveFilenames()
+                    ->directory('doctor_images/')
+                    ->disk('public')
+                    ->columnSpanFull(),
                 TextInput::make('first_name'),
                 TextInput::make('last_name'),
                 Select::make('gender')
@@ -71,7 +78,12 @@ class DoctorResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            // ->modifyQueryUsing(fn (Builder $query) => $query->where('hospital_id', DB::table('hospital_details')->where('admin_id', auth()->user()->id)->first()->id ?? null))
+            ->modifyQueryUsing(function (Builder $query) {
+                $user = Auth::user();
+                if (!$user->is_superadmin) {
+                    return $query->where('hospital_id', DB::table('hospital_details')->where('admin_id', auth()->user()->id)->first()->id ?? null);
+                }
+            })
             ->columns([
                 Tables\Columns\TextColumn::make('No.')->state(
                     static function (Tables\Contracts\HasTable $livewire, \stdClass $rowLoop): string {

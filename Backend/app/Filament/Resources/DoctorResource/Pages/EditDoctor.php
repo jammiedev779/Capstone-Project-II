@@ -5,6 +5,7 @@ namespace App\Filament\Resources\DoctorResource\Pages;
 use App\Filament\Resources\DoctorResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Database\Eloquent\Model;
 
 class EditDoctor extends EditRecord
 {
