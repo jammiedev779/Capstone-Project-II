@@ -229,7 +229,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             children: [
                               WidgetStyle().buildCircleIcon(
                                   paddingValue: 8.0,
-                                  backgroundColor: Color(0xFF2d595a),
+                                  backgroundColor: Color(0xFF4F7E76),
                                   iconData: Icons.transgender_outlined,
                                   iconColor: Color.fromARGB(255, 255, 255, 255),
                                   iconSize: 16.0),
@@ -247,7 +247,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             children: [
                               WidgetStyle().buildCircleIcon(
                                   paddingValue: 8.0,
-                                  backgroundColor: Color(0xFF2d595a),
+                                  backgroundColor: Color(0xFF4F7E76),
                                   iconData: Icons.phone,
                                   iconColor: Colors.white,
                                   iconSize: 16.0),
@@ -265,7 +265,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             children: [
                               WidgetStyle().buildCircleIcon(
                                   paddingValue: 8.0,
-                                  backgroundColor: Color(0xFF2d595a),
+                                  backgroundColor: Color(0xFF4F7E76),
                                   iconData: Icons.email,
                                   iconColor: Colors.white,
                                   iconSize: 16.0),
@@ -283,7 +283,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             children: [
                               WidgetStyle().buildCircleIcon(
                                   paddingValue: 8.0,
-                                  backgroundColor: Color(0xFF2d595a),
+                                  backgroundColor: Color(0xFF4F7E76),
                                   iconData: Icons.location_on,
                                   iconColor: Colors.white,
                                   iconSize: 16.0),
@@ -323,13 +323,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             padding: const EdgeInsets.all(8.0),
                             child: ListTile(
                               leading:
-                                  const Icon(Icons.favorite, color: Colors.red),
+                                  const Icon(Icons.history, color: Color(0xFFFF6961)),
                               title: const Text('Medical History'),
                               onTap: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => MedicalHistory(),
+                                    builder: (context) => MedicalHistoryScreen(patientId: widget.patientId),
                                   ),
                                 );
                               },
@@ -343,7 +343,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             padding: const EdgeInsets.all(8.0),
                             child: ListTile(
                               leading: const Icon(Icons.bookmark_add,
-                                  color: Color(0xFF38AB3B)),
+                                  color: Color(0xFF6FC276)),
                               title: const Text('Appointment'),
                               onTap: () {
                                 Navigator.push(
@@ -366,7 +366,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             padding: const EdgeInsets.all(8.0),
                             child: ListTile(
                               leading: const Icon(Icons.person_4,
-                                  color: Color(0xFF5DC2F4)),
+                                  color: Color(0xFFFFA756)),
                               title: const Text('Favorite Doctor'),
                               onTap: () {
                                 Navigator.push(
@@ -386,8 +386,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: ListTile(
-                              leading: const Icon(Icons.home,
-                                  color: Color(0xFFA86D2A)),
+                              leading: const Icon(Icons.local_hospital,
+                                  color: Color(0xFF6488EA)),
                               title: const Text('Favorite Hospital'),
                               onTap: () {
                                 Navigator.push(
@@ -423,9 +423,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             padding: const EdgeInsets.all(8.0),
                             child: ListTile(
                               leading: const Icon(Icons.logout_outlined,
-                                  color: Color(0xFFB01313)),
+                                  color: Color(0xFFFF6961)),
                               title: const Text('Log out',
-                                  style: TextStyle(color: Color(0xFFB01313))),
+                                  style: TextStyle(color: Color(0xFFFF6961))),
                               onTap: _showLogoutConfirmationDialog,
                             ),
                           ),
