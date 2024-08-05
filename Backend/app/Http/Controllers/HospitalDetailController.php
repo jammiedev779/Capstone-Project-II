@@ -12,7 +12,7 @@ class HospitalDetailController extends Controller
     public function index()
     {
         $hospitalDetails = HospitalDetail::with(['category'])
-            ->get(['id','category_id', 'phone_number','kh_name', 'email','description', 'location', 'contact_person_phone', 'url',]);
+            ->get(['id','category_id', 'phone_number','kh_name', 'email','description', 'location', 'contact_person_phone', 'url','image']);
 
         $hospitalDetails = $hospitalDetails->map(function ($hospitalDetail) {
             return [
@@ -23,6 +23,7 @@ class HospitalDetailController extends Controller
                 'email' => $hospitalDetail->email,
                 'phone_number' => $hospitalDetail->phone_number,
                 'url' => $hospitalDetail->url,
+                'image' => $hospitalDetail->image,
             ];
         });
 
@@ -42,7 +43,7 @@ class HospitalDetailController extends Controller
                 $queryBuilder->where('kh_name', 'LIKE', "%{$query}%")
                              ->orWhere('address', 'LIKE', "%{$query}%");
             })
-            ->get(['id','category_id', 'phone_number','kh_name', 'email','description', 'location', 'contact_person_phone', 'url']);
+            ->get(['id','category_id', 'phone_number','kh_name', 'email','description', 'location', 'contact_person_phone', 'url','image']);
     
         $hospitalDetails = $hospitalDetails->map(function ($hospitalDetail) {
             return [
@@ -53,10 +54,29 @@ class HospitalDetailController extends Controller
                 'email' => $hospitalDetail->email,
                 'phone_number' => $hospitalDetail->phone_number,
                 'url' => $hospitalDetail->url,
+                'image' => $hospitalDetail->image,
             ];
         });
 
         return response()->json(['hospitalDetails' => $hospitalDetails], 200);
+    }
+
+    public function show($id)
+    {
+        try {
+            $hospitalDetail = HospitalDetail::with(['category'])
+                ->where('id', $id)
+                ->first(['id', 'category_id', 'phone_number', 'kh_name', 'email', 'description', 'location', 'contact_person_phone', 'url', 'image']);
+
+            if ($hospitalDetail) {
+                return response()->json($hospitalDetail, 200);
+            } else {
+                return response()->json(['error' => 'Hospital not found'], 404);
+            }
+        } catch (\Exception $e) {
+            error_log('Error fetching hospital detail: ' . $e->getMessage());
+            return response()->json(['error' => 'Failed to load hospital detail'], 500);
+        }
     }
 
      

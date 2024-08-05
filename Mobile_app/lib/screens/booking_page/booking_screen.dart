@@ -55,12 +55,13 @@ class _BookingScreenState extends State<BookingScreen> {
 
         setState(() {
           _selectedDate = combinedDateTime;
-          _dateController.text = DateFormat('yyyy-MM-dd HH:mm').format(combinedDateTime);
+          _dateController.text =
+              DateFormat('yyyy-MM-dd HH:mm').format(combinedDateTime);
         });
       }
     }
   }
-  
+
   Future<void> _submitForm() async {
     if (_formKey.currentState?.validate() ?? false) {
       final Map<String, dynamic> bookingData = {
@@ -86,9 +87,13 @@ class _BookingScreenState extends State<BookingScreen> {
             actions: [
               TextButton(
                 onPressed: () {
-                  Navigator.pushReplacement(
+                  Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => AppointmentScreen(patientId: widget.patientId)),
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          AppointmentScreen(patientId: widget.patientId),
+                      settings: const RouteSettings(arguments: true),
+                    ),
                   );
                 },
                 child: Text('OK'),
@@ -102,7 +107,8 @@ class _BookingScreenState extends State<BookingScreen> {
           context: context,
           builder: (context) => AlertDialog(
             title: Text('Error'),
-            content: Text(response['data']['message'] ?? 'Something went wrong'),
+            content:
+                Text(response['data']['message'] ?? 'Something went wrong'),
             actions: [
               TextButton(
                 onPressed: () {
@@ -146,36 +152,48 @@ class _BookingScreenState extends State<BookingScreen> {
         preferredSize: Size.fromHeight(kToolbarHeight),
         child: Container(
           decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.2),
-                offset: Offset(0, 4),
-                blurRadius: 6.0,
-                spreadRadius: 1.0,
-              ),
-            ],
-            gradient: LinearGradient(
-              colors: [Color(0xFF245252), Color(0xFF67A59B)],
-              begin: Alignment.bottomLeft,
-              end: Alignment.topRight,
+            border: Border(
+              bottom: BorderSide(color: Colors.grey, width: 0.25),
             ),
           ),
-          child: AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            centerTitle: true,
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-              onPressed: () {
-                Navigator.pop(context);
-              },
+          child: Container(
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    offset: Offset(0, 4),
+                    blurRadius: 6.0,
+                    spreadRadius: 1.0),
+              ],
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFF245252),
+                  Color(0xFF67A59B),
+                ],
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
+              ),
             ),
-            title: Text(
-              'Book Appointment',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 20.0,
+            child: AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              centerTitle: true,
+              leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+              title: Text(
+                'Booking Appointment',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.0,
+                ),
               ),
             ),
           ),
@@ -192,7 +210,8 @@ class _BookingScreenState extends State<BookingScreen> {
               const SizedBox(height: 8),
               TextFormField(
                 controller: _dateController,
-                decoration: _buildInputDecoration('Appointment Date', 'Select date and time'),
+                decoration: _buildInputDecoration(
+                    'Appointment Date', 'Select date and time'),
                 onTap: () async {
                   FocusScope.of(context).requestFocus(FocusNode());
                   await _selectDate(context);
@@ -205,12 +224,12 @@ class _BookingScreenState extends State<BookingScreen> {
                 },
               ),
               const SizedBox(height: 16),
-
               Text('Reason'),
               const SizedBox(height: 8),
               TextFormField(
                 controller: _reasonController,
-                decoration: _buildInputDecoration('Reason', 'Why do you need this appointment?'),
+                decoration: _buildInputDecoration(
+                    'Reason', 'Why do you need this appointment?'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please provide a reason';
@@ -219,12 +238,12 @@ class _BookingScreenState extends State<BookingScreen> {
                 },
               ),
               const SizedBox(height: 16),
-
               Text('Location'),
               const SizedBox(height: 8),
               TextFormField(
                 controller: _locationController,
-                decoration: _buildInputDecoration('Location', 'Enter the location'),
+                decoration:
+                    _buildInputDecoration('Location', 'Enter the location'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please provide a location';
@@ -233,12 +252,12 @@ class _BookingScreenState extends State<BookingScreen> {
                 },
               ),
               const SizedBox(height: 16),
-
               Text('Note'),
               const SizedBox(height: 8),
               TextFormField(
                 controller: _noteController,
-                decoration: _buildInputDecoration('Note', 'Additional notes (optional)'),
+                decoration: _buildInputDecoration(
+                    'Note', 'Additional notes (optional)'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please provide a note';
@@ -252,9 +271,11 @@ class _BookingScreenState extends State<BookingScreen> {
                   onPressed: _submitForm,
                   child: Text('Submit Booking'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF245252), // Match the AppBar gradient color
+                    backgroundColor:
+                        Color(0xFF245252), // Match the AppBar gradient color
                     foregroundColor: Colors.white,
-                    padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
+                    padding:
+                        EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),

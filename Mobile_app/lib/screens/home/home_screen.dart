@@ -36,7 +36,7 @@ class HomeView extends StatelessWidget {
                 ),
                 const SizedBox(width: 4.0),
                 Text(
-                  'Dubai, UAE',
+                  'Phnom Penh',
                   style: textTheme.bodySmall!.copyWith(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -111,6 +111,7 @@ class HomeView extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 8.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
                 width: double.infinity,
@@ -168,12 +169,13 @@ class HomeView extends StatelessWidget {
                 height: MediaQuery.of(context).size.height * 0.3,
                 child: CategoriesScreen(),
               ),
+              // SizedBox(height: 8.0),
               Container(
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * 0.4,
                 child: NearbyMedicalCentersScreen(),
               ),
-              SizedBox(height: 16.0),
+              SizedBox(height: 8.0),
             ],
           ),
         ),

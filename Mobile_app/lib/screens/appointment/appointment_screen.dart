@@ -1,15 +1,15 @@
 import 'package:doc_care/services/appointment_api.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class AppointmentScreen extends StatefulWidget {
   final int patientId;
-
   const AppointmentScreen({super.key, required this.patientId});
 
   @override
   _AppointmentScreenState createState() => _AppointmentScreenState();
 }
-  
+
 class _AppointmentScreenState extends State<AppointmentScreen> {
   String selectedTab = 'upcoming';
   List<Map<String, dynamic>> appointments = [];
@@ -39,7 +39,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   Future<void> cancelAppointment(int appointmentId) async {
     try {
       await AppointmentApi.cancelAppointment(appointmentId);
-      fetchAppointments(); // Refresh appointments after cancellation
+      fetchAppointments(); 
     } catch (e) {
       print('Error cancelling appointment: $e');
       ScaffoldMessenger.of(context).showSnackBar(
@@ -50,38 +50,60 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool showBackButton =
+        ModalRoute.of(context)?.settings.arguments as bool? ?? false;
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
         child: Container(
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Color(0xFF2d595a), Color(0xFF65a399)],
-              begin: Alignment.bottomLeft,
-              end: Alignment.topRight,
+            border: Border(
+              bottom: BorderSide(color: Colors.grey, width: 0.25),
             ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.2),
-                offset: Offset(0, 4),
-                blurRadius: 6.0,
-                spreadRadius: 1.0,
-              ),
-            ],
           ),
-          child: AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            automaticallyImplyLeading: false,
-            title: const Text(
-              'Appointment Schedule',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+          child: Container(
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    offset: Offset(0, 4),
+                    blurRadius: 6.0,
+                    spreadRadius: 1.0),
+              ],
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFF245252),
+                  Color(0xFF67A59B),
+                ],
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
               ),
             ),
-            centerTitle: true,
+            child: AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              centerTitle: true,
+              leading: showBackButton
+                  ? IconButton(
+                      icon: Icon(
+                        Icons.arrow_back_ios,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    )
+                  : null,
+              title: Text(
+                'Appointment Schedule',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.0,
+                ),
+              ),
+            ),
           ),
         ),
       ),
@@ -117,7 +139,8 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
         });
       },
       style: TextButton.styleFrom(
-        backgroundColor: selectedTab == tab ? Color(0xFF2d595a) : Colors.transparent,
+        backgroundColor:
+            selectedTab == tab ? Color(0xFF2d595a) : Colors.transparent,
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
@@ -134,9 +157,11 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   }
 
   Widget _buildAppointmentDetails() {
-    List<Map<String, dynamic>> filteredAppointments = appointments.where((appointment) {
+    List<Map<String, dynamic>> filteredAppointments =
+        appointments.where((appointment) {
       if (selectedTab == 'upcoming') {
-        return appointment['status'] == 'Pending' || appointment['status'] == 'Ongoing';
+        return appointment['status'] == 'Pending' ||
+            appointment['status'] == 'Ongoing';
       } else if (selectedTab == 'complete') {
         return appointment['status'] == 'Completed';
       } else if (selectedTab == 'cancel') {
@@ -187,7 +212,8 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                               ),
                             ),
                             Text(
-                              appointment['specialist_title'] ?? 'Unknown Specialty',
+                              appointment['specialist_title'] ??
+                                  'Unknown Specialty',
                               style: const TextStyle(
                                 color: Colors.grey,
                                 fontSize: 14.0,
@@ -202,11 +228,13 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                         right: 0,
                         top: 0,
                         child: TextButton(
-                          onPressed: () => _showCancelConfirmationDialog(appointment['id']),
+                          onPressed: () =>
+                              _showCancelConfirmationDialog(appointment['id']),
                           style: TextButton.styleFrom(
                             backgroundColor: Colors.red,
                           ),
-                          child: const Text('Cancel', style: TextStyle(color: Colors.white)),
+                          child: const Text('Cancel',
+                              style: TextStyle(color: Colors.white)),
                         ),
                       ),
                   ],
@@ -217,7 +245,8 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                   children: [
                     Row(
                       children: [
-                        Icon(Icons.calendar_today, color: Colors.grey[600], size: 20),
+                        Icon(Icons.calendar_today,
+                            color: Colors.grey[600], size: 20),
                         const SizedBox(width: 4.0),
                         Text(
                           appointment['appointment_date'] ?? 'Unknown Date',
@@ -274,7 +303,8 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Cancel Appointment'),
-          content: const Text('Are you sure you want to cancel this appointment?'),
+          content:
+              const Text('Are you sure you want to cancel this appointment?'),
           actions: <Widget>[
             TextButton(
               child: const Text('Cancel'),

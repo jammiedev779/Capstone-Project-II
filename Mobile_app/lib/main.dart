@@ -21,8 +21,8 @@ class DocCare extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      // home: MainNavBar(),
-      home:LoginPage(),
+      // home: MainNavBar(token: token, patientId: patientId),
+      home: LoginPage(),
       theme: const AppTheme().themeData,
     );
   }

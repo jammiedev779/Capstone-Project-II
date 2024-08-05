@@ -1,9 +1,6 @@
 import 'package:doc_care/screens/hospital/hospital_detail.dart';
 import 'package:doc_care/services/hospital_api.dart';
 import 'package:flutter/material.dart';
-import 'package:doc_care/screens/hospital/hospital_detail.dart';
-
-
 
 class HospitalListScreen extends StatefulWidget {
   @override
@@ -63,21 +60,23 @@ class HospitalCard extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: InkWell(
         onTap: () {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => HospitalDetailScreen(hospital: hospital),
-          //   ),
-          // );
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HospitalDetailScreen(
+                hospitalId: hospital['id'], // Pass the hospital ID
+              ),
+            ),
+          );
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
               borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-              child: hospital['url'] != null
+              child: hospital['image'] != null
                   ? Image.network(
-                      hospital['url'],
+                      hospital['image'],
                       height: 150,
                       width: double.infinity,
                       fit: BoxFit.cover,
@@ -105,10 +104,37 @@ class HospitalCard extends StatelessWidget {
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 5),
-                  Text(hospital['location'] ?? 'Unknown Location'),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.location_on_outlined,
+                        size: 16,
+                      ),
+                      SizedBox(width: 5),
+                      Text(
+                        hospital['location'] ?? 'Unknown Location',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  ),
                   SizedBox(height: 5),
                   Text(hospital['description'] ?? 'No Description'),
+                  Row(
+                    children: [
+                      const Icon(Icons.star, size: 16, color: Colors.orange),
+                      const Icon(Icons.star, size: 16, color: Colors.orange),
+                      const Icon(Icons.star, size: 16, color: Colors.orange),
+                      const Icon(Icons.star, size: 16, color: Colors.orange),
+                      const Icon(Icons.star, size: 16, color: Colors.grey),
+                      const SizedBox(width: 4),
+                      Text('1031 Ratings'),
+                    ],
+                  ),
                   SizedBox(height: 5),
+                  Divider(
+                    thickness: 2,
+                    color: Color(0xffE5E7EB),
+                  ),
                   Row(
                     children: [
                       Icon(Icons.phone, size: 16),
@@ -129,4 +155,3 @@ class HospitalCard extends StatelessWidget {
     );
   }
 }
-

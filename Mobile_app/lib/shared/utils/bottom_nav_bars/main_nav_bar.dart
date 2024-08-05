@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 class MainNavBar extends StatefulWidget {
   final String token;
-  final int patientId; 
+  final int patientId;
 
-  const MainNavBar({super.key, required this.token, required this.patientId}); 
+  const MainNavBar({super.key, required this.token, required this.patientId});
 
   @override
   _MainNavBarState createState() => _MainNavBarState();
@@ -20,9 +20,9 @@ class _MainNavBarState extends State<MainNavBar> {
     super.initState();
     _children = [
       const HomeScreen(),
-      SearchScreen(patientId: widget.patientId), 
+      SearchScreen(patientId: widget.patientId),
       AppointmentScreen(patientId: widget.patientId),
-      // const InboxScreen(), 
+      // const InboxScreen(),
       ProfileScreen(token: widget.token, patientId: widget.patientId),
     ];
   }
@@ -31,6 +31,10 @@ class _MainNavBarState extends State<MainNavBar> {
     setState(() {
       _currentIndex = index;
     });
+  }
+
+  void _navigateToAppointmentSchedule(BuildContext context) {
+    Navigator.of(context).pushNamed('/appointment', arguments: true);
   }
 
   @override
@@ -77,5 +81,3 @@ class _MainNavBarState extends State<MainNavBar> {
     );
   }
 }
-
-

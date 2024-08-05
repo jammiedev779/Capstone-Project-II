@@ -1,44 +1,37 @@
-import 'package:doc_care/screens/hospital/hospital_list.dart';
+import 'package:doc_care/screens/hospital/hospital_detail.dart';
 import 'package:flutter/material.dart';
+import 'package:doc_care/services/hospital_api.dart';
+import 'package:doc_care/screens/hospital/hospital_list.dart';
 
-class NearbyMedicalCentersScreen extends StatelessWidget {
-  final List<MedicalCenter> medicalCenters = [
-    MedicalCenter(
-      imageUrl:
-          'https://via.placeholder.com/150', // replace with actual image URL
-      name: 'Sunrise Health Clinic',
-      address: '123 Oak Street, CA 98765',
-      rating: 5.0,
-      reviewsCount: 58,
-      distance: 2.5,
-      time: 40,
-      type: 'Hospital',
-    ),
-    MedicalCenter(
-      imageUrl:
-          'https://via.placeholder.com/150', // replace with actual image URL
-      name: 'Golden Cardiology Center',
-      address: '555 Bridge Street, Golden City',
-      rating: 4.9,
-      reviewsCount: 108,
-      distance: 2.5,
-      time: 40,
-      type: 'Cardiology',
-    ),
-    // Add more MedicalCenter objects as needed
-  ];
+class NearbyMedicalCentersScreen extends StatefulWidget {
+  @override
+  _NearbyMedicalCentersScreenState createState() =>
+      _NearbyMedicalCentersScreenState();
+}
+
+class _NearbyMedicalCentersScreenState
+    extends State<NearbyMedicalCentersScreen> {
+  late Future<List<Map<String, dynamic>>> _hospitalFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _hospitalFuture = HospitalApi.fetchHospitals();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: <Widget>[
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
               Text(
                 'Nearby Medical Centers',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               TextButton(
                 onPressed: () {
@@ -49,126 +42,163 @@ class NearbyMedicalCentersScreen extends StatelessWidget {
                     ),
                   );
                 },
-                child:
-                    Text('See All', style: TextStyle(color: Color(0xff6B7280))),
+                child: Text('See All', style: TextStyle(color: Color(0xff6B7280))),
               ),
-            ]),
-            Expanded(
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: medicalCenters.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: MedicalCenterCard(
-                      medicalCenter: medicalCenters[index],
-                    ),
+            ],
+          ),
+          SizedBox(height: 10),
+          Expanded(
+            child: FutureBuilder<List<Map<String, dynamic>>>(
+              future: _hospitalFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return Center(child: Text('No nearby medical centers found.'));
+                } else {
+                  final hospitals = snapshot.data!;
+                  return ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: hospitals.length,
+                    itemBuilder: (context, index) {
+                      final hospital = hospitals[index];
+                      return Container(
+                        width: 300.0,
+                        margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: HospitalCard(
+                          hospital: hospital,
+                        ),
+                      );
+                    },
                   );
-                },
-              ),
+                }
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 }
+class HospitalCard extends StatelessWidget {
+  final Map<String, dynamic> hospital;
 
-class MedicalCenter {
-  final String imageUrl;
-  final String name;
-  final String address;
-  final double rating;
-  final int reviewsCount;
-  final double distance;
-  final int time;
-  final String type;
-
-  MedicalCenter({
-    required this.imageUrl,
-    required this.name,
-    required this.address,
-    required this.rating,
-    required this.reviewsCount,
-    required this.distance,
-    required this.time,
-    required this.type,
-  });
-}
-
-class MedicalCenterCard extends StatelessWidget {
-  final MedicalCenter medicalCenter;
-
-  const MedicalCenterCard({
-    required this.medicalCenter,
+  const HospitalCard({
+    required this.hospital,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 4.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
+    return Container(
+      constraints: BoxConstraints(
+        maxHeight: 800.0, 
       ),
-      child: InkWell(
-        onTap: () {
-          // Handle card tap
-        },
-        child: Container(
-          width: 250.0, // Set a fixed width for horizontal cards
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        elevation: 3,
+        child: InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HospitalDetailScreen(
+                  hospitalId: hospital['id'],
+                ),
+              ),
+            );
+          },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(10.0)),
-                child: Image.network(
-                  medicalCenter.imageUrl,
-                  height: 150.0,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+                child: hospital['image'] != null
+                    ? Image.network(
+                        hospital['image'],
+                        height: 140.0, 
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      )
+                    : Container(
+                        height: 140.0,
+                        width: double.infinity,
+                        color: Colors.grey[200],
+                        child: Center(
+                          child: Text(
+                            'No Image Available',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ),
+                      ),
               ),
               Padding(
-                padding: const EdgeInsets.all(12.0),
+                padding: const EdgeInsets.all(10.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      medicalCenter.name,
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      hospital['kh_name'] ?? 'Unknown Name',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 4.0),
-                    Text(
-                      medicalCenter.address,
-                      style: TextStyle(color: Colors.grey[600]),
-                    ),
-                    SizedBox(height: 8.0),
+                    SizedBox(height: 5),
                     Row(
                       children: [
-                        Icon(Icons.star, color: Colors.orange, size: 16.0),
-                        SizedBox(width: 4.0),
-                        Text(
-                          '${medicalCenter.rating}',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                        Icon(
+                          Icons.location_on_outlined,
+                          size: 16,
                         ),
-                        SizedBox(width: 4.0),
-                        Text('(${medicalCenter.reviewsCount} Reviews)'),
+                        SizedBox(width: 5),
+                        Expanded(
+                          child: Text(
+                            hospital['location'] ?? 'Unknown Location',
+                            style: TextStyle(fontSize: 16),
+                         
+                          ),
+                        ),
                       ],
                     ),
-                    SizedBox(height: 8.0),
+                    SizedBox(height: 5),
+                    Text(
+                      hospital['description'] ?? 'No Description',
+                      maxLines: 3, // Allowing more lines for the description
+                   
+                    ),
+                    SizedBox(height: 5),
                     Row(
                       children: [
-                        Icon(Icons.directions_walk, size: 16.0),
-                        SizedBox(width: 4.0),
+                        Icon(Icons.star, size: 16, color: Colors.orange),
+                        Icon(Icons.star, size: 16, color: Colors.orange),
+                        Icon(Icons.star, size: 16, color: Colors.orange),
+                        Icon(Icons.star, size: 16, color: Colors.orange),
+                        Icon(Icons.star, size: 16, color: Colors.grey),
+                        SizedBox(width: 4),
+                        Text('1031 Ratings'),
+                      ],
+                    ),
+                    Divider(
+                      thickness: 1,
+                      color: Color(0xffE5E7EB),
+                    ),
+                    Row(
+                      children: [
+                        Icon(Icons.phone, size: 16),
+                        SizedBox(width: 5),
                         Text(
-                            '${medicalCenter.distance} km/${medicalCenter.time} min'),
-                        SizedBox(width: 16.0),
-                        Icon(Icons.local_hospital, size: 16.0),
-                        SizedBox(width: 4.0),
-                        Text(medicalCenter.type),
+                          hospital['phone_number'] ?? 'No Phone Number',
+                       
+                        ),
+                        Spacer(),
+                        Icon(Icons.email, size: 16),
+                        SizedBox(width: 5),
+                        Expanded(
+                          child: Text(
+                            hospital['email'] ?? 'No Email',
+                         
+                          ),
+                        ),
                       ],
                     ),
                   ],

@@ -6,7 +6,9 @@ class DoctorDetailScreen extends StatefulWidget {
   final Map<String, dynamic> doctor;
   final int patientId;
 
-  const DoctorDetailScreen({required this.doctor, required this.patientId, Key? key}) : super(key: key);
+  const DoctorDetailScreen(
+      {required this.doctor, required this.patientId, Key? key})
+      : super(key: key);
 
   @override
   _DoctorDetailScreenState createState() => _DoctorDetailScreenState();
@@ -24,7 +26,8 @@ class _DoctorDetailScreenState extends State<DoctorDetailScreen> {
 
   Future<void> _checkFavoriteStatus() async {
     try {
-      final isFavorite = await FavoriteDoctorApi.isFavorite(widget.patientId, widget.doctor['id']);
+      final isFavorite = await FavoriteDoctorApi.isFavorite(
+          widget.patientId, widget.doctor['id']);
       setState(() {
         _isFavorite = isFavorite;
         _isLoading = false;
@@ -45,9 +48,11 @@ class _DoctorDetailScreenState extends State<DoctorDetailScreen> {
       });
 
       if (_isFavorite) {
-        await FavoriteDoctorApi.addFavorite(widget.patientId, widget.doctor['id']);
+        await FavoriteDoctorApi.addFavorite(
+            widget.patientId, widget.doctor['id']);
       } else {
-        await FavoriteDoctorApi.removeFavorite(widget.patientId, widget.doctor['id']);
+        await FavoriteDoctorApi.removeFavorite(
+            widget.patientId, widget.doctor['id']);
       }
 
       setState(() {
@@ -85,7 +90,7 @@ class _DoctorDetailScreenState extends State<DoctorDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final Color appBarColor = Color(0xFF245252); 
+    final Color appBarColor = Color(0xFF245252);
 
     return Scaffold(
       appBar: PreferredSize(
@@ -108,10 +113,14 @@ class _DoctorDetailScreenState extends State<DoctorDetailScreen> {
           ),
           child: AppBar(
             backgroundColor: Colors.transparent,
+            foregroundColor: Colors.white,
             elevation: 0,
             centerTitle: true,
             leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios, color: Colors.white),
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.white,
+              ),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -119,7 +128,6 @@ class _DoctorDetailScreenState extends State<DoctorDetailScreen> {
             title: Text(
               'Doctor Details',
               style: TextStyle(
-                color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 20.0,
               ),
@@ -170,13 +178,15 @@ class _DoctorDetailScreenState extends State<DoctorDetailScreen> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          widget.doctor['specialist_title'] ?? 'Qualifications not available',
+                          widget.doctor['specialist_title'] ??
+                              'Qualifications not available',
                           style: const TextStyle(fontSize: 16),
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          widget.doctor['hospital_name'] ?? 'Hospital not available',
+                          widget.doctor['hospital_name'] ??
+                              'Hospital not available',
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -187,9 +197,20 @@ class _DoctorDetailScreenState extends State<DoctorDetailScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            _buildInfoCard('Patients', widget.doctor['patients_count']?.toString() ?? '100', appBarColor),
-                            _buildInfoCard('Experiences', widget.doctor['experience_years']?.toString() ?? '5 years', appBarColor),
-                            _buildInfoCard('Rating', widget.doctor['rating']?.toString() ?? '4.2', appBarColor),
+                            _buildInfoCard(
+                                'Patients',
+                                widget.doctor['patients_count']?.toString() ??
+                                    '100',
+                                appBarColor),
+                            _buildInfoCard(
+                                'Experiences',
+                                widget.doctor['experience_years']?.toString() ??
+                                    '5 years',
+                                appBarColor),
+                            _buildInfoCard(
+                                'Rating',
+                                widget.doctor['rating']?.toString() ?? '4.2',
+                                appBarColor),
                           ],
                         ),
                         const SizedBox(height: 16),
@@ -197,12 +218,14 @@ class _DoctorDetailScreenState extends State<DoctorDetailScreen> {
                           alignment: Alignment.centerLeft,
                           child: Text(
                             'About Doctor',
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          widget.doctor['about'] ?? '${widget.doctor['first_name']} ${widget.doctor['last_name']} is an experienced Specialist ${widget.doctor['specialist_title']} at Cambodia, graduated since 2008, and completed his/her training at Sungai Buloh General Hospital',
+                          widget.doctor['about'] ??
+                              '${widget.doctor['first_name']} ${widget.doctor['last_name']} is an experienced Specialist ${widget.doctor['specialist_title']} at Cambodia, graduated since 2008, and completed his/her training at Sungai Buloh General Hospital',
                           style: const TextStyle(fontSize: 16),
                           textAlign: TextAlign.left,
                         ),
@@ -211,12 +234,14 @@ class _DoctorDetailScreenState extends State<DoctorDetailScreen> {
                           alignment: Alignment.centerLeft,
                           child: Text(
                             'About Hospital',
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          widget.doctor['hospital_description'] ?? 'Hospital description not available',
+                          widget.doctor['hospital_description'] ??
+                              'Hospital description not available',
                           style: const TextStyle(fontSize: 16),
                           textAlign: TextAlign.left,
                         ),
@@ -240,14 +265,18 @@ class _DoctorDetailScreenState extends State<DoctorDetailScreen> {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 15),
                       textStyle: const TextStyle(fontSize: 18),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                       backgroundColor: appBarColor, // Match the AppBar color
                     ),
-                    child: const Text('Book Appointment'),
+                    child: const Text(
+                      'Book Appointment',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ),
               ],
@@ -272,7 +301,10 @@ class _DoctorDetailScreenState extends State<DoctorDetailScreen> {
           children: [
             Text(
               value,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+              style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
             ),
             const SizedBox(height: 4),
             Text(

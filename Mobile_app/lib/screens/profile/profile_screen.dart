@@ -11,7 +11,8 @@ class ProfileScreen extends StatefulWidget {
   final String token;
   final int patientId;
 
-  const ProfileScreen({super.key, required this.token, required this.patientId});
+  const ProfileScreen(
+      {super.key, required this.token, required this.patientId});
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -203,7 +204,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           profileData: profile,
                                           onUpdate: (newProfileData) {
                                             setState(() {
-                                              futureProfile = Future.value(newProfileData);
+                                              futureProfile =
+                                                  Future.value(newProfileData);
                                             });
                                           },
                                         ),
@@ -346,7 +348,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => AppointmentScreen(patientId: widget.patientId),
+                                    builder: (context) => AppointmentScreen(
+                                        patientId: widget.patientId),
+                                    settings:
+                                        const RouteSettings(arguments: true),
                                   ),
                                 );
                               },
@@ -366,7 +371,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => FavoriteDoctorsScreen(patientId: widget.patientId),
+                                    builder: (context) => FavoriteDoctorsScreen(
+                                        patientId: widget.patientId),
                                   ),
                                 );
                               },
