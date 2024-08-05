@@ -30,11 +30,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: widget.profileData['name']);
-    _ageController = TextEditingController(text: widget.profileData['age'].toString());
-    _genderController = TextEditingController(text: widget.profileData['gender']);
-    _phoneController = TextEditingController(text: widget.profileData['phone_number']);
+    _ageController =
+        TextEditingController(text: widget.profileData['age'].toString());
+    _genderController =
+        TextEditingController(text: widget.profileData['gender']);
+    _phoneController =
+        TextEditingController(text: widget.profileData['phone_number']);
     _emailController = TextEditingController(text: widget.profileData['email']);
-    _addressController = TextEditingController(text: widget.profileData['address']);
+    _addressController =
+        TextEditingController(text: widget.profileData['address']);
   }
 
   @override
@@ -65,9 +69,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         builder: (context) => Center(child: CircularProgressIndicator()),
       );
 
-      final response = await ApiService.updateProfile(widget.token, updatedProfile);
+      final response =
+          await ApiService.updateProfile(widget.token, updatedProfile);
 
-      Navigator.pop(context); 
+      Navigator.pop(context);
 
       if (response['status'] == 200) {
         widget.onUpdate(updatedProfile);
@@ -118,6 +123,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
           ),
           child: AppBar(
+            foregroundColor: Colors.white,
             backgroundColor: Colors.transparent,
             elevation: 0,
             title: const Text(
@@ -238,12 +244,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     ),
                     child: Container(
                       alignment: Alignment.center,
-                      constraints:
-                          BoxConstraints(minHeight: 50, maxWidth: double.infinity),
+                      constraints: BoxConstraints(
+                          minHeight: 50, maxWidth: double.infinity),
                       child: const Text(
                         'Save Changes',
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
                       ),
                     ),
                   ),
