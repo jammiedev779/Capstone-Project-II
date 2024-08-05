@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use DB;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Doctor;
@@ -15,12 +16,13 @@ use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Columns\BooleanColumn;
 use App\Filament\Resources\DoctorResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\DoctorResource\RelationManagers;
-use DB;
 
 class DoctorResource extends Resource
 {
@@ -45,6 +47,7 @@ class DoctorResource extends Resource
     {
         return $form
             ->schema([
+                FileUpload::make('image')->label('Profile Image')->columnSpanFull(),
                 TextInput::make('first_name'),
                 TextInput::make('last_name'),
                 Select::make('gender')
@@ -52,9 +55,9 @@ class DoctorResource extends Resource
                         '0'  => 'Male',
                         '1' => 'Female'
                     ]),
-                TextInput::make('address'),
                 TextInput::make('phone_number')->tel()
                     ->telRegex('/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.\/0-9]*$/'),
+                TextInput::make('address')->columnSpanFull(),
                 Select::make('specialist_id')
                     ->label('Specialist')
                     ->options(fn () => Specialist::all()->pluck('title', 'id')),
@@ -68,8 +71,11 @@ class DoctorResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(fn (Builder $query) => $query->where('hospital_id', DB::table('hospital_details')->where('admin_id', auth()->user()->id)->first()->id ?? null))
+            // ->modifyQueryUsing(fn (Builder $query) => $query->where('hospital_id', DB::table('hospital_details')->where('admin_id', auth()->user()->id)->first()->id ?? null))
             ->columns([
+                ImageColumn::make('image')
+                    ->label('Profile')
+                    ->circular(),
                 TextColumn::make('first_name')->searchable(),
                 TextColumn::make('last_name')->searchable(),
                 TextColumn::make('gender')->searchable(),
@@ -78,7 +84,6 @@ class DoctorResource extends Resource
                 TextColumn::make('specialist.title')->searchable(),
                 TextColumn::make('department.title')->searchable(),
                 BooleanColumn::make('status')->sortable(),
-
 
             ])
             ->filters([

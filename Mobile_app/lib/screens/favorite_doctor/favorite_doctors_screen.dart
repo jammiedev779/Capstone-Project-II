@@ -63,11 +63,56 @@ class _FavoriteDoctorsScreenState extends State<FavoriteDoctorsScreen> {
     final Color appBarColor = Color(0xFF245252);
 
     return Scaffold(
-      appBar: AppBar(
-        foregroundColor: Colors.white,
-        title: Text('Favorite Doctors'),
-        centerTitle: true,
-        backgroundColor: appBarColor,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(color: Colors.grey, width: 0.25),
+            ),
+          ),
+          child: Container(
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    offset: Offset(0, 4),
+                    blurRadius: 6.0,
+                    spreadRadius: 1.0),
+              ],
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFF245252),
+                  Color(0xFF67A59B),
+                ],
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
+              ),
+            ),
+            child: AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              centerTitle: true,
+              leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+              title: Text(
+                'Favorite Doctors',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.0,
+                ),
+              ),
+            ),
+          ),
+        ),
       ),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())

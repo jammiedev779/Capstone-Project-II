@@ -90,8 +90,10 @@ class _BookingScreenState extends State<BookingScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            AppointmentScreen(patientId: widget.patientId)),
+                      builder: (context) =>
+                          AppointmentScreen(patientId: widget.patientId),
+                      settings: const RouteSettings(arguments: true),
+                    ),
                   );
                 },
                 child: Text('OK'),
@@ -146,28 +148,54 @@ class _BookingScreenState extends State<BookingScreen> {
     // final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar: AppBar(
-        foregroundColor: Colors.white,
-        title: const Text(
-          'Booking Appointment',
-          style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-        flexibleSpace: Container(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: Container(
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Color(0xFF2d595a), Color(0xFF65a399)],
-              begin: Alignment.bottomLeft,
-              end: Alignment.topRight,
+            border: Border(
+              bottom: BorderSide(color: Colors.grey, width: 0.25),
             ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.2),
-                offset: Offset(0, 4),
-                blurRadius: 6.0,
-                spreadRadius: 1.0,
+          ),
+          child: Container(
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    offset: Offset(0, 4),
+                    blurRadius: 6.0,
+                    spreadRadius: 1.0),
+              ],
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFF245252),
+                  Color(0xFF67A59B),
+                ],
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
               ),
-            ],
+            ),
+            child: AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              centerTitle: true,
+              leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+              title: Text(
+                'Booking Appointment',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.0,
+                ),
+              ),
+            ),
           ),
         ),
       ),

@@ -4,11 +4,17 @@ namespace App\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
+use App\Models\Category;
 use App\Models\Hospital;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Services\PanelService;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\HospitalResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -35,11 +41,17 @@ class HospitalResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('kh_name')->required(),
-                Forms\Components\TextInput::make('email')->email()->required(),
-                Forms\Components\TextInput::make('phone_number'),
-                Forms\Components\TextInput::make('description'),
-                Forms\Components\TextInput::make('location'),
+                FileUpload::make('image')->label('Hospital Image')->required()->columnSpanFull(),
+                TextInput::make('kh_name')->required(),
+                Select::make('category_id')
+                    ->label('Category')
+                    ->options(Category::all()->pluck('name', 'id'))
+                    ->required(),
+                TextInput::make('email')->email()->required(),
+                TextInput::make('phone_number'),
+                TextInput::make('location'),
+                TextInput::make('url')->label('Link'),
+                Textarea::make('description')->columnSpanFull(),
             ]);
     }
 
@@ -47,13 +59,11 @@ class HospitalResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user.name')->label('Hospital Provider')->sortable()->searchable()->alignment('center'),
-                Tables\Columns\TextColumn::make('kh_name')->sortable()->searchable()->alignment('center'),
-                Tables\Columns\TextColumn::make('email')->searchable()->alignment('center'),
-                Tables\Columns\TextColumn::make('phone_number')->searchable()->alignment('center'),
-                Tables\Columns\TextColumn::make('description')->searchable()->alignment('center'),
-                Tables\Columns\TextColumn::make('location')->searchable()->alignment('center'),
-                Tables\Columns\TextColumn::make('created_at')->sortable()->searchable()->alignment('center'),
+                TextColumn::make('user.name')->label('Hospital Provider')->sortable()->searchable(),
+                TextColumn::make('kh_name')->sortable()->searchable(),
+                TextColumn::make('email')->searchable(),
+                TextColumn::make('phone_number')->searchable(),
+                TextColumn::make('created_at')->sortable()->searchable(),
             ])
             ->filters([
                 //

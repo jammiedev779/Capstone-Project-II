@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 class MainNavBar extends StatefulWidget {
   final String token;
-  final int patientId; 
+  final int patientId;
 
-  const MainNavBar({super.key, required this.token, required this.patientId}); 
+  const MainNavBar({super.key, required this.token, required this.patientId});
 
   @override
   _MainNavBarState createState() => _MainNavBarState();
@@ -30,6 +30,10 @@ class _MainNavBarState extends State<MainNavBar> {
     setState(() {
       _currentIndex = index;
     });
+  }
+
+  void _navigateToAppointmentSchedule(BuildContext context) {
+    Navigator.of(context).pushNamed('/appointment', arguments: true);
   }
 
   @override
@@ -76,5 +80,3 @@ class _MainNavBarState extends State<MainNavBar> {
     );
   }
 }
-
-

@@ -351,6 +351,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   MaterialPageRoute(
                                     builder: (context) => AppointmentScreen(
                                         patientId: widget.patientId),
+                                    settings:
+                                        const RouteSettings(arguments: true),
                                   ),
                                 );
                               },
