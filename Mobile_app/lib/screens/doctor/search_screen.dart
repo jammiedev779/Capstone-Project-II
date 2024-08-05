@@ -173,7 +173,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 );
               },
               child: Card(
-                elevation: 5,
+                elevation: 2,
                 margin:
                     const EdgeInsets.symmetric(vertical: 6.0, horizontal: 0),
                 shape: RoundedRectangleBorder(
@@ -206,12 +206,16 @@ class _SearchScreenState extends State<SearchScreen> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            SizedBox(height: 8),
+                            Divider(
+                              height: 10,
+                              color: Colors.grey[300],
+                            ),
                             Text(
                               doctor['specialist_title'] ??
                                   'Specialist not available',
                               style: TextStyle(
                                 fontSize: 16,
+                                fontWeight: FontWeight.bold,
                                 color: Colors.grey[600],
                               ),
                             ),
@@ -246,22 +250,6 @@ class _SearchScreenState extends State<SearchScreen> {
                             ),
                           ],
                         ),
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.favorite_border,
-                        ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DoctorDetailScreen(
-                                doctor: doctor,
-                                patientId: widget.patientId,
-                              ),
-                            ),
-                          );
-                        },
                       ),
                     ],
                   ),

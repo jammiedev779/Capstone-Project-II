@@ -42,7 +42,8 @@ class _NearbyMedicalCentersScreenState
                     ),
                   );
                 },
-                child: Text('See All', style: TextStyle(color: Color(0xff6B7280))),
+                child:
+                    Text('See All', style: TextStyle(color: Color(0xff6B7280))),
               ),
             ],
           ),
@@ -56,16 +57,17 @@ class _NearbyMedicalCentersScreenState
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return Center(child: Text('No nearby medical centers found.'));
+                  return Center(
+                      child: Text('No nearby medical centers found.'));
                 } else {
                   final hospitals = snapshot.data!;
-                  return ListView.builder(
-                    scrollDirection: Axis.horizontal,
+                  return PageView.builder(
+                    controller: PageController(viewportFraction: 1),
                     itemCount: hospitals.length,
                     itemBuilder: (context, index) {
                       final hospital = hospitals[index];
                       return Container(
-                        width: 300.0,
+                        width: 350.0,
                         margin: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: HospitalCard(
                           hospital: hospital,
@@ -82,6 +84,7 @@ class _NearbyMedicalCentersScreenState
     );
   }
 }
+
 class HospitalCard extends StatelessWidget {
   final Map<String, dynamic> hospital;
 
@@ -92,9 +95,6 @@ class HospitalCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: BoxConstraints(
-        maxHeight: 800.0, 
-      ),
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         elevation: 3,
@@ -117,7 +117,7 @@ class HospitalCard extends StatelessWidget {
                 child: hospital['image'] != null
                     ? Image.network(
                         hospital['image'],
-                        height: 140.0, 
+                        height: 140.0,
                         width: double.infinity,
                         fit: BoxFit.cover,
                       )
@@ -141,7 +141,8 @@ class HospitalCard extends StatelessWidget {
                   children: [
                     Text(
                       hospital['kh_name'] ?? 'Unknown Name',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 5),
                     Row(
@@ -155,7 +156,6 @@ class HospitalCard extends StatelessWidget {
                           child: Text(
                             hospital['location'] ?? 'Unknown Location',
                             style: TextStyle(fontSize: 16),
-                         
                           ),
                         ),
                       ],
@@ -163,8 +163,8 @@ class HospitalCard extends StatelessWidget {
                     SizedBox(height: 5),
                     Text(
                       hospital['description'] ?? 'No Description',
-                      maxLines: 3, // Allowing more lines for the description
-                   
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     SizedBox(height: 5),
                     Row(
@@ -179,26 +179,18 @@ class HospitalCard extends StatelessWidget {
                       ],
                     ),
                     Divider(
-                      thickness: 1,
+                      thickness: 2,
                       color: Color(0xffE5E7EB),
                     ),
                     Row(
                       children: [
                         Icon(Icons.phone, size: 16),
                         SizedBox(width: 5),
-                        Text(
-                          hospital['phone_number'] ?? 'No Phone Number',
-                       
-                        ),
+                        Text(hospital['phone_number'] ?? 'No Phone Number'),
                         Spacer(),
                         Icon(Icons.email, size: 16),
                         SizedBox(width: 5),
-                        Expanded(
-                          child: Text(
-                            hospital['email'] ?? 'No Email',
-                         
-                          ),
-                        ),
+                        Text(hospital['email'] ?? 'No Email'),
                       ],
                     ),
                   ],

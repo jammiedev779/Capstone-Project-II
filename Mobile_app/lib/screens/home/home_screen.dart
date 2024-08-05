@@ -172,7 +172,7 @@ class HomeView extends StatelessWidget {
               // SizedBox(height: 8.0),
               Container(
                 width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.4,
+                height: MediaQuery.of(context).size.height * 0.43,
                 child: NearbyMedicalCentersScreen(),
               ),
               SizedBox(height: 8.0),

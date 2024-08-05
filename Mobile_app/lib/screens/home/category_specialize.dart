@@ -10,19 +10,18 @@ class CategoriesScreen extends StatelessWidget {
     Category(
         name: 'Pulmonology',
         icon: 'assets/icons/categories/pulmonology_icon.jpg'),
-    Category(name: 'General', 
-    icon: 'assets/icons/categories/general_icon.jpg'),
-    // Category(
-    //     name: 'Neurology', icon: 'assets/icons/categories/neurology_icon.jpg'),
-    // Category(
-    //     name: 'Gastroenteritis',
-    //     icon: 'assets/icons/categories/gastroenteritis_icon.jpg'),
-    // Category(
-    //     name: 'Laboratory',
-    //     icon: 'assets/icons/categories/laboratory_icon.jpg'),
-    // Category(
-    //     name: 'Vaccination',
-    //     icon: 'assets/icons/categories/vaccination_icon.jpg'),
+    Category(name: 'General', icon: 'assets/icons/categories/general_icon.jpg'),
+    Category(
+        name: 'Neurology', icon: 'assets/icons/categories/neurology_icon.jpg'),
+    Category(
+        name: 'Gastroenteritis',
+        icon: 'assets/icons/categories/gastroenteritis_icon.jpg'),
+    Category(
+        name: 'Laboratory',
+        icon: 'assets/icons/categories/laboratory_icon.jpg'),
+    Category(
+        name: 'Vaccination',
+        icon: 'assets/icons/categories/vaccination_icon.jpg'),
   ];
 
   @override

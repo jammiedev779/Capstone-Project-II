@@ -23,26 +23,67 @@ class _HospitalDetailScreenState extends State<HospitalDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: FutureBuilder<Map<String, dynamic>>(
-          future: _hospitalFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Text('Loading...');
-            } else if (snapshot.hasError) {
-              return Text('Error');
-            } else if (!snapshot.hasData) {
-              return Text('No Data');
-            } else {
-              final hospital = snapshot.data!;
-              return Text(
-                hospital['kh_name'] ?? 'Unknown Name',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              );
-            }
-          },
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(color: Colors.grey, width: 0.25),
+            ),
+          ),
+          child: Container(
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    offset: Offset(0, 4),
+                    blurRadius: 6.0,
+                    spreadRadius: 1.0),
+              ],
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFF245252),
+                  Color(0xFF67A59B),
+                ],
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
+              ),
+            ),
+            child: AppBar(
+              backgroundColor: Colors.transparent,
+              foregroundColor: Colors.white,
+              elevation: 0,
+              centerTitle: true,
+              leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+              title: FutureBuilder<Map<String, dynamic>>(
+                future: _hospitalFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Text('Loading...');
+                  } else if (snapshot.hasError) {
+                    return Text('Error');
+                  } else if (!snapshot.hasData) {
+                    return Text('No Data');
+                  } else {
+                    final hospital = snapshot.data!;
+                    return Text(
+                      hospital['kh_name'] ?? 'Unknown Name',
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    );
+                  }
+                },
+              ),
+            ),
+          ),
         ),
-        centerTitle: true,
       ),
       body: FutureBuilder<Map<String, dynamic>>(
         future: _hospitalFuture,
@@ -81,14 +122,6 @@ class _HospitalDetailScreenState extends State<HospitalDetailScreen> {
                                 ),
                               ),
                             ),
-                      Positioned(
-                        top: 40,
-                        left: 10,
-                        child: IconButton(
-                          icon: Icon(Icons.arrow_back, color: Colors.white),
-                          onPressed: () => Navigator.of(context).pop(),
-                        ),
-                      ),
                     ],
                   ),
                   Padding(
@@ -118,7 +151,8 @@ class _HospitalDetailScreenState extends State<HospitalDetailScreen> {
                           children: [
                             Icon(Icons.phone, color: Colors.grey),
                             SizedBox(width: 5),
-                            Text("Phone: ${hospital['phone_number'] ?? 'No Phone Number'}"),
+                            Text(
+                                "Phone: ${hospital['phone_number'] ?? 'No Phone Number'}"),
                           ],
                         ),
                         SizedBox(height: 10),
@@ -158,7 +192,8 @@ class _HospitalDetailScreenState extends State<HospitalDetailScreen> {
                         ),
                         SizedBox(height: 10),
                         Text(
-                          hospital['visiting_hours'] ?? 'No Visiting Hours Provided',
+                          hospital['visiting_hours'] ??
+                              'No Visiting Hours Provided',
                           style: TextStyle(fontSize: 16),
                         ),
                         SizedBox(height: 30),
