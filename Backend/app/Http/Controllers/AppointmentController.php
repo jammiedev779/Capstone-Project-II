@@ -33,17 +33,26 @@ class AppointmentController extends Controller
         }
 
         try {
+            $doctor = DB::table('doctors')->select('hospital_id')->whereId($request->doctor_id)->first();
             $appointment = new Appointment([
-                'doctor_id' => $request->doctor_id,
-                'patient_id' => $request->patient_id,
-                'appointment_date' => Carbon::parse($request->appointment_date),
-                'location' => $request->location,
-                'status' => $request->status ?? 0,
-                'user_status' => $request->user_status ?? 0, 
-                'doctor_status' => $request->doctor_status ?? 0, 
-                'reason' => $request->reason,
-                'note' => $request->note,
+                'hospital_id'       => $doctor ? $doctor->hospital_id : null,
+                'doctor_id'         => $request->doctor_id,
+                'patient_id'        => $request->patient_id,
+                'appointment_date'  => Carbon::parse($request->appointment_date),
+                'location'          => $request->location,
+                'status'            => $request->status ?? 0,
+                'user_status'       => $request->user_status ?? 0, 
+                'doctor_status'     => $request->doctor_status ?? 0, 
+                'reason'            => $request->reason,
+                'note'              => $request->note,
             ]);
+
+            //Access patient medical
+            DB::table('access_patient_medicals')->insert([
+                'patient_id'        => $request->patient_id,
+                'doctor_id'         => $request->doctor_id,
+                'status'            => 1,
+            ]); 
 
             $appointment->save();
 
