@@ -1,4 +1,5 @@
 import 'package:doc_care/screens/appointment/appointment_screen.dart';
+import 'package:doc_care/screens/favorite_hospital/favorite_hospitals_screen.dart';
 import 'package:doc_care/screens/favorite_doctor/favorite_doctors_screen.dart';
 import 'package:doc_care/screens/login_&_register/login_screen.dart';
 import 'package:doc_care/screens/profile/edit_profile.dart';
@@ -86,7 +87,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             padding: const EdgeInsets.all(16.0),
             child: Row(
               mainAxisSize: MainAxisSize.min,
-              children: [
+              children: [ 
                 const CircularProgressIndicator(),
                 const SizedBox(width: 16),
                 const Text('Logging out...'),
@@ -387,7 +388,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   color: Color(0xFFA86D2A)),
                               title: const Text('Favorite Hospital'),
                               onTap: () {
-                                // Navigate to Favorite Hospital
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => FavoriteHospitalScreen(
+                                        patientId: widget.patientId),
+                                  ),
+                                );
                               },
                             ),
                           ),

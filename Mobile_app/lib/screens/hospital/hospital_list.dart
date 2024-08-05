@@ -3,6 +3,10 @@ import 'package:doc_care/services/hospital_api.dart';
 import 'package:flutter/material.dart';
 
 class HospitalListScreen extends StatefulWidget {
+  final int patientId;
+
+  const HospitalListScreen({super.key, required this.patientId});
+
   @override
   _HospitalListScreenState createState() => _HospitalListScreenState();
 }
@@ -38,7 +42,10 @@ class _HospitalListScreenState extends State<HospitalListScreen> {
               itemCount: hospitals.length,
               itemBuilder: (context, index) {
                 final hospital = hospitals[index];
-                return HospitalCard(hospital: hospital);
+                return HospitalCard(
+                  hospital: hospital,
+                  patientId: widget.patientId, 
+                );
               },
             );
           }
@@ -50,8 +57,9 @@ class _HospitalListScreenState extends State<HospitalListScreen> {
 
 class HospitalCard extends StatelessWidget {
   final Map<String, dynamic> hospital;
+  final int patientId; // Add patientId here
 
-  const HospitalCard({required this.hospital});
+  const HospitalCard({required this.hospital, required this.patientId});
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +72,8 @@ class HospitalCard extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => HospitalDetailScreen(
-                hospitalId: hospital['id'], // Pass the hospital ID
+                hospitalId: hospital['id'], // Ensure hospitalId is provided
+                patientId: patientId, // Pass patientId here
               ),
             ),
           );

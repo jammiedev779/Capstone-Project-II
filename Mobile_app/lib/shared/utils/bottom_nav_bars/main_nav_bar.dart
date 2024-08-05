@@ -19,10 +19,9 @@ class _MainNavBarState extends State<MainNavBar> {
   void initState() {
     super.initState();
     _children = [
-      const HomeScreen(),
+      HomeView(patientId: widget.patientId),
       SearchScreen(patientId: widget.patientId), 
       AppointmentScreen(patientId: widget.patientId),
-      // const InboxScreen(), 
       ProfileScreen(token: widget.token, patientId: widget.patientId),
     ];
   }
