@@ -7,20 +7,23 @@ use Filament\Tables;
 use App\Models\Patient;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\MedicalHistory;
 use App\Services\PanelService;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Group;
+use Illuminate\Support\Facades\Auth;
 use Filament\Infolists\Components\View;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Components\Placeholder;
 use Filament\Infolists\Components\TextEntry;
 use App\Filament\Resources\PatientResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PatientResource\RelationManagers;
-use App\Models\MedicalHistory;
-use Filament\Forms\Components\Placeholder;
-use Illuminate\Support\Facades\Auth;
 
 class PatientResource extends Resource
 {
@@ -43,22 +46,31 @@ class PatientResource extends Resource
     {
         return $form
             ->schema([
+                Group::make()
+                    ->schema([
+                        FileUpload::make('image')
+                            ->label('Profile Image')
+                            ->image()
+                            ->preserveFilenames()
+                            ->directory('patient_profiles')
+                            ->visibility('public'),
+                    ])->columnSpanFull()->columns(2),
                 Placeholder::make('first_name')
-                    ->content(fn ($record): string => $record->first_name),
+                    ->content(fn ($record): string => $record->first_name ?? ""),
                 Placeholder::make('last_name')
-                    ->content(fn ($record): string => $record->last_name),
+                    ->content(fn ($record): string => $record->last_name ?? ""),
                 Placeholder::make('phone_number')->label('Phone Number')
-                    ->content(fn ($record): string => $record->phone_number),
-                Placeholder::make('age')
-                    ->content(fn ($record): string => $record->age),
+                    ->content(fn ($record): string => $record->phone_number ?? ""),
+                Placeholder::make('dob')->label('Date Of Birth')
+                    ->content(fn ($record): string => $record->dob ?? ""),
                 Placeholder::make('gender')
-                    ->content(fn ($record): string => $record->gender),
+                    ->content(fn ($record): string => $record->gender ?? ""),
                 Placeholder::make('address')
-                    ->content(fn ($record): string => $record->address),
+                    ->content(fn ($record): string => $record->address ?? ""),
                 Placeholder::make('emergency_contact')->label('Emergency Contact')
-                    ->content(fn ($record): string => $record->emergency_contact),
+                    ->content(fn ($record): string => $record->emergency_contact ?? ""),
                 Placeholder::make('status')
-                    ->content(fn ($record): string => $record->status),
+                    ->content(fn ($record): string => $record->status ?? ""),
             ]);
     }
 
@@ -74,6 +86,9 @@ class PatientResource extends Resource
                 }
             })
             ->columns([
+                ImageColumn::make('image')
+                    ->label('Profile')
+                    ->circular(),
                 TextColumn::make('first_name')->searchable(),
                 TextColumn::make('last_name')->searchable(),
                 TextColumn::make('phone_number')->searchable(),
