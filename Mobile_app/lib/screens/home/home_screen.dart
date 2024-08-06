@@ -4,6 +4,7 @@ import 'package:doc_care/screens/home/medical_center.dart';
 import 'package:doc_care/screens/home/notification_page.dart';
 import 'package:doc_care/services/search_doctor_api.dart';
 import 'package:doc_care/screens/doctor/doctor_detail.dart'; 
+import 'package:flutter_svg/flutter_svg.dart';
 
 class HomeView extends StatefulWidget {
   final int patientId;
@@ -106,39 +107,37 @@ class _HomeViewState extends State<HomeView> {
           child: Column(
             children: [
               AppBar(
-                
                 backgroundColor: Colors.transparent,
                 elevation: 0,
                 centerTitle: true,
-                leading: Row(
-                  mainAxisSize: MainAxisSize.min,
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // const SizedBox(width: 4.0), 
-                    Icon(
-                      Icons.location_on,
-                      color: const Color.fromARGB(255, 255, 255, 255),
+                    SvgPicture.asset(
+                      'assets/icons/app_icon.svg',
+                      height: 30.0,
+                      width: 30.0,
                     ),
-                    // const SizedBox(width: 4.0),
+                    // Center: Home
                     Text(
-                      'Phnom Penh',
-                      style: textTheme.bodySmall!.copyWith(
-                        color: const Color.fromARGB(255, 255, 255, 255),
+                      'Home',
+                      style: TextStyle(
+                        fontSize: 20.0,
                         fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
                     ),
+                    SizedBox(width: 48.0), 
                   ],
-                ),
-                title: const Text(
-                  'Home',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
                 ),
                 actions: [
                   Container(
-                    margin: EdgeInsets.only(right: 8.0),
+                    margin: EdgeInsets.only(right: 4.0),
+                    padding: EdgeInsets.all(2.0), 
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white, 
+                    ),
                     child: IconButton(
                       onPressed: () {
                         Navigator.push(
@@ -146,13 +145,14 @@ class _HomeViewState extends State<HomeView> {
                           MaterialPageRoute(builder: (context) => NotificationPage()),
                         );
                       },
-                      icon: const Icon(Icons.notifications),
-                      color: Colors.white,
+                      icon: Icon(Icons.notifications),
+                      color: Colors.black,
                     ),
                   ),
-              
                 ],
+
               ),
+
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: TextField(
@@ -252,10 +252,10 @@ class _HomeViewState extends State<HomeView> {
                     SizedBox(height: 8.0),
                     Container(
                       width: double.infinity,
-                      height: MediaQuery.of(context).size.height * 0.25,
+                      height: MediaQuery.of(context).size.height * 0.35,
                       child: CategoriesScreen(),
                     ),
-                    SizedBox(height: 8.0),
+                    SizedBox(height: 4.0),
                     Container(
                       width: double.infinity,
                       height: MediaQuery.of(context).size.height * 0.6,
