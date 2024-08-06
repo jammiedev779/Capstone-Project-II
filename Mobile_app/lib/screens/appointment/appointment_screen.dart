@@ -140,10 +140,10 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
       },
       style: TextButton.styleFrom(
         backgroundColor:
-            selectedTab == tab ? Color(0xFF2d595a) : Colors.transparent,
+            selectedTab == tab ? Color(0xFF4F7E76) : Colors.transparent,
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(6),
         ),
       ),
       child: Text(

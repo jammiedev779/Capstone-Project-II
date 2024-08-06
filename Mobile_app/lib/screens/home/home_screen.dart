@@ -1,19 +1,12 @@
+import 'package:flutter/material.dart';
 import 'package:doc_care/screens/home/category_specialize.dart';
 import 'package:doc_care/screens/home/medical_center.dart';
 import 'package:doc_care/screens/home/notification_page.dart';
-import 'package:flutter/material.dart';
-
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const HomeView();
-  }
-}
 
 class HomeView extends StatelessWidget {
-  const HomeView({super.key});
+  final int patientId; // Add patientId
+
+  const HomeView({super.key, required this.patientId});
 
   @override
   Widget build(BuildContext context) {
@@ -166,14 +159,22 @@ class HomeView extends StatelessWidget {
               SizedBox(height: 8.0),
               Container(
                 width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.3,
+                height: MediaQuery.of(context).size.height * 0.25,
                 child: CategoriesScreen(),
               ),
               // SizedBox(height: 8.0),
+              // Container(
+              //   width: double.infinity,
+              //   height: MediaQuery.of(context).size.height * 0.25,
+              //   child: CategoriesScreen(),
+              // ),
+              // SizedBox(height: 8.0),
               Container(
                 width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.4,
-                child: NearbyMedicalCentersScreen(),
+                height: MediaQuery.of(context).size.height * 0.6,
+                child: NearbyMedicalCentersScreen(
+                  patientId: patientId, // Pass patientId here
+                ),
               ),
               SizedBox(height: 8.0),
             ],

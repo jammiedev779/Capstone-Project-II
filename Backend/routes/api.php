@@ -50,7 +50,7 @@ Route::post('/favorites/remove/{patient_id}', [FavoriteDoctorController::class, 
 Route::get('/favorites/show/{patient_id}/{doctor_id}', [FavoriteDoctorController::class, 'showFavorite']);
 Route::get('/favorites/{patientId}', [FavoriteDoctorController::class, 'getFavoriteDoctors']);
 
-Route::post('/favorites/add/{patient_id}', [FavoriteHospitalController::class, 'addFavorite']);
-Route::post('/favorites/remove/{patient_id}', [FavoriteHospitalController::class, 'removeFavorite']);
-Route::get('/favorites/show/{patient_id}/{hospital_id}', [FavoriteHospitalController::class, 'showFavorite']);
-Route::get('/favorites/{patientId}', [FavoriteHospitalController::class, 'getFavoriteHospitals']);
+Route::post('/favorite_hospital/add/{patient_id}', [FavoriteHospitalController::class, 'addFavorite']);
+Route::post('/favorite_hospital/remove/{patient_id}', [FavoriteHospitalController::class, 'removeFavorite']);
+Route::get('/favorite_hospital/show/{patient_id}/{hospital_id}', [FavoriteHospitalController::class, 'showFavorite']);
+Route::get('/favorite_hospital/{patientId}', [FavoriteHospitalController::class, 'getFavoriteHospitals']);

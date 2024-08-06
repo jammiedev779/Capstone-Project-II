@@ -3,6 +3,10 @@ import 'package:doc_care/services/hospital_api.dart';
 import 'package:flutter/material.dart';
 
 class HospitalListScreen extends StatefulWidget {
+  final int patientId;
+
+  const HospitalListScreen({super.key, required this.patientId});
+
   @override
   _HospitalListScreenState createState() => _HospitalListScreenState();
 }
@@ -19,9 +23,56 @@ class _HospitalListScreenState extends State<HospitalListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Hospitals'),
-        centerTitle: true,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(color: Colors.grey, width: 0.25),
+            ),
+          ),
+          child: Container(
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    offset: Offset(0, 4),
+                    blurRadius: 6.0,
+                    spreadRadius: 1.0),
+              ],
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFF245252),
+                  Color(0xFF67A59B),
+                ],
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
+              ),
+            ),
+            child: AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              centerTitle: true,
+              leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+              title: Text(
+                'Hospital',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.0,
+                ),
+              ),
+            ),
+          ),
+        ),
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: _hospitalFuture,
@@ -38,7 +89,10 @@ class _HospitalListScreenState extends State<HospitalListScreen> {
               itemCount: hospitals.length,
               itemBuilder: (context, index) {
                 final hospital = hospitals[index];
-                return HospitalCard(hospital: hospital);
+                return HospitalCard(
+                  hospital: hospital,
+                  patientId: widget.patientId, 
+                );
               },
             );
           }
@@ -50,8 +104,9 @@ class _HospitalListScreenState extends State<HospitalListScreen> {
 
 class HospitalCard extends StatelessWidget {
   final Map<String, dynamic> hospital;
+  final int patientId; // Add patientId here
 
-  const HospitalCard({required this.hospital});
+  const HospitalCard({required this.hospital, required this.patientId});
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +119,8 @@ class HospitalCard extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => HospitalDetailScreen(
-                hospitalId: hospital['id'], // Pass the hospital ID
+                hospitalId: hospital['id'], // Ensure hospitalId is provided
+                patientId: patientId, // Pass patientId here
               ),
             ),
           );
