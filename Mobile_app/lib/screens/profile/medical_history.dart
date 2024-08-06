@@ -18,13 +18,13 @@ class _MedicalHistoryScreenState extends State<MedicalHistoryScreen> {
   late Future<List<Map<String, dynamic>>> _medicalHistoryFuture;
 
   // Endpoint API local For chrome developer
-  static const String _baseUrl = 'http://127.0.0.1:8002/api/medical_history';
+  // static const String _baseUrl = 'http://127.0.0.1:8002/api/medical_history';
 
   // Endpoint API local for emulator developer
-  // static const String _baseUrl = 'http://10.0.2.2:8002/api/patients';
+  static const String _baseUrl = 'http://10.0.2.2:8002/api/medical_history';
 
   // Add endpoint API server here..
-  // static const String _baseUrl = 'http://54.151.252.168/api/doctors';
+  // static const String _baseUrl = 'http://54.151.252.168/api/medical_history';
 
   @override
   void initState() {
@@ -37,7 +37,6 @@ class _MedicalHistoryScreenState extends State<MedicalHistoryScreen> {
 
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = json.decode(response.body)['medical'];
-      print('API is on');
       return jsonData.map((json) => json as Map<String, dynamic>).toList();
     } else {
       throw Exception('Failed to load medical history');

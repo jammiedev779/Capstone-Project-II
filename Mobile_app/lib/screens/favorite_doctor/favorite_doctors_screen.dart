@@ -4,8 +4,9 @@ import 'package:doc_care/services/favorite_doctor_api.dart';
 
 class FavoriteDoctorsScreen extends StatefulWidget {
   final int patientId;
+  final String token;
 
-  const FavoriteDoctorsScreen({required this.patientId, Key? key})
+  const FavoriteDoctorsScreen({required this.token,required this.patientId, Key? key})
       : super(key: key);
 
   @override
@@ -202,6 +203,7 @@ class _FavoriteDoctorsScreenState extends State<FavoriteDoctorsScreen> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => DoctorDetailScreen(
+                                  token: widget.token,
                                   doctor: doctor,
                                   patientId: widget.patientId,
                                 ),

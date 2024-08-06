@@ -28,41 +28,45 @@ class CategoriesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        child: Padding(
-          padding: const EdgeInsets.only(
-              top: 8.0, bottom: 8.0, left: 4.0, right: 4.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
                 Text(
                   'Categories',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
-                TextButton(
-                  onPressed: () {
-                    // Implement "See All" functionality
-                  },
-                  child: Text('See All',
-                      style: TextStyle(color: Color(0xff6B7280))),
+                // Uncomment and implement "See All" functionality if needed
+                // TextButton(
+                //   onPressed: () {
+                //     // Implement "See All" functionality
+                //   },
+                //   child: Text('See All',
+                //       style: TextStyle(color: Color(0xff6B7280))),
+                // ),
+              ],
+            ),
+            // The GridView.builder is now non-scrollable
+            Expanded(
+              child: GridView.builder(
+                shrinkWrap: true, // Ensure GridView uses only the required space
+                physics: NeverScrollableScrollPhysics(), // Disable scrolling
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4,
+                  crossAxisSpacing: 4.0,
+                  mainAxisSpacing: 12.0,
                 ),
-              ]),
-              Expanded(
-                child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4,
-                    crossAxisSpacing: 4.0,
-                    mainAxisSpacing: 12.0,
-                  ),
-                  itemCount: categories.length,
-                  itemBuilder: (context, index) {
-                    final category = categories[index];
-                    return CategoryTile(category: category);
-                  },
-                ),
+                itemCount: categories.length,
+                itemBuilder: (context, index) {
+                  final category = categories[index];
+                  return CategoryTile(category: category);
+                },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -86,6 +90,15 @@ class CategoryTile extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.0),
+        color: Colors.white, // Optional: Background color for better visibility
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 4,
+            offset: Offset(0, 2), // changes position of shadow
+          ),
+        ],
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -100,7 +113,7 @@ class CategoryTile extends StatelessWidget {
                   Icon(Icons.error, size: 40),
             ),
           ),
-          // SizedBox(height: 8.0),
+          SizedBox(height: 8.0),
           Text(
             category.name,
             textAlign: TextAlign.center,

@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 
 class SearchScreen extends StatefulWidget {
   final int patientId;
+  final String token;
 
-  const SearchScreen({super.key, required this.patientId});
+  const SearchScreen({super.key, required this.token,required this.patientId});
 
   @override
   _SearchScreenState createState() => _SearchScreenState();
@@ -168,6 +169,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => DoctorDetailScreen(
+                        token: widget.token,
                         doctor: doctor, patientId: widget.patientId),
                   ),
                 );

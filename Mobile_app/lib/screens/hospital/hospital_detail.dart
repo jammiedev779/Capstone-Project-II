@@ -114,6 +114,15 @@ class _HospitalDetailScreenState extends State<HospitalDetailScreen> {
           child: AppBar(
             backgroundColor: Colors.transparent,
             foregroundColor: Colors.white,
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
             elevation: 0,
             centerTitle: true,
             title: FutureBuilder<Map<String, dynamic>>(
@@ -143,12 +152,10 @@ class _HospitalDetailScreenState extends State<HospitalDetailScreen> {
                 child: Padding(
                   padding: const EdgeInsets.only(right: 16.0),
                   child: IconButton(
-                    icon: _isLoading
-                        ? CircularProgressIndicator()
-                        : Icon(
-                            Icons.favorite,
-                            color: _isFavorite ? Colors.red : Colors.white,
-                          ),
+                    icon: Icon(
+                      Icons.favorite,
+                      color: _isFavorite ? Colors.red : Colors.white,
+                    ),
                     onPressed: _toggleFavorite,
                   ),
                 ),

@@ -102,6 +102,7 @@ class AppointmentController extends Controller
                     'doctor_status' => $appointment->doctor_status,
                     'reason' => $appointment->reason,
                     'note' => $appointment->note,
+                    // 'updated_at' => $appointment->updated_at->format('Y-m-d H:i:s'),
                 ];
             });
     
@@ -135,8 +136,8 @@ class AppointmentController extends Controller
 
         try {
             $appointment = Appointment::findOrFail($appointment_id);
-            $appointment->user_status = $request->user_status; // set user_status to "Canceled"
-            $appointment->status = 3; // set status to "Canceled"
+            $appointment->user_status = $request->user_status; 
+            $appointment->status = 3;
             $appointment->save();
 
             return response()->json([

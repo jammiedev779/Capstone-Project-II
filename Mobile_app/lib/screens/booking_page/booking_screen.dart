@@ -1,13 +1,14 @@
-import 'package:doc_care/screens/screens.dart';
 import 'package:doc_care/services/booking_api.dart';
+import 'package:doc_care/shared/utils/bottom_nav_bars/main_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class BookingScreen extends StatefulWidget {
   final int doctorId;
   final int patientId;
+  final String token;
 
-  BookingScreen({required this.doctorId, required this.patientId});
+  BookingScreen({required this.doctorId,required this.token, required this.patientId});
 
   @override
   _BookingScreenState createState() => _BookingScreenState();
@@ -81,26 +82,47 @@ class _BookingScreenState extends State<BookingScreen> {
       if (response['statusCode'] == 201) {
         showDialog(
           context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Success'),
-            content: Text('Booking created successfully!'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          AppointmentScreen(patientId: widget.patientId),
-                      settings: const RouteSettings(arguments: true),
+          barrierDismissible: false,
+          builder: (context) {
+            Future.delayed(const Duration(seconds: 2), () {
+              Navigator.of(context).pop();
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MainNavBar(
+                    token: widget.token,
+                    patientId: widget.patientId,
+                  ),
+                ),
+                (Route<dynamic> route) => false,
+              );
+            });
+            return AlertDialog(
+              title: Text('Booking successfully'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Icon(
+                    Icons.check_circle,
+                    size: 100,
+                    color: Colors.green,
+                  ),
+                  SizedBox(height: 16.0),
+                  Text(
+                    'You have already booked the appointment',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.grey,
                     ),
-                  );
-                },
-                child: Text('OK'),
+                  ),
+                  SizedBox(height: 16.0),
+                  CircularProgressIndicator(),
+                ],
               ),
-            ],
-          ),
+            );
+          },
         );
+        
       } else {
         // Show error message
         showDialog(
@@ -150,6 +172,7 @@ class _BookingScreenState extends State<BookingScreen> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
+        
         child: Container(
           decoration: BoxDecoration(
             border: Border(
@@ -269,7 +292,7 @@ class _BookingScreenState extends State<BookingScreen> {
               Center(
                 child: ElevatedButton(
                   onPressed: _submitForm,
-                  child: Text('Submit Booking'),
+                  child: Text('Confirm Booking'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor:
                         Color(0xFF245252), // Match the AppBar gradient color

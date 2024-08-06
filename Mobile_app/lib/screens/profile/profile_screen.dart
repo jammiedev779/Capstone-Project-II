@@ -172,7 +172,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               CircleAvatar(
                                 radius: 30,
                                 backgroundImage: NetworkImage(
-                                    'https://i.pinimg.com/736x/83/1f/01/831f015888b5a0cd588e89b865ed12d0.jpg'),
+                                    '${profile['image']}'),
                               ),
                               const SizedBox(width: 16),
                               Column(
@@ -373,6 +373,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => FavoriteDoctorsScreen(
+                                        token: widget.token,
                                         patientId: widget.patientId),
                                   ),
                                 );
@@ -400,21 +401,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               },
                             ),
                           ),
-                          WidgetStyle().buildBottomBorder(
-                              horizontalValue: 24.0,
-                              colorValue: Color(0x0F292626),
-                              widthValue: 2.0),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ListTile(
-                              leading: const Icon(Icons.settings,
-                                  color: Color(0xF8817676)),
-                              title: const Text('Settings'),
-                              onTap: () {
-                                // Navigate to Settings
-                              },
-                            ),
-                          ),
+                          // WidgetStyle().buildBottomBorder(
+                          //     horizontalValue: 24.0,
+                          //     colorValue: Color(0x0F292626),
+                          //     widthValue: 2.0),
+                          // Padding(
+                          //   padding: const EdgeInsets.all(8.0),
+                          //   child: ListTile(
+                          //     leading: const Icon(Icons.settings,
+                          //         color: Color(0xF8817676)),
+                          //     title: const Text('Settings'),
+                          //     onTap: () {
+                          //       // Navigate to Settings
+                          //     },
+                          //   ),
+                          // ),
                           WidgetStyle().buildBottomBorder(
                               horizontalValue: 24.0,
                               colorValue: Color(0x0F292626),

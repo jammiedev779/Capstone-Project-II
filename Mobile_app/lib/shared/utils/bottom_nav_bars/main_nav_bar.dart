@@ -19,8 +19,8 @@ class _MainNavBarState extends State<MainNavBar> {
   void initState() {
     super.initState();
     _children = [
-      HomeView(patientId: widget.patientId),
-      SearchScreen(patientId: widget.patientId), 
+      HomeView(token: widget.token, patientId: widget.patientId),
+      SearchScreen(token: widget.token, patientId: widget.patientId),
       AppointmentScreen(patientId: widget.patientId),
       ProfileScreen(token: widget.token, patientId: widget.patientId),
     ];
@@ -32,50 +32,51 @@ class _MainNavBarState extends State<MainNavBar> {
     });
   }
 
-  void _navigateToAppointmentSchedule(BuildContext context) {
-    Navigator.of(context).pushNamed('/appointment', arguments: true);
-  }
-
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
       body: _children[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: colorScheme.primary,
-        unselectedItemColor: colorScheme.onBackground.withOpacity(0.5),
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        unselectedFontSize: 14,
-        selectedLabelStyle: textTheme.bodySmall,
-        unselectedLabelStyle: textTheme.bodySmall,
-        type: BottomNavigationBarType.fixed,
-        onTap: onTabTapped,
-        currentIndex: _currentIndex,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFF2d595a), Color(0xFF65a399)],
+            begin: Alignment.bottomLeft,
+            end: Alignment.topRight,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.local_hospital),
-            label: 'Doctor',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.book),
-            label: 'Appointment',
-          ),
-          // BottomNavigationBarItem(
-          //   icon: Icon(Icons.inbox),
-          //   label: 'Inbox',
-          // ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
+        ),
+        child: BottomNavigationBar(
+          backgroundColor: Colors.transparent,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.white.withOpacity(0.5),
+          showSelectedLabels: true,
+          showUnselectedLabels: true,
+          unselectedFontSize: 14,
+          selectedLabelStyle: textTheme.bodySmall,
+          unselectedLabelStyle: textTheme.bodySmall,
+          type: BottomNavigationBarType.fixed,
+          onTap: onTabTapped,
+          currentIndex: _currentIndex,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.local_hospital),
+              label: 'Doctor',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.calendar_month_rounded),
+              label: 'Appointment',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Profile',
+            ),
+          ],
+        ),
       ),
     );
   }

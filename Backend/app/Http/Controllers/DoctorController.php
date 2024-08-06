@@ -10,7 +10,7 @@ class DoctorController extends Controller
     public function index()
     {
         $doctors = Doctor::with(['hospital', 'specialist', 'department'])
-            ->get(['id', 'first_name', 'last_name', 'phone_number', 'status', 'address', 'hospital_id', 'specialist_id', 'department_id']);
+            ->get(['id', 'first_name', 'last_name', 'phone_number', 'status', 'address','experience', 'hospital_id', 'specialist_id', 'department_id']);
 
         $doctors = $doctors->map(function ($doctor) {
             return [
@@ -20,6 +20,8 @@ class DoctorController extends Controller
                 'phone_number' => $doctor->phone_number,
                 'status' => $doctor->status,
                 'address' => $doctor->address,
+                'experience' => $doctor->experience,
+                'hospital_id' => $doctor->hospital_id ?? null,
                 'hospital_name' => $doctor->hospital->kh_name ?? null,
                 'hospital_description' => $doctor->hospital->description ?? null,
                 'specialist_title' => $doctor->specialist->title ?? null,
@@ -33,19 +35,26 @@ class DoctorController extends Controller
     public function search(Request $request)
     {
         $query = $request->query('query');
-        
+    
         if (!$query) {
             return response()->json(['doctors' => []], 200);
         }
-
-        // Eager load the relationships
         $doctors = Doctor::with(['hospital', 'specialist', 'department'])
             ->where(function ($queryBuilder) use ($query) {
                 $queryBuilder->where('first_name', 'LIKE', "%{$query}%")
                              ->orWhere('last_name', 'LIKE', "%{$query}%")
-                             ->orWhere('address', 'LIKE', "%{$query}%");
+                             ->orWhere('address', 'LIKE', "%{$query}%")
+                             ->orWhere('phone_number', 'LIKE', "%{$query}%")
+                             ->orWhereHas('hospital', function ($hospitalQuery) use ($query) {
+                                 $hospitalQuery->where('kh_name', 'LIKE', "%{$query}%")
+                                               ->orWhere('location', 'LIKE', "%{$query}%")
+                                               ->orWhere('address', 'LIKE', "%{$query}%");
+                             })
+                             ->orWhereHas('specialist', function ($specialistQuery) use ($query) {
+                                 $specialistQuery->where('title', 'LIKE', "%{$query}%");
+                             });
             })
-            ->get(['id', 'first_name', 'last_name', 'phone_number', 'status', 'address', 'hospital_id', 'specialist_id', 'department_id',]);
+            ->get(['id', 'first_name', 'last_name', 'phone_number', 'status', 'address','experience', 'hospital_id', 'specialist_id', 'department_id']);
     
         $doctors = $doctors->map(function ($doctor) {
             return [
@@ -55,13 +64,17 @@ class DoctorController extends Controller
                 'phone_number' => $doctor->phone_number,
                 'status' => $doctor->status,
                 'address' => $doctor->address,
+                'experience' => $doctor->experience,
+                'hospital_id' => $doctor->hospital_id ?? null,
                 'hospital_name' => $doctor->hospital->kh_name ?? null,
-                'hospital_description' => $doctor->hospital->description ?? null,
+                'hospital_location' => $doctor->hospital->location ?? null,
+                'hospital_address' => $doctor->hospital->address ?? null,
                 'specialist_title' => $doctor->specialist->title ?? null,
                 'department_title' => $doctor->department->title ?? null,
             ];
         });
-
+    
         return response()->json(['doctors' => $doctors], 200);
     }
+    
 }
