@@ -3,12 +3,13 @@ import 'package:doc_care/screens/home/category_specialize.dart';
 import 'package:doc_care/screens/home/medical_center.dart';
 import 'package:doc_care/screens/home/notification_page.dart';
 import 'package:doc_care/services/search_doctor_api.dart';
-import 'package:doc_care/screens/doctor/doctor_detail.dart'; // Import DoctorDetailScreen
+import 'package:doc_care/screens/doctor/doctor_detail.dart'; 
 
 class HomeView extends StatefulWidget {
   final int patientId;
+  final String token;
 
-  const HomeView({super.key, required this.patientId});
+  const HomeView({super.key, required this.token, required this.patientId});
 
   @override
   _HomeViewState createState() => _HomeViewState();
@@ -83,170 +84,190 @@ class _HomeViewState extends State<HomeView> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 80,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SizedBox(height: 16.0),
-            Row(
-              children: [
-                Icon(
-                  Icons.location_on,
-                  color: Colors.black,
-                ),
-                const SizedBox(width: 4.0),
-                Text(
-                  'Phnom Penh',
-                  style: textTheme.bodySmall!.copyWith(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(width: 4.0),
-                Icon(
-                  Icons.expand_more,
-                  color: Colors.black,
-                ),
-              ],
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight + 80.0),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF2d595a), Color(0xFF65a399)],
+              begin: Alignment.bottomLeft,
+              end: Alignment.topRight,
             ),
-          ],
-        ),
-        actions: [
-          Container(
-            margin: EdgeInsets.only(right: 16.0, top: 16.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(40.0),
-              color: Colors.grey[200],
-            ),
-            child: IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => NotificationPage()),
-                );
-              },
-              icon: const Icon(Icons.notifications),
-              color: Colors.grey[700],
-            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                offset: Offset(0, 4),
+                blurRadius: 6.0,
+                spreadRadius: 1.0,
+              ),
+            ],
           ),
-        ],
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(40.0),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 8.0),
-            child: TextField(
-              controller: _searchController,
-              onChanged: _filterDoctors,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white,
-                prefixIcon: const Icon(Icons.search),
-                hintText: "Search doctors...",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  borderSide: BorderSide(
-                    color: Colors.grey.shade300,
-                    width: 1,
+          
+          child: Column(
+            children: [
+              AppBar(
+                
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                centerTitle: true,
+                leading: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // const SizedBox(width: 4.0), 
+                    Icon(
+                      Icons.location_on,
+                      color: const Color.fromARGB(255, 255, 255, 255),
+                    ),
+                    // const SizedBox(width: 4.0),
+                    Text(
+                      'Phnom Penh',
+                      style: textTheme.bodySmall!.copyWith(
+                        color: const Color.fromARGB(255, 255, 255, 255),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                title: const Text(
+                  'Home',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
                 ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  borderSide: BorderSide(
-                    color: Colors.grey.shade300,
-                    width: 1,
+                actions: [
+                  Container(
+                    margin: EdgeInsets.only(right: 8.0),
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => NotificationPage()),
+                        );
+                      },
+                      icon: const Icon(Icons.notifications),
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  borderSide: BorderSide(
-                    color: Colors.blue,
-                    width: 2,
+              
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: TextField(
+                  controller: _searchController,
+                  onChanged: _filterDoctors,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    prefixIcon: const Icon(Icons.search),
+                    hintText: "Search doctors...",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                      borderSide: BorderSide(
+                        color: Colors.grey.shade300,
+                        width: 1,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                      borderSide: BorderSide(
+                        color: Colors.grey.shade300,
+                        width: 1,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                      borderSide: BorderSide(
+                        color: Colors.blue,
+                        width: 2,
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
+            ],
           ),
         ),
       ),
       body: _isSearching
-        ? _buildDoctorList()
-        : SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    width: double.infinity,
-                    height: 200,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/slide1_image.jpg'),
-                        fit: BoxFit.cover,
+          ? _buildDoctorList()
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 8.0, top: 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      width: double.infinity,
+                      height: 200,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        image: DecorationImage(
+                          image: AssetImage('assets/images/slide1_image.jpg'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Start Booking Your',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            'Appointment Now!',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            'Schedule an appointment',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            'with our doctors.',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Start Booking Your',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          'Appointment Now!',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          'Schedule an appointment',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          'with our doctors.',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
+                    SizedBox(height: 8.0),
+                    Container(
+                      width: double.infinity,
+                      height: MediaQuery.of(context).size.height * 0.25,
+                      child: CategoriesScreen(),
                     ),
-                  ),
-                  SizedBox(height: 8.0),
-                  Container(
-                    width: double.infinity,
-                    height: MediaQuery.of(context).size.height * 0.25,
-                    child: CategoriesScreen(),
-                  ),
-                  SizedBox(height: 8.0),
-                  Container(
-                    width: double.infinity,
-                    height: MediaQuery.of(context).size.height * 0.6,
-                    child: NearbyMedicalCentersScreen(
-                      patientId: widget.patientId, // Pass patientId here
+                    SizedBox(height: 8.0),
+                    Container(
+                      width: double.infinity,
+                      height: MediaQuery.of(context).size.height * 0.6,
+                      child: NearbyMedicalCentersScreen(
+                        patientId: widget.patientId, // Pass patientId here
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 8.0),
-                ],
+                    SizedBox(height: 8.0),
+                  ],
+                ),
               ),
             ),
-          ),
     );
   }
 
@@ -269,6 +290,7 @@ class _HomeViewState extends State<HomeView> {
               context,
               MaterialPageRoute(
                 builder: (context) => DoctorDetailScreen(
+                  token: widget.token,
                   doctor: doctor,
                   patientId: widget.patientId,
                 ),
@@ -281,56 +303,71 @@ class _HomeViewState extends State<HomeView> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.0),
             ),
-            child: ListTile(
-              leading: CircleAvatar(
-                backgroundImage: NetworkImage(
-                  doctor['profile_picture_url'] ??
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiO1ABhTbJ30hyaTS5yGuX0cFk_PN51aKV9g&s',
-                ),
-              ),
-              title: Text(
-                '${doctor['first_name']} ${doctor['last_name']}',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              subtitle: Column(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    doctor['specialist_title'] ?? 'Specialist not available',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey[600],
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.network(
+                      doctor['profile_picture_url'] ??
+                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiO1ABhTbJ30hyaTS5yGuX0cFk_PN51aKV9g&s',
+                      height: 110,
+                      width: 110,
+                      fit: BoxFit.cover,
                     ),
                   ),
-                  SizedBox(height: 4),
-                  Row(
-                    children: [
-                      Icon(Icons.location_on, size: 16, color: Colors.grey),
-                      SizedBox(width: 4),
-                      Text(
-                        doctor['hospital_name'] ?? 'Hospital not available',
-                        style: TextStyle(color: Colors.grey[600]),
-                      ),
-                    ],
+                  SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${doctor['first_name']} ${doctor['last_name']}',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Divider(
+                          height: 10,
+                          color: Colors.grey[300],
+                        ),
+                        Text(
+                          doctor['specialist_title'] ?? 'Specialist not available',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                        SizedBox(height: 4),
+                        Row(
+                          children: [
+                            Icon(Icons.location_on, size: 16, color: Colors.grey),
+                            SizedBox(width: 4),
+                            Text(
+                              doctor['location'] ?? 'Location not available',
+                              style: TextStyle(color: Colors.grey[600]),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 4),
+                        Row(
+                          children: [
+                            Icon(Icons.phone, size: 16, color: Colors.grey),
+                            SizedBox(width: 4),
+                            Text(
+                              doctor['phone'] ?? 'Phone not available',
+                              style: TextStyle(color: Colors.grey[600]),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ],
-              ),
-              trailing: IconButton(
-                icon: Icon(Icons.favorite_border),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DoctorDetailScreen(
-                        doctor: doctor,
-                        patientId: widget.patientId,
-                      ),
-                    ),
-                  );
-                },
               ),
             ),
           ),

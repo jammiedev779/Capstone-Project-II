@@ -2,10 +2,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class FavoriteHospitalApi {
+  
   static const String _baseUrl = 'http://10.0.2.2:8002/api/favorite_hospital';
-
-
-
 
   static Future<bool> isFavorite(int patientId, int hospitalId) async {
     final response = await http.get(
@@ -100,7 +98,7 @@ class FavoriteHospitalApi {
       final Map<String, dynamic> data = jsonDecode(response.body);
       print('getFavoriteHospitals - Parsed data: $data');
 
-      // Extract the list from the 'favoriteHospitals' field
+  
       final List<dynamic> hospitalsData = data['favoriteHospitals'];
       return hospitalsData.map((hospital) => {
         'id': hospital['id'],

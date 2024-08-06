@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:doc_care/screens/booking_page/booking_screen.dart';
 import 'package:doc_care/services/favorite_doctor_api.dart';
 import 'package:flutter/material.dart';
@@ -5,9 +7,10 @@ import 'package:flutter/material.dart';
 class DoctorDetailScreen extends StatefulWidget {
   final Map<String, dynamic> doctor;
   final int patientId;
+  final String token;
 
   const DoctorDetailScreen(
-      {required this.doctor, required this.patientId, Key? key})
+      {required this.doctor,required this.token ,required this.patientId, Key? key})
       : super(key: key);
 
   @override
@@ -137,17 +140,16 @@ class _DoctorDetailScreenState extends State<DoctorDetailScreen> {
                 child: Padding(
                   padding: const EdgeInsets.only(right: 16.0),
                   child: IconButton(
-                    icon: _isLoading
-                        ? CircularProgressIndicator()
-                        : Icon(
-                            Icons.favorite,
-                            color: _isFavorite ? Colors.red : Colors.white,
-                          ),
+                    icon: Icon(
+                      Icons.favorite,
+                      color: _isFavorite ? Colors.red : Colors.white,
+                    ),
                     onPressed: _toggleFavorite,
                   ),
                 ),
               ),
             ],
+
           ),
         ),
       ),
@@ -204,7 +206,7 @@ class _DoctorDetailScreenState extends State<DoctorDetailScreen> {
                                 appBarColor),
                             _buildInfoCard(
                                 'Experiences',
-                                widget.doctor['experience_years']?.toString() ??
+                                widget.doctor['experience']?.toString() ??
                                     '5 years',
                                 appBarColor),
                             _buildInfoCard(
@@ -258,6 +260,7 @@ class _DoctorDetailScreenState extends State<DoctorDetailScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => BookingScreen(
+                            token: widget.token,
                             doctorId: widget.doctor['id'],
                             patientId: widget.patientId,
                           ),

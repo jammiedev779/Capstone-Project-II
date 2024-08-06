@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:doc_care/screens/profile/widget_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';

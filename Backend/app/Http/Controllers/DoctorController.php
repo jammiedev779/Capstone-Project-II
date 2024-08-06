@@ -10,7 +10,7 @@ class DoctorController extends Controller
     public function index()
     {
         $doctors = Doctor::with(['hospital', 'specialist', 'department'])
-            ->get(['id', 'first_name', 'last_name', 'phone_number', 'status', 'address', 'hospital_id', 'specialist_id', 'department_id']);
+            ->get(['id', 'first_name', 'last_name', 'phone_number', 'status', 'address','experience', 'hospital_id', 'specialist_id', 'department_id']);
 
         $doctors = $doctors->map(function ($doctor) {
             return [
@@ -20,6 +20,8 @@ class DoctorController extends Controller
                 'phone_number' => $doctor->phone_number,
                 'status' => $doctor->status,
                 'address' => $doctor->address,
+                'experience' => $doctor->experience,
+                'hospital_id' => $doctor->hospital_id ?? null,
                 'hospital_name' => $doctor->hospital->kh_name ?? null,
                 'hospital_description' => $doctor->hospital->description ?? null,
                 'specialist_title' => $doctor->specialist->title ?? null,
@@ -52,7 +54,7 @@ class DoctorController extends Controller
                                  $specialistQuery->where('title', 'LIKE', "%{$query}%");
                              });
             })
-            ->get(['id', 'first_name', 'last_name', 'phone_number', 'status', 'address', 'hospital_id', 'specialist_id', 'department_id']);
+            ->get(['id', 'first_name', 'last_name', 'phone_number', 'status', 'address','experience', 'hospital_id', 'specialist_id', 'department_id']);
     
         $doctors = $doctors->map(function ($doctor) {
             return [
@@ -62,6 +64,8 @@ class DoctorController extends Controller
                 'phone_number' => $doctor->phone_number,
                 'status' => $doctor->status,
                 'address' => $doctor->address,
+                'experience' => $doctor->experience,
+                'hospital_id' => $doctor->hospital_id ?? null,
                 'hospital_name' => $doctor->hospital->kh_name ?? null,
                 'hospital_location' => $doctor->hospital->location ?? null,
                 'hospital_address' => $doctor->hospital->address ?? null,

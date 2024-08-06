@@ -1,3 +1,4 @@
+import 'package:doc_care/screens/login_&_register/register_screen.dart';
 import 'package:doc_care/services/patient_api.dart';
 import 'package:doc_care/shared/utils/bottom_nav_bars/main_nav_bar.dart';
 import 'package:flutter/material.dart';
@@ -113,26 +114,26 @@ class LoginPage extends StatelessWidget {
               Text('or'),
               SizedBox(height: 10),
               // Sign In with Telegram
-              SizedBox(
-                width: double.parse('300'),
-                child: ElevatedButton.icon(
-                  onPressed: () {},
-                  icon: Image.asset(
-                    'assets/icons/telegram_icon.png',
-                    width: 20,
-                  ),
-                  label: Text('Sign In with Telegram'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: colorScheme.onPrimary,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      side: BorderSide(color: colorScheme.primary),
-                    ),
-                    padding: EdgeInsets.symmetric(vertical: 15),
-                  ),
-                ),
-              ),
-              SizedBox(height: 20),
+              // SizedBox(
+              //   width: double.parse('300'),
+              //   child: ElevatedButton.icon(
+              //     onPressed: () {},
+              //     icon: Image.asset(
+              //       'assets/icons/telegram_icon.png',
+              //       width: 20,
+              //     ),
+              //     label: Text('Sign In with Telegram'),
+              //     style: ElevatedButton.styleFrom(
+              //       backgroundColor: colorScheme.onPrimary,
+              //       shape: RoundedRectangleBorder(
+              //         borderRadius: BorderRadius.circular(10),
+              //         side: BorderSide(color: colorScheme.primary),
+              //       ),
+              //       padding: EdgeInsets.symmetric(vertical: 15),
+              //     ),
+              //   ),
+              // ),
+              // SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -142,12 +143,12 @@ class LoginPage extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      // Navigator.pushReplacement(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => RegisterPage(),
-                      //   ),
-                      // );
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RegisterPage()
+                        ),
+                      );
                     },
                     child: Text(
                       "Register now",
@@ -217,8 +218,10 @@ class LoginPage extends StatelessWidget {
               ],
             ),
           );
+
         },
       );
+
     } else {
       _showErrorDialog(context, response['message'] ?? 'An error occurred. Please try again.');
     }
@@ -227,13 +230,18 @@ class LoginPage extends StatelessWidget {
   void _showErrorDialog(BuildContext context, String message) {
     showDialog(
       context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Error'),
-          content: Text(message),
-        );
-      },
+      builder: (context) => AlertDialog(
+        title: Text('Error'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text('OK'),
+          ),
+        ],
+      ),
     );
   }
 }
