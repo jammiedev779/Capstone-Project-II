@@ -166,7 +166,7 @@ class _DoctorDetailScreenState extends State<DoctorDetailScreen> {
                         CircleAvatar(
                           radius: 50,
                           backgroundImage: NetworkImage(
-                            widget.doctor['profile_picture_url'] ??
+                            widget.doctor['image'] ??
                                 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiO1ABhTbJ30hyaTS5yGuX0cFk_PN51aKV9g&s',
                           ),
                         ),

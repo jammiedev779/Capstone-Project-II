@@ -130,25 +130,11 @@ class HospitalCard extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-              child: hospital['image'] != null
-                  ? Image.network(
-                      hospital['image'],
-                      height: 150,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    )
-                  : Container(
-                      height: 150,
-                      width: double.infinity,
-                      color: Colors.grey[200],
-                      child: Center(
-                        child: Text(
-                          'No Image Available',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                      ),
-                    ),
+              child: Image.network(
+                  hospital['image'] ??
+                      'https://teacarchitect.com/wp-content/uploads/2021/09/Royal-Phnom-Penh-Hospital.jpg',
+                  fit: BoxFit.cover,
+                ),
             ),
             Padding(
               padding: const EdgeInsets.all(10.0),

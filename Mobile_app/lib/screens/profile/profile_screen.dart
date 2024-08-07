@@ -12,7 +12,7 @@ class ProfileScreen extends StatefulWidget {
   final String token;
   final int patientId;
 
-  const ProfileScreen(
+  const ProfileScreen(  
       {super.key, required this.token, required this.patientId});
 
   @override
@@ -169,10 +169,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         children: [
                           Row(
                             children: [
-                              CircleAvatar(
+                              CircleAvatar( 
                                 radius: 30,
                                 backgroundImage: NetworkImage(
-                                    '${profile['image']}'),
+                                  profile['image'] ?? 'https://wallpapers.com/images/hd/professional-profile-pictures-1080-x-1080-460wjhrkbwdcp1ig.jpg'
+                                ),
                               ),
                               const SizedBox(width: 16),
                               Column(
@@ -228,20 +229,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Row(
                             children: [
                               WidgetStyle().buildCircleIcon(
-                                  paddingValue: 8.0,
-                                  backgroundColor: Color(0xFF4F7E76),
-                                  iconData: Icons.transgender_outlined,
-                                  iconColor: Color.fromARGB(255, 255, 255, 255),
-                                  iconSize: 16.0),
+                                paddingValue: 8.0,
+                                backgroundColor: Color(0xFF4F7E76),
+                                iconData: Icons.transgender_outlined,
+                                iconColor: Color.fromARGB(255, 255, 255, 255),
+                                iconSize: 16.0,
+                              ),
                               const SizedBox(width: 8),
-                              const Text('Gender'),
-                              Spacer(),
-                              Text(
-                                profile['gender'] ?? 'N/A',
-                                style: const TextStyle(color: Colors.black),
+                              // const Text('Gender'),
+                              
+                              Expanded(
+                                child: Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                    profile['gender'] ?? 'N/A',
+                                    style: const TextStyle(
+                                      color: Colors.black,
+
+                                    ),  // textAlign: TextAlign.right,
+                                  ),
+                                ),
                               ),
                             ],
                           ),
+
                           const SizedBox(height: 16),
                           Row(
                             children: [
@@ -252,11 +263,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   iconColor: Colors.white,
                                   iconSize: 16.0),
                               const SizedBox(width: 8),
-                              const Text('Phone'),
-                              Spacer(),
-                              Text(
-                                profile['phone_number'] ?? 'N/A',
-                                style: const TextStyle(color: Colors.black),
+                              // const Text('Phone'),
+                              
+                              Expanded(
+                                child: Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                    profile['phone_number'] ?? 'N/A',
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                    
+                                    ),  // textAlign: TextAlign.right,
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -270,11 +289,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   iconColor: Colors.white,
                                   iconSize: 16.0),
                               const SizedBox(width: 8),
-                              const Text('Email'),
-                              Spacer(),
-                              Text(
-                                profile['email'] ?? 'N/A',
-                                style: const TextStyle(color: Colors.black),
+                              // const Text('Email'),
+                              
+                              Expanded(
+                                child: Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                    profile['email'] ?? 'N/A',
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                    
+                                    ),  // textAlign: TextAlign.right,
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -288,13 +315,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   iconColor: Colors.white,
                                   iconSize: 16.0),
                               const SizedBox(width: 8),
-                              const Text('Address'),
-                              Spacer(),
+                              // const Text('Address'),
+                              
                               Expanded(
-                                child: Text(
-                                  profile['address'] ?? 'N/A',
-                                  style: const TextStyle(color: Colors.black),
-                                  softWrap: true,
+                                child: Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                    profile['address'] ?? 'N/A',
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                    ),  // textAlign: TextAlign.right,
+                                  ),
                                 ),
                               ),
                             ],

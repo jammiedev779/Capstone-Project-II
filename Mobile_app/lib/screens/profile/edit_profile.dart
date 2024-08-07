@@ -126,6 +126,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             foregroundColor: Colors.white,
             backgroundColor: Colors.transparent,
             elevation: 0,
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
             title: const Text(
               'Edit Profile',
               style: TextStyle(

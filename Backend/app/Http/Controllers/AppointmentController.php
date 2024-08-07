@@ -8,6 +8,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB; // Add this line
 
 class AppointmentController extends Controller
 {
@@ -47,10 +48,9 @@ class AppointmentController extends Controller
                 'note'              => $request->note,
             ]);
 
-            //Access patient medical
             DB::table('access_patient_medicals')->insert([
                 'patient_id'        => $request->patient_id,
-                'doctor_id'         => $request->doctor_id,
+                // 'doctor_id'         => $request->doctor_id,
                 'status'            => 1,
             ]); 
 
@@ -102,7 +102,7 @@ class AppointmentController extends Controller
                     'doctor_status' => $appointment->doctor_status,
                     'reason' => $appointment->reason,
                     'note' => $appointment->note,
-                    // 'updated_at' => $appointment->updated_at->format('Y-m-d H:i:s'),
+    
                 ];
             });
     
@@ -154,9 +154,4 @@ class AppointmentController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-    
-    
-    
-    
-    
 }

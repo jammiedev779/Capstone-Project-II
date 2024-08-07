@@ -110,6 +110,7 @@ class _HomeViewState extends State<HomeView> {
                 backgroundColor: Colors.transparent,
                 elevation: 0,
                 centerTitle: true,
+                leading: null,
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -132,11 +133,11 @@ class _HomeViewState extends State<HomeView> {
                 ),
                 actions: [
                   Container(
-                    margin: EdgeInsets.only(right: 4.0),
-                    padding: EdgeInsets.all(2.0), 
+                    margin: EdgeInsets.only(right: 2.0),
+                    padding: EdgeInsets.all(2.0),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Colors.white, 
+                      color: Color.fromARGB(255, 200, 196, 196), 
                     ),
                     child: IconButton(
                       onPressed: () {
@@ -147,10 +148,15 @@ class _HomeViewState extends State<HomeView> {
                       },
                       icon: Icon(Icons.notifications),
                       color: Colors.black,
+                      iconSize: 22.0, 
+                      padding: EdgeInsets.all(4.0), 
+                      constraints: BoxConstraints(
+                        minWidth: 22.0, 
+                        minHeight: 22.0, 
+                      ),
                     ),
                   ),
                 ],
-
               ),
 
               Padding(
@@ -162,7 +168,7 @@ class _HomeViewState extends State<HomeView> {
                     filled: true,
                     fillColor: Colors.white,
                     prefixIcon: const Icon(Icons.search),
-                    hintText: "Search doctors...",
+                    hintText: "Address, Specialist, Name of Doctors...",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8.0),
                       borderSide: BorderSide(
@@ -258,9 +264,9 @@ class _HomeViewState extends State<HomeView> {
                     SizedBox(height: 4.0),
                     Container(
                       width: double.infinity,
-                      height: MediaQuery.of(context).size.height * 0.6,
+                      height: MediaQuery.of(context).size.height * 0.7,
                       child: NearbyMedicalCentersScreen(
-                        patientId: widget.patientId, // Pass patientId here
+                        patientId: widget.patientId,  
                       ),
                     ),
                     SizedBox(height: 8.0),
@@ -311,7 +317,7 @@ class _HomeViewState extends State<HomeView> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: Image.network(
-                      doctor['profile_picture_url'] ??
+                      doctor['image'] ??
                           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiO1ABhTbJ30hyaTS5yGuX0cFk_PN51aKV9g&s',
                       height: 110,
                       width: 110,
@@ -330,40 +336,40 @@ class _HomeViewState extends State<HomeView> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Divider(
-                          height: 10,
-                          color: Colors.grey[300],
-                        ),
-                        Text(
-                          doctor['specialist_title'] ?? 'Specialist not available',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                        SizedBox(height: 4),
-                        Row(
-                          children: [
-                            Icon(Icons.location_on, size: 16, color: Colors.grey),
-                            SizedBox(width: 4),
-                            Text(
-                              doctor['location'] ?? 'Location not available',
-                              style: TextStyle(color: Colors.grey[600]),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 4),
-                        Row(
-                          children: [
-                            Icon(Icons.phone, size: 16, color: Colors.grey),
-                            SizedBox(width: 4),
-                            Text(
-                              doctor['phone'] ?? 'Phone not available',
-                              style: TextStyle(color: Colors.grey[600]),
-                            ),
-                          ],
-                        ),
+                        // Divider(
+                        //   height: 10,
+                        //   color: Colors.grey[300],
+                        // ),
+                        // Text(
+                        //   doctor['specialist_title'] ?? 'Specialist not available',
+                        //   style: TextStyle(
+                        //     fontSize: 16,
+                        //     fontWeight: FontWeight.bold,
+                        //     color: Colors.grey[600],
+                        //   ),
+                        // ),
+                        // SizedBox(height: 4),
+                        // Row(
+                        //   children: [
+                        //     Icon(Icons.location_on, size: 16, color: Colors.grey),
+                        //     SizedBox(width: 4),
+                        //     Text(
+                        //       doctor['address'] ?? 'address not available',
+                        //       style: TextStyle(color: Colors.grey[600]),
+                        //     ),
+                        //   ],
+                        // ),
+                        // SizedBox(height: 4),
+                        // Row(
+                        //   children: [
+                        //     Icon(Icons.phone, size: 16, color: Colors.grey),
+                        //     SizedBox(width: 4),
+                        //     Text(
+                        //       doctor['phone_number'] ?? 'Phone not available',
+                        //       style: TextStyle(color: Colors.grey[600]),
+                        //     ),
+                        //   ],
+                        // ),
                       ],
                     ),
                   ),

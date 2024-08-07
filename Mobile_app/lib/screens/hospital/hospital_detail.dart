@@ -181,25 +181,11 @@ class _HospitalDetailScreenState extends State<HospitalDetailScreen> {
                 children: [
                   Stack(
                     children: [
-                      hospital['image'] != null
-                          ? Image.network(
-                              hospital['image'],
-                              width: double.infinity,
-                              height: 250,
-                              fit: BoxFit.cover,
-                            )
-                          : Container(
-                              height: 250,
-                              width: double.infinity,
-                              color: Colors.grey[200],
-                              child: Center(
-                                child: Text(
-                                  'No Image Available',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                              ),
-                            ),
+                      Image.network(
+                        hospital['image'] ??
+                            'https://teacarchitect.com/wp-content/uploads/2021/09/Royal-Phnom-Penh-Hospital.jpg',
+                        fit: BoxFit.cover,
+                      ),
                     ],
                   ),
                   Padding(

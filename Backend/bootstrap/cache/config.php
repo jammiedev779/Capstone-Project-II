@@ -15,7 +15,7 @@
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
     'cipher' => 'AES-256-CBC',
-    'key' => 'base64:hmASVMFMLGkOdIlEu68OuUS5q4g33Qv7rFYZexMzxKI=',
+    'key' => 'base64:R9hOGw0qcASf2Hg5qe/cYxa5I7wGm3vpVJgiEnoo+xs=',
     'previous_keys' => 
     array (
     ),
@@ -159,8 +159,8 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => 'C:\\Users\\vinun\\Desktop\\Term 7\\Capstone-Project-II\\Backend\\storage\\framework/cache/data',
-        'lock_path' => 'C:\\Users\\vinun\\Desktop\\Term 7\\Capstone-Project-II\\Backend\\storage\\framework/cache/data',
+        'path' => 'C:\\Users\\johnk\\Capstone-Project-II\\Backend\\storage\\framework/cache/data',
+        'lock_path' => 'C:\\Users\\johnk\\Capstone-Project-II\\Backend\\storage\\framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -215,7 +215,7 @@
       array (
         'driver' => 'sqlite',
         'url' => NULL,
-        'database' => 'test_capstone',
+        'database' => 'db_test_capstone2',
         'prefix' => '',
         'foreign_key_constraints' => true,
         'busy_timeout' => NULL,
@@ -228,7 +228,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'test_capstone',
+        'database' => 'db_test_capstone2',
         'username' => 'root',
         'password' => '',
         'unix_socket' => '',
@@ -248,7 +248,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'test_capstone',
+        'database' => 'db_test_capstone2',
         'username' => 'root',
         'password' => '',
         'unix_socket' => '',
@@ -268,7 +268,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'test_capstone',
+        'database' => 'db_test_capstone2',
         'username' => 'root',
         'password' => '',
         'charset' => 'utf8',
@@ -283,7 +283,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'test_capstone',
+        'database' => 'db_test_capstone2',
         'username' => 'root',
         'password' => '',
         'charset' => 'utf8',
@@ -332,13 +332,13 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\Users\\vinun\\Desktop\\Term 7\\Capstone-Project-II\\Backend\\storage\\app',
+        'root' => 'C:\\Users\\johnk\\Capstone-Project-II\\Backend\\storage\\app',
         'throw' => false,
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\Users\\vinun\\Desktop\\Term 7\\Capstone-Project-II\\Backend\\storage\\app/public',
+        'root' => 'C:\\Users\\johnk\\Capstone-Project-II\\Backend\\storage\\app/public',
         'url' => 'http://localhost/storage',
         'visibility' => 'public',
         'throw' => false,
@@ -358,7 +358,7 @@
     ),
     'links' => 
     array (
-      'C:\\Users\\vinun\\Desktop\\Term 7\\Capstone-Project-II\\Backend\\public\\storage' => 'C:\\Users\\vinun\\Desktop\\Term 7\\Capstone-Project-II\\Backend\\storage\\app/public',
+      'C:\\Users\\johnk\\Capstone-Project-II\\Backend\\public\\storage' => 'C:\\Users\\johnk\\Capstone-Project-II\\Backend\\storage\\app/public',
     ),
   ),
   'logging' => 
@@ -383,14 +383,14 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => 'C:\\Users\\vinun\\Desktop\\Term 7\\Capstone-Project-II\\Backend\\storage\\logs/laravel.log',
+        'path' => 'C:\\Users\\johnk\\Capstone-Project-II\\Backend\\storage\\logs/laravel.log',
         'level' => 'debug',
         'replace_placeholders' => true,
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => 'C:\\Users\\vinun\\Desktop\\Term 7\\Capstone-Project-II\\Backend\\storage\\logs/laravel.log',
+        'path' => 'C:\\Users\\johnk\\Capstone-Project-II\\Backend\\storage\\logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
         'replace_placeholders' => true,
@@ -455,7 +455,7 @@
       ),
       'emergency' => 
       array (
-        'path' => 'C:\\Users\\vinun\\Desktop\\Term 7\\Capstone-Project-II\\Backend\\storage\\logs/laravel.log',
+        'path' => 'C:\\Users\\johnk\\Capstone-Project-II\\Backend\\storage\\logs/laravel.log',
       ),
     ),
   ),
@@ -531,7 +531,7 @@
       'theme' => 'default',
       'paths' => 
       array (
-        0 => 'C:\\Users\\vinun\\Desktop\\Term 7\\Capstone-Project-II\\Backend\\resources\\views/vendor/mail',
+        0 => 'C:\\Users\\johnk\\Capstone-Project-II\\Backend\\resources\\views/vendor/mail',
       ),
     ),
   ),
@@ -622,11 +622,11 @@
   ),
   'session' => 
   array (
-    'driver' => 'database',
+    'driver' => 'file',
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => 'C:\\Users\\vinun\\Desktop\\Term 7\\Capstone-Project-II\\Backend\\storage\\framework/sessions',
+    'files' => 'C:\\Users\\johnk\\Capstone-Project-II\\Backend\\storage\\framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -647,9 +647,9 @@
   array (
     'paths' => 
     array (
-      0 => 'C:\\Users\\vinun\\Desktop\\Term 7\\Capstone-Project-II\\Backend\\resources\\views',
+      0 => 'C:\\Users\\johnk\\Capstone-Project-II\\Backend\\resources\\views',
     ),
-    'compiled' => 'C:\\Users\\vinun\\Desktop\\Term 7\\Capstone-Project-II\\Backend\\storage\\framework\\views',
+    'compiled' => 'C:\\Users\\johnk\\Capstone-Project-II\\Backend\\storage\\framework\\views',
   ),
   'broadcasting' => 
   array (
@@ -840,7 +840,7 @@
       'discover_models_through_filament_resources' => false,
       'model_directories' => 
       array (
-        0 => 'C:\\Users\\vinun\\Desktop\\Term 7\\Capstone-Project-II\\Backend\\app\\Models',
+        0 => 'C:\\Users\\johnk\\Capstone-Project-II\\Backend\\app\\Models',
       ),
       'custom_models' => 
       array (
@@ -891,7 +891,7 @@
     ),
     'default_filesystem_disk' => 'public',
     'assets_path' => NULL,
-    'cache_path' => 'C:\\Users\\vinun\\Desktop\\Term 7\\Capstone-Project-II\\Backend\\bootstrap/cache/filament',
+    'cache_path' => 'C:\\Users\\johnk\\Capstone-Project-II\\Backend\\bootstrap/cache/filament',
     'livewire_loading_delay' => 'default',
   ),
   'sanctum' => 
@@ -921,7 +921,7 @@
   'livewire' => 
   array (
     'class_namespace' => 'App\\Livewire',
-    'view_path' => 'C:\\Users\\vinun\\Desktop\\Term 7\\Capstone-Project-II\\Backend\\resources\\views/livewire',
+    'view_path' => 'C:\\Users\\johnk\\Capstone-Project-II\\Backend\\resources\\views/livewire',
     'layout' => 'components.layouts.app',
     'lazy_placeholder' => NULL,
     'temporary_file_upload' => 

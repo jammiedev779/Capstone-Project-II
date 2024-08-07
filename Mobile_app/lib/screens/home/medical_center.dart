@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:doc_care/services/hospital_api.dart';
 import 'package:doc_care/screens/hospital/hospital_detail.dart';
-import 'package:doc_care/screens/hospital/hospital_list.dart'; // Ensure this import is correct
+import 'package:doc_care/screens/hospital/hospital_list.dart'; 
 
 class NearbyMedicalCentersScreen extends StatefulWidget {
-  final int patientId; // Add patientId as a parameter
+  final int patientId; 
 
   const NearbyMedicalCentersScreen({super.key, required this.patientId});
 
@@ -16,17 +16,25 @@ class NearbyMedicalCentersScreen extends StatefulWidget {
 class _NearbyMedicalCentersScreenState
     extends State<NearbyMedicalCentersScreen> {
   late Future<List<Map<String, dynamic>>> _hospitalFuture;
+  late PageController _pageController;
 
   @override
   void initState() {
     super.initState();
     _hospitalFuture = HospitalApi.fetchHospitals();
+    _pageController = PageController(viewportFraction: 0.9);
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(1.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -43,7 +51,7 @@ class _NearbyMedicalCentersScreenState
                     context,
                     MaterialPageRoute(
                       builder: (context) => HospitalListScreen(
-                        patientId: widget.patientId, // Pass patientId here
+                        patientId: widget.patientId, 
                       ),
                     ),
                   );
@@ -67,20 +75,52 @@ class _NearbyMedicalCentersScreenState
                       child: Text('No nearby medical centers found.'));
                 } else {
                   final hospitals = snapshot.data!;
-                  return PageView.builder(
-                    controller: PageController(viewportFraction: 1),
-                    itemCount: hospitals.length,
-                    itemBuilder: (context, index) {
-                      final hospital = hospitals[index];
-                      return Container(
-                        width: 350.0,
-                        margin: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: HospitalCard(
-                          hospital: hospital,
-                          patientId: widget.patientId, // Pass patientId here
+                  return Stack(
+                    children: [
+                      PageView.builder(
+                        controller: _pageController,
+                        itemCount: hospitals.length,
+                        itemBuilder: (context, index) {
+                          final hospital = hospitals[index];
+                          return Container(
+                            width: 350.0,
+                            margin: const EdgeInsets.symmetric(horizontal: 2.0),
+                            child: HospitalCard(
+                              hospital: hospital,
+                              patientId: widget.patientId, 
+                            ),
+                          );
+                        },
+                      ),
+                      Positioned(
+                        left: 0,
+                        top: 0,
+                        bottom: 0,
+                        child: IconButton(
+                          icon: Icon(Icons.arrow_back_ios),
+                          onPressed: () {
+                            _pageController.previousPage(
+                              duration: Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            );
+                          },
                         ),
-                      );
-                    },
+                      ),
+                      Positioned(
+                        right: 0,
+                        top: 0,
+                        bottom: 0,
+                        child: IconButton(
+                          icon: Icon(Icons.arrow_forward_ios),
+                          onPressed: () {
+                            _pageController.nextPage(
+                              duration: Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   );
                 }
               },
@@ -94,7 +134,7 @@ class _NearbyMedicalCentersScreenState
 
 class HospitalCard extends StatelessWidget {
   final Map<String, dynamic> hospital;
-  final int patientId; // Add patientId as a parameter
+  final int patientId;
 
   const HospitalCard({
     required this.hospital,
@@ -116,8 +156,8 @@ class HospitalCard extends StatelessWidget {
               context,
               MaterialPageRoute(
                 builder: (context) => HospitalDetailScreen(
-                  hospitalId: hospital['id'], // Ensure hospitalId is provided
-                  patientId: patientId, // Pass patientId here
+                  hospitalId: hospital['id'],
+                  patientId: patientId,
                 ),
               ),
             );
@@ -127,25 +167,13 @@ class HospitalCard extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-                child: hospital['image'] != null
-                    ? Image.network(
-                        hospital['image'],
-                        height: 140.0,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      )
-                    : Container(
-                        height: 140.0,
-                        width: double.infinity,
-                        color: Colors.grey[200],
-                        child: Center(
-                          child: Text(
-                            'No Image Available',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                        ),
-                      ),
+                child: Image.network(
+                  hospital['image'] ??
+                      'https://teacarchitect.com/wp-content/uploads/2021/09/Royal-Phnom-Penh-Hospital.jpg',
+                  height: 220,
+                  width: 350,
+                  fit: BoxFit.cover,
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(10.0),
@@ -190,27 +218,6 @@ class HospitalCard extends StatelessWidget {
                         Text('1031 Ratings'),
                       ],
                     ),
-                    Divider(
-                      thickness: 2,
-                      color: Color(0xffE5E7EB),
-                    ),
-                    // Row(
-                    //   children: [
-                    //     Icon(Icons.phone, size: 16),
-                    //     SizedBox(width: 5),
-                    //     Text(
-                    //       hospital['phone_number'] ?? 'No Phone Number',
-                    //     ),
-                    //     Spacer(),
-                    //     Icon(Icons.email, size: 16),
-                    //     SizedBox(width: 5),
-                    //     Expanded(
-                    //       child: Text(
-                    //         hospital['email'] ?? 'No Email',
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
                   ],
                 ),
               ),

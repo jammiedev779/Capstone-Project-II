@@ -18,8 +18,10 @@ class SearchDoctorApi {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-
+ print('GET search doctors response status: ${response.statusCode}');
+      print('GET search doctors response body: ${response.body}');
     if (response.statusCode == 200) {
+      
       final List<dynamic> doctors = jsonDecode(response.body)['doctors'];
       return doctors.map((doctor) {
         return {
@@ -34,8 +36,10 @@ class SearchDoctorApi {
           'hospital_description': doctor['hospital_description'],
           'specialist_title': doctor['specialist_title'],
           'department_title': doctor['department_title'],
+          'image': doctor['image'],
         };
       }).toList();
+      
     } else {
       throw Exception('Failed to load doctors');
     }
@@ -48,8 +52,10 @@ class SearchDoctorApi {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-
+ print('GET search doctors response status: ${response.statusCode}');
+      print('GET search doctors response body: ${response.body}');
     if (response.statusCode == 200) {
+      
       final List<dynamic> doctors = jsonDecode(response.body)['doctors'];
       return doctors.map((doctor) {
         return {
@@ -64,6 +70,7 @@ class SearchDoctorApi {
           'hospital_description': doctor['hospital_description'],
           'specialist_title': doctor['specialist_title'],
           'department_title': doctor['department_title'],
+          'image': doctor['image'],
         };
       }).toList();
     } else {

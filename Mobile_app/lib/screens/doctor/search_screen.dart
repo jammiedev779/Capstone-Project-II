@@ -189,7 +189,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(8),
                         child: Image.network(
-                          doctor['profile_picture_url'] ??
+                          doctor['image'] ??
                               'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiO1ABhTbJ30hyaTS5yGuX0cFk_PN51aKV9g&s',
                           height: 110,
                           width: 110,

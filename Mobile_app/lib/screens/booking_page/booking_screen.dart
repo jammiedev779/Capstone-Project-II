@@ -222,7 +222,7 @@ class _BookingScreenState extends State<BookingScreen> {
           ),
         ),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
@@ -277,16 +277,23 @@ class _BookingScreenState extends State<BookingScreen> {
               const SizedBox(height: 16),
               Text('Note'),
               const SizedBox(height: 8),
-              TextFormField(
-                controller: _noteController,
-                decoration: _buildInputDecoration(
-                    'Note', 'Additional notes (optional)'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please provide a note';
-                  }
-                  return null;
-                },
+        
+              Container(
+                height: 150.0,
+                child: TextFormField(
+                  controller: _noteController,
+                  decoration: _buildInputDecoration(
+                      '', ''),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please provide a note';
+                    }
+                    return null;
+                  },
+                  maxLines: null, 
+                  expands: true, 
+                  textAlignVertical: TextAlignVertical.top, 
+                ),
               ),
               SizedBox(height: 20),
               Center(
@@ -295,7 +302,7 @@ class _BookingScreenState extends State<BookingScreen> {
                   child: Text('Confirm Booking'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor:
-                        Color(0xFF245252), // Match the AppBar gradient color
+                        Color(0xFF245252), 
                     foregroundColor: Colors.white,
                     padding:
                         EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
