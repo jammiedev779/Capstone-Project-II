@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Appointment;
+use App\Models\Doctor;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
@@ -25,16 +26,17 @@ class AppointmentController extends Controller
             'reason' => 'required|string|max:255',
             'note' => 'nullable|string|max:500'
         ]);
-
+    
         if ($validator->fails()) {
             return response()->json([
                 'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
                 'message' => $validator->messages(),
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-
+    
+        DB::beginTransaction();
         try {
-            $doctor = DB::table('doctors')->select('hospital_id')->whereId($request->doctor_id)->first();
+            $doctor = Doctor::select('hospital_id')->whereId($request->doctor_id)->first();
             $appointment = new Appointment([
                 'hospital_id'       => $doctor ? $doctor->hospital_id : null,
                 'doctor_id'         => $request->doctor_id,
@@ -48,28 +50,30 @@ class AppointmentController extends Controller
                 'note'              => $request->note,
             ]);
 
+            $appointment->save();
+    
             DB::table('access_patient_medicals')->insert([
                 'patient_id'        => $request->patient_id,
-                // 'doctor_id'         => $request->doctor_id,
+                'admin_id'          => $doctor->hospital->user->id ?? '1',
                 'status'            => 1,
-            ]); 
-
-            $appointment->save();
-
+            ]);
+    
+            DB::commit();
+    
             return response()->json([
                 'status' => Response::HTTP_CREATED,
                 'message' => 'Appointment created successfully',
                 'appointment' => $appointment 
             ], Response::HTTP_CREATED);
         } catch (\Exception $e) {
-            Log::error('Failed to create appointment: ' . $e->getMessage());
-            
+            DB::rollBack();
             return response()->json([
                 'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
                 'message' => 'Failed to create appointment. Please try again later.',
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+    
 
     public function appointmentHistory($patient_id)
     {
@@ -86,15 +90,17 @@ class AppointmentController extends Controller
     
         try {
             $appointments = Appointment::where('patient_id', $patient_id)
-                ->with('doctor')
+                ->with(['doctor.specialist']) // Ensure nested loading of the specialist relation
                 ->get(['id','doctor_id', 'appointment_date', 'location', 'status', 'user_status', 'doctor_status', 'reason', 'note']);
     
+    
             $appointmentData = $appointments->map(function ($appointment) {
+    
                 return [
                     'id' => $appointment->id,
                     'doctor_id' => $appointment->doctor_id,
                     'doctor_name' => $appointment->doctor->first_name . ' ' . $appointment->doctor->last_name,
-                    'specialist_title' => $appointment->doctor->specialist->title ?? 'N/A', 
+                    'specialist_title' => $appointment->doctor->specialist->title ?? 'N/A',
                     'appointment_date' => $appointment->appointment_date->format('Y-m-d H:i:s'),
                     'location' => $appointment->location,
                     'status' => $appointment->status,
@@ -102,7 +108,6 @@ class AppointmentController extends Controller
                     'doctor_status' => $appointment->doctor_status,
                     'reason' => $appointment->reason,
                     'note' => $appointment->note,
-    
                 ];
             });
     
@@ -110,9 +115,8 @@ class AppointmentController extends Controller
                 'status' => Response::HTTP_OK,
                 'appointments' => $appointmentData,
             ], Response::HTTP_OK);
-            
+    
         } catch (\Exception $e) {
-            Log::error('Failed to fetch appointments: ' . $e->getMessage());
     
             return response()->json([
                 'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
@@ -120,6 +124,7 @@ class AppointmentController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+    
 
     public function cancelAppointment(Request $request, $appointment_id)
     {

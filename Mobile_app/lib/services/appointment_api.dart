@@ -6,7 +6,7 @@ class AppointmentApi {
 
   static Future<Map<String, dynamic>> fetchAppointments(int patientId) async {
     final response = await http.get(Uri.parse('$_baseUrl/$patientId'));
-
+  print('API response: ${response.body}');
     if (response.statusCode == 200) {
       print('API response: ${response.body}');
       return json.decode(response.body);
